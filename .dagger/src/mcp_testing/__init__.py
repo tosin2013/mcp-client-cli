@@ -127,7 +127,7 @@ class McpTesting:
             container
             .with_directory("/src", source)
             .with_workdir("/src")
-            .with_exec(["pip", "install", "-e", ".[testing]"])
+            .with_exec(["pip", "install", "-e", "."])
         )
 
     @function
@@ -772,7 +772,70 @@ if __name__ == "__main__":
         self,
         source: Annotated[Directory, dagger.DefaultPath("/")]
     ) -> str:
-        """Run basic tests."""
-        # Use our enhanced functional tests
-        result = await self.run_functional_tests(source)
-        return f"Basic tests completed:\\n{result}" 
+        """Run basic validation tests."""
+        container = await self.test_environment()
+        container = await self.install_dependencies(container, source)
+        
+        # Create a simple validation test script
+        validation_script = '''
+import sys
+import importlib
+
+def test_imports():
+    """Test basic imports."""
+    print("Starting basic validation tests...")
+    
+    try:
+        # Test core imports
+        import mcp_client_cli
+        print("SUCCESS: mcp_client_cli imported")
+        
+        from mcp_client_cli.config import AppConfig, LLMConfig, ServerConfig, TestConfig
+        print("SUCCESS: Config classes imported")
+        
+        from mcp_client_cli.testing import MCPServerTester
+        print("SUCCESS: MCPServerTester imported")
+        
+        # Test basic configuration creation
+        config = AppConfig(
+            llm=LLMConfig(
+                model="gpt-4o-mini",
+                provider="openai",
+                temperature=0.0
+            ),
+            system_prompt="Basic validation test",
+            mcp_servers={},
+            tools_requires_confirmation=[],
+            testing=TestConfig()
+        )
+        print("SUCCESS: Basic configuration created")
+        
+        # Test tester instantiation
+        tester = MCPServerTester(config)
+        print("SUCCESS: MCPServerTester instantiated")
+        
+        print("\\nAll basic validation tests PASSED")
+        return True
+        
+    except Exception as e:
+        print(f"ERROR: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+if __name__ == "__main__":
+    success = test_imports()
+    print(f"\\nValidation Result: {'PASSED' if success else 'FAILED'}")
+    sys.exit(0 if success else 1)
+'''
+        
+        container = container.with_new_file("/src/validation_tests.py", validation_script)
+        
+        # Run validation tests
+        result = await (
+            container
+            .with_exec(["python", "validation_tests.py"])
+            .stdout()
+        )
+        
+        return f"Basic validation tests completed:\\n{result}" 
