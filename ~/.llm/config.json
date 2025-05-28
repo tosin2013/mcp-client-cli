@@ -1,0 +1,10 @@
+{
+  "systemPrompt": "You are an AI assistant helping with MCP server testing and configuration.",
+  "llm": {
+    "provider": "openai",
+    "model": "gpt-4",
+    "api_key": "test-key-for-development",
+    "temperature": 0.7
+  },
+  "mcpServers": {}
+} 

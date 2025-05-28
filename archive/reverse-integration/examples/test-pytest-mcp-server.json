@@ -1,0 +1,55 @@
+{
+  "systemPrompt": "You are testing the pytest-mcp-server integration with our MCP testing framework.",
+  "llm": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "temperature": 0.1
+  },
+  "mcpServers": {
+    "pytest-mcp-server": {
+      "command": "node",
+      "args": ["../pytest-mcp-server/src/index.ts"],
+      "env": {
+        "NODE_ENV": "test",
+        "DATA_DIR": "./test-data"
+      },
+      "enabled": true,
+      "excludeTools": [],
+      "requiresConfirmation": []
+    }
+  },
+  "toolsRequiresConfirmation": [],
+  "testingConfig": {
+    "timeout": 30,
+    "retries": 3,
+    "parallel": true,
+    "confidenceThreshold": 0.85,
+    "securityTesting": {
+      "enabled": true,
+      "authenticationTests": true,
+      "inputValidationTests": true,
+      "dataSanitizationTests": true
+    },
+    "performanceTesting": {
+      "enabled": true,
+      "concurrentConnections": 5,
+      "testDuration": 60,
+      "responseTimeThreshold": 2.0,
+      "memoryLeakDetection": true
+    },
+    "functionalTesting": {
+      "enabled": true,
+      "toolTests": [
+        "register_pytest_failure",
+        "debug_with_principle",
+        "get_failure_info",
+        "list_failures",
+        "analyze_failures",
+        "generate_debug_prompt",
+        "pytest_docs_guide"
+      ],
+      "resourceTests": true,
+      "promptTests": true
+    }
+  }
+} 
