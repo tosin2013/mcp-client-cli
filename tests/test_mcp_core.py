@@ -6,24 +6,27 @@ including functional testing capabilities and configuration validation.
 """
 
 import asyncio
-import pytest
 import tempfile
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import pytest
+
 from mcp_client_cli.config import AppConfig, LLMConfig, ServerConfig, TestConfig
-from mcp_client_cli.testing import MCPServerTester, TestResult, TestSuite, TestResultManager, TestStatus
+from mcp_client_cli.testing import (
+    MCPServerTester,
+    TestResult,
+    TestResultManager,
+    TestStatus,
+    TestSuite,
+)
 
 
 @pytest.fixture
 def sample_config():
     """Create a sample AppConfig for testing."""
     return AppConfig(
-        llm=LLMConfig(
-            model="gpt-4o-mini",
-            provider="openai",
-            temperature=0.0
-        ),
+        llm=LLMConfig(model="gpt-4o-mini", provider="openai", temperature=0.0),
         system_prompt="Test system prompt",
         mcp_servers={
             "test-server": ServerConfig(
@@ -32,11 +35,11 @@ def sample_config():
                 env={},
                 enabled=True,
                 exclude_tools=[],
-                requires_confirmation=[]
+                requires_confirmation=[],
             )
         },
         tools_requires_confirmation=[],
-        testing=TestConfig()
+        testing=TestConfig(),
     )
 
 
@@ -48,12 +51,12 @@ async def test_configuration_validation_valid():
         system_prompt="Test prompt",
         mcp_servers={"test": ServerConfig(command="python", args=[])},
         tools_requires_confirmation=[],
-        testing=TestConfig()
+        testing=TestConfig(),
     )
-    
+
     tester = MCPServerTester(config)
     result = await tester.validate_configuration(config)
-    
+
     assert result.status == TestStatus.PASSED
     assert result.confidence_score >= 0.85
     assert "Configuration validation passed" in result.message
@@ -67,12 +70,12 @@ async def test_configuration_validation_invalid():
         system_prompt="",  # Invalid
         mcp_servers={},  # Invalid
         tools_requires_confirmation=[],
-        testing=TestConfig()
+        testing=TestConfig(),
     )
-    
+
     tester = MCPServerTester(config)
     result = await tester.validate_configuration(config)
-    
+
     assert result.status == TestStatus.FAILED
     assert result.confidence_score >= 0.90
     assert "Configuration validation failed" in result.message
@@ -86,20 +89,20 @@ async def test_server_connectivity_mock():
         system_prompt="Test",
         mcp_servers={"test": ServerConfig(command="python", args=[])},
         tools_requires_confirmation=[],
-        testing=TestConfig()
+        testing=TestConfig(),
     )
-    
+
     tester = MCPServerTester(config)
     server_config = config.mcp_servers["test"]
-    
+
     # Mock successful connection
-    with patch('mcp_client_cli.testing.mcp_tester.McpToolkit') as mock_toolkit_class:
+    with patch("mcp_client_cli.testing.mcp_tester.McpToolkit") as mock_toolkit_class:
         mock_toolkit = AsyncMock()
         mock_toolkit._start_session = AsyncMock()
         mock_toolkit_class.return_value = mock_toolkit
-        
+
         result = await tester.test_server_connectivity(server_config, "test")
-        
+
         assert result.status == TestStatus.PASSED
         assert result.confidence_score == 0.95
         assert "Successfully connected" in result.message
@@ -112,9 +115,9 @@ def test_test_result_creation():
         status=TestStatus.PASSED,
         confidence_score=0.95,
         execution_time=0.1,
-        message="Test passed"
+        message="Test passed",
     )
-    
+
     assert result.test_name == "test"
     assert result.status == TestStatus.PASSED
     assert result.confidence_score == 0.95
@@ -132,10 +135,10 @@ def test_test_suite_creation():
         error_tests=0,
         skipped_tests=0,
         overall_confidence=0.85,
-        execution_time=1.5
+        execution_time=1.5,
     )
-    
+
     assert suite.server_name == "test-server"
     assert suite.total_tests == 3
     assert suite.passed_tests == 2
-    assert suite.overall_confidence == 0.85 
+    assert suite.overall_confidence == 0.85

@@ -4,21 +4,18 @@ This store provides persistent storage using SQLite with optional vector search 
 It implements the BaseStore interface from langgraph.
 """
 
-from datetime import datetime, timezone
 import json
 import logging
+import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
-from typing_extensions import Annotated
-import uuid
 
 import aiosqlite
 from langchain_core.embeddings import Embeddings
-from langgraph.prebuilt import InjectedStore
-from langgraph.store.base import BaseStore
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
-
+from langgraph.prebuilt import InjectedStore
 from langgraph.store.base import (
     BaseStore,
     GetOp,
@@ -35,13 +32,19 @@ from langgraph.store.base import (
     get_text_at_path,
     tokenize_path,
 )
+from typing_extensions import Annotated
 
 logger = logging.getLogger(__name__)
-        
+
 
 @tool
-async def save_memory(memories: List[str], *, config: RunnableConfig, store: Annotated[BaseStore, InjectedStore()]) -> str:
-    '''Save the given memory for the current user. Do not save duplicate memories.'''
+async def save_memory(
+    memories: List[str],
+    *,
+    config: RunnableConfig,
+    store: Annotated[BaseStore, InjectedStore()],
+) -> str:
+    """Save the given memory for the current user. Do not save duplicate memories."""
     user_id = config.get("configurable", {}).get("user_id")
     namespace = ("memories", user_id)
     for memory in memories:
@@ -49,10 +52,14 @@ async def save_memory(memories: List[str], *, config: RunnableConfig, store: Ann
         await store.aput(namespace, f"memory_{id}", {"data": memory})
     return f"Saved memories: {memories}"
 
-async def get_memories(store: BaseStore, user_id: str = "myself", query: str = None) -> List[str]:
+
+async def get_memories(
+    store: BaseStore, user_id: str = "myself", query: str = None
+) -> List[str]:
     namespace = ("memories", user_id)
     memories = [m.value["data"] for m in await store.asearch(namespace, query=query)]
     return memories
+
 
 class SqliteStore(BaseStore):
     """SQLite-based store with optional vector search.
@@ -92,7 +99,8 @@ class SqliteStore(BaseStore):
         Args:
             db (aiosqlite.Connection): Database connection
         """
-        await db.execute("""
+        await db.execute(
+            """
             CREATE TABLE IF NOT EXISTS items (
                 namespace TEXT,
                 key TEXT,
@@ -101,9 +109,11 @@ class SqliteStore(BaseStore):
                 updated_at TEXT,
                 PRIMARY KEY (namespace, key)
             )
-        """)
+        """
+        )
         if self.index_config:
-            await db.execute("""
+            await db.execute(
+                """
                 CREATE TABLE IF NOT EXISTS vectors (
                     namespace TEXT,
                     key TEXT,
@@ -113,7 +123,8 @@ class SqliteStore(BaseStore):
                     FOREIGN KEY (namespace, key) REFERENCES items (namespace, key)
                         ON DELETE CASCADE
                 )
-            """)
+            """
+            )
         await db.commit()
 
     def batch(self, ops: List[Op]) -> List[Result]:
@@ -140,7 +151,9 @@ class SqliteStore(BaseStore):
             await self._init_db(db)
             results: List[Result] = []
             put_ops: Dict[Tuple[Tuple[str, ...], str], PutOp] = {}
-            search_ops: Dict[int, Tuple[SearchOp, List[Tuple[Item, List[List[float]]]]]] = {}
+            search_ops: Dict[
+                int, Tuple[SearchOp, List[Tuple[Item, List[List[float]]]]]
+            ] = {}
 
             for i, op in enumerate(ops):
                 if isinstance(op, GetOp):
@@ -188,7 +201,7 @@ class SqliteStore(BaseStore):
         """
         async with db.execute(
             "SELECT value, created_at, updated_at FROM items WHERE namespace = ? AND key = ?",
-            ("/".join(namespace), key)
+            ("/".join(namespace), key),
         ) as cursor:
             row = await cursor.fetchone()
             if row:
@@ -197,7 +210,7 @@ class SqliteStore(BaseStore):
                     key=key,
                     value=json.loads(row[0]),
                     created_at=datetime.fromisoformat(row[1]),
-                    updated_at=datetime.fromisoformat(row[2])
+                    updated_at=datetime.fromisoformat(row[2]),
                 )
             return None
 
@@ -230,7 +243,7 @@ class SqliteStore(BaseStore):
                     key=row[1],
                     value=json.loads(row[2]),
                     created_at=datetime.fromisoformat(row[3]),
-                    updated_at=datetime.fromisoformat(row[4])
+                    updated_at=datetime.fromisoformat(row[4]),
                 )
                 if not op.filter or all(
                     self._compare_values(item.value.get(key), filter_value)
@@ -258,7 +271,7 @@ class SqliteStore(BaseStore):
         """
         async with db.execute(
             "SELECT vector FROM vectors WHERE namespace = ? AND key = ?",
-            ("/".join(namespace), key)
+            ("/".join(namespace), key),
         ) as cursor:
             rows = await cursor.fetchall()
             return [json.loads(row[0]) for row in rows]
@@ -281,16 +294,20 @@ class SqliteStore(BaseStore):
 
             if op.match_conditions:
                 namespaces = [
-                    ns for ns in namespaces
-                    if all(self._does_match(condition, ns) for condition in op.match_conditions)
+                    ns
+                    for ns in namespaces
+                    if all(
+                        self._does_match(condition, ns)
+                        for condition in op.match_conditions
+                    )
                 ]
 
             if op.max_depth is not None:
-                namespaces = sorted({ns[:op.max_depth] for ns in namespaces})
+                namespaces = sorted({ns[: op.max_depth] for ns in namespaces})
             else:
                 namespaces = sorted(namespaces)
 
-            return namespaces[op.offset:op.offset + op.limit]
+            return namespaces[op.offset : op.offset + op.limit]
 
     async def _embed_search_queries(
         self,
@@ -365,7 +382,7 @@ class SqliteStore(BaseStore):
 
                 if scoreless and len(kept) < op.limit:
                     kept.extend(
-                        (None, item) for item in scoreless[:op.limit - len(kept)]
+                        (None, item) for item in scoreless[: op.limit - len(kept)]
                     )
 
                 results[i] = [
@@ -388,11 +405,13 @@ class SqliteStore(BaseStore):
                         created_at=item.created_at,
                         updated_at=item.updated_at,
                     )
-                    for (item, _) in candidates[op.offset:op.offset + op.limit]
+                    for (item, _) in candidates[op.offset : op.offset + op.limit]
                 ]
 
     async def _apply_put_ops(
-        self, db: aiosqlite.Connection, put_ops: Dict[Tuple[Tuple[str, ...], str], PutOp]
+        self,
+        db: aiosqlite.Connection,
+        put_ops: Dict[Tuple[Tuple[str, ...], str], PutOp],
     ) -> None:
         """Apply put operations to the database.
 
@@ -404,7 +423,7 @@ class SqliteStore(BaseStore):
             if op.value is None:
                 await db.execute(
                     "DELETE FROM items WHERE namespace = ? AND key = ?",
-                    ("/".join(namespace), key)
+                    ("/".join(namespace), key),
                 )
             else:
                 now = datetime.now(timezone.utc)
@@ -422,7 +441,7 @@ class SqliteStore(BaseStore):
                         json.dumps(op.value),
                         now.isoformat(),
                         now.isoformat(),
-                    )
+                    ),
                 )
 
     async def _insert_vectors(
@@ -453,7 +472,7 @@ class SqliteStore(BaseStore):
                 ON CONFLICT (namespace, key, path) DO UPDATE SET
                     vector = excluded.vector
                 """,
-                ("/".join(ns), key, path, json.dumps(embedding))
+                ("/".join(ns), key, path, json.dumps(embedding)),
             )
 
     def _extract_texts(
@@ -551,7 +570,9 @@ class SqliteStore(BaseStore):
         else:
             raise ValueError(f"Unsupported operator: {operator}")
 
-    def _does_match(self, match_condition: MatchCondition, key: Tuple[str, ...]) -> bool:
+    def _does_match(
+        self, match_condition: MatchCondition, key: Tuple[str, ...]
+    ) -> bool:
         """Check if a namespace key matches a match condition.
 
         Args:
@@ -599,6 +620,7 @@ class SqliteStore(BaseStore):
 
         try:
             import numpy as np
+
             X_arr = np.array(X) if not isinstance(X, np.ndarray) else X
             Y_arr = np.array(Y) if not isinstance(Y, np.ndarray) else Y
             X_norm = np.linalg.norm(X_arr)
@@ -623,4 +645,4 @@ class SqliteStore(BaseStore):
                     dot_product / (norm1 * norm2) if norm1 > 0 and norm2 > 0 else 0.0
                 )
                 similarities.append(similarity)
-            return similarities 
+            return similarities

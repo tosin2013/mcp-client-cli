@@ -1,9 +1,11 @@
 import json
-from langchain_core.messages import BaseMessage, AIMessage, AIMessageChunk, ToolMessage
+
+from langchain_core.messages import AIMessage, AIMessageChunk, BaseMessage, ToolMessage
 from rich.console import Console, ConsoleDimensions
 from rich.live import Live
 from rich.markdown import Markdown
 from rich.prompt import Confirm
+
 
 class OutputHandler:
     def __init__(self, text_only: bool = False, only_last_message: bool = False):
@@ -20,31 +22,35 @@ class OutputHandler:
     def start(self):
         if not self.text_only:
             self._live = Live(
-                Markdown(self.md), 
-                vertical_overflow="visible", 
+                Markdown(self.md),
+                vertical_overflow="visible",
                 screen=True,
-                console=self.console
+                console=self.console,
             )
             self._live.start()
 
     def update(self, chunk: any):
         self.md = self._parse_chunk(chunk, self.md)
-        if(self.only_last_message and self.text_only):
+        if self.only_last_message and self.text_only:
             # when only_last_message, we print in finish()
             return
         if self.text_only:
             self.console.print(self._parse_chunk(chunk), end="")
         else:
-            if self.md.startswith("Thinking...") and not self.md.strip("Thinking...").isspace():
+            if (
+                self.md.startswith("Thinking...")
+                and not self.md.strip("Thinking...").isspace()
+            ):
                 self.md = self.md.strip("Thinking...").strip()
             partial_md = self._truncate_md_to_fit(self.md, self.console.size)
             self._live.update(Markdown(partial_md), refresh=True)
 
     def update_error(self, error: Exception):
         import traceback
+
         error = f"Error: {error}\n\nStack trace:\n```\n{traceback.format_exc()}```"
         self.md += error
-        if(self.only_last_message):
+        if self.only_last_message:
             self.console.print(error)
             return
         if self.text_only:
@@ -66,7 +72,7 @@ class OutputHandler:
         if not is_confirmed:
             self.md += "# Tool call denied"
             return False
-            
+
         if not self.text_only:
             self.start()
         return True
@@ -93,7 +99,12 @@ class OutputHandler:
                 self.last_message += content
                 if isinstance(content, str):
                     md += content
-                elif isinstance(content, list) and len(content) > 0 and isinstance(content[0], dict) and "text" in content[0]:
+                elif (
+                    isinstance(content, list)
+                    and len(content) > 0
+                    and isinstance(content[0], dict)
+                    and "text" in content[0]
+                ):
                     md += content[0]["text"]
         # If this is a final value
         elif isinstance(chunk, dict) and "messages" in chunk:
@@ -101,7 +112,7 @@ class OutputHandler:
             md += "\n"
             self.last_message = ""
         elif isinstance(chunk, tuple) and chunk[0] == "values":
-            message: BaseMessage = chunk[1]['messages'][-1]
+            message: BaseMessage = chunk[1]["messages"][-1]
             if isinstance(message, AIMessage) and message.tool_calls:
                 md += "\n\n### Tool Calls:"
                 for tc in message.tool_calls:
@@ -157,7 +168,7 @@ class OutputHandler:
             if line.strip() == "```":
                 code_block_count += 1
 
-        return '\n'.join(fitted_lines) if fitted_lines else ''
+        return "\n".join(fitted_lines) if fitted_lines else ""
 
     def _is_tool_call_requested(self, chunk: any, config: dict) -> bool:
         """
@@ -165,7 +176,7 @@ class OutputHandler:
         """
         if isinstance(chunk, tuple) and chunk[0] == "values":
             if len(chunk) > 1 and isinstance(chunk[1], dict) and "messages" in chunk[1]:
-                message = chunk[1]['messages'][-1]
+                message = chunk[1]["messages"][-1]
                 if isinstance(message, AIMessage) and message.tool_calls:
                     for tc in message.tool_calls:
                         if tc.get("name") in config["tools_requires_confirmation"]:
@@ -179,7 +190,9 @@ class OutputHandler:
         self.console.set_alt_screen(True)
         self.console.print(Markdown(self.md))
         self.console.print(f"\n\n")
-        is_tool_call_confirmed = Confirm.ask(f"Confirm tool call?", console=self.console)
+        is_tool_call_confirmed = Confirm.ask(
+            f"Confirm tool call?", console=self.console
+        )
         self.console.set_alt_screen(False)
         if not is_tool_call_confirmed:
             return False
