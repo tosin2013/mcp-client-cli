@@ -3,7 +3,8 @@
 [![PyPI version](https://badge.fury.io/py/mcp-testing-framework.svg)](https://badge.fury.io/py/mcp-testing-framework)
 [![Python Support](https://img.shields.io/pypi/pyversions/mcp-testing-framework.svg)](https://pypi.org/project/mcp-testing-framework/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://github.com/tosinakinosho/mcp-testing-framework/workflows/Tests/badge.svg)](https://github.com/tosinakinosho/mcp-testing-framework/actions)
+[![Test mcp-testing-framework](https://github.com/tosin2013/mcp-client-cli/actions/workflows/test.yml/badge.svg)](https://github.com/tosin2013/mcp-client-cli/actions/workflows/test.yml)
+[![MCP Server Testing with Dagger Cloud](https://github.com/tosin2013/mcp-client-cli/actions/workflows/mcp-server-testing.yml/badge.svg)](https://github.com/tosin2013/mcp-client-cli/actions/workflows/mcp-server-testing.yml)
 
 **Comprehensive testing framework for Model Context Protocol (MCP) servers**
 
