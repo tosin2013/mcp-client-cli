@@ -56,7 +56,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       
@@ -77,13 +77,13 @@ jobs:
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
       
       - name: Cache Python dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/uv
           key: ${{ runner.os }}-uv-${{ matrix.python-version }}-${{ hashFiles('mcp-client-cli/pyproject.toml') }}
       
       - name: Cache Node dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: target-mcp-server/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('target-mcp-server/package-lock.json') }}
@@ -100,7 +100,7 @@ jobs:
             --openai-api-key=env:OPENAI_API_KEY
       
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results-py${{ matrix.python-version }}-node${{ matrix.node-version }}
@@ -111,7 +111,7 @@ jobs:
           retention-days: 30
       
       - name: Upload Dagger Cloud logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always() && env.DAGGER_CLOUD_TOKEN
         with:
           name: dagger-cloud-logs-py${{ matrix.python-version }}-node${{ matrix.node-version }}
@@ -128,7 +128,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Download all test results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: test-results
       
@@ -175,7 +175,7 @@ jobs:
       
       - name: Comment PR with results
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
@@ -214,7 +214,7 @@ jobs:
             });
       
       - name: Upload comprehensive report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: comprehensive-test-report
           path: comprehensive_report.json
