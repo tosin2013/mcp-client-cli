@@ -1,10 +1,12 @@
 # MCP CLI client
 
-A simple CLI program to run LLM prompt and implement [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) client.
+A simple CLI program to run LLM prompt and implement [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) client, **featuring a universal testing framework for any MCP server repository**.
 
 You can use any [MCP-compatible servers](https://github.com/punkpeye/awesome-mcp-servers) from the convenience of your terminal.
 
 This act as alternative client beside Claude Desktop. Additionally you can use any LLM provider like OpenAI, Groq, or local LLM model via [llama](https://github.com/ggerganov/llama.cpp).
+
+**🧪 Universal MCP Testing**: Includes a comprehensive testing framework that works with any MCP server implementation (Python, Node.js, Go, Rust, etc.) with automated detection, security testing, performance benchmarking, and CI/CD integration.
 
 ![C4 Diagram](https://raw.githubusercontent.com/adhikasp/mcp-client-cli/refs/heads/master/c4_diagram.png)
 
@@ -226,7 +228,15 @@ $ llm --model gpt-4               # Override the model specified in config
 
 ## MCP Testing Framework
 
-This project includes a comprehensive testing framework for MCP servers, built with methodological pragmatism principles and powered by Dagger.io pipelines.
+This project includes a **universal, comprehensive testing framework** for MCP servers, designed to work with **any MCP server repository** regardless of implementation language or framework. Built with methodological pragmatism principles and powered by Dagger.io pipelines.
+
+### 🌟 Universal Compatibility
+
+The testing framework automatically detects and adapts to:
+- **Any MCP server implementation** (Python, Node.js, Go, Rust, etc.)
+- **Any repository structure** with intelligent auto-discovery
+- **Multiple testing environments** (local, containerized, CI/CD)
+- **Various MCP protocol versions** and extensions
 
 ### Quick Start
 
@@ -235,44 +245,62 @@ This project includes a comprehensive testing framework for MCP servers, built w
    pip install -e ".[testing]"
    ```
 
-2. **Run basic tests:**
+2. **One-command testing for any repository:**
    ```bash
-   # Test a specific MCP server
+   # Auto-detect and test any MCP server repository
+   ./scripts/quick-test-local.sh --repo-url https://github.com/your-org/your-mcp-server.git
+
+   # Test current repository
+   llm test-server --auto-detect
+
+   # Test with specific configuration
    llm test-server --config examples/test-config-basic.json
-
-   # Run comprehensive test suite
-   llm test-suite --config examples/test-config-advanced.json
-
-   # Run security tests
-   llm test-security --server my-server --config examples/test-config-advanced.json
    ```
 
-3. **Use Dagger.io pipelines:**
+3. **Universal self-testing workflow:**
    ```bash
-   # Run full test suite with Dagger
-   dagger call run-full-test-suite --config-path examples/test-config-advanced.json
+   # Generate and run tests for any MCP server
+   python scripts/pytest-mcp-server-workflow.py --repo-url https://github.com/your-org/your-mcp-server.git
+   ```
 
-   # Run performance tests
-   dagger call run-performance-tests --server-name my-server
+4. **Use Dagger.io pipelines:**
+   ```bash
+   # Run full test suite with automatic environment detection
+   dagger call run-full-test-suite --auto-detect
+
+   # Multi-language testing
+   dagger call multi-language-environment --test-python --test-nodejs
    ```
 
 ### Testing Capabilities
 
-- **Functional Testing**: Validate MCP server functionality, tool execution, and resource access
-- **Security Testing**: Authentication, authorization, input validation, and vulnerability scanning
-- **Performance Testing**: Load testing, response time measurement, and resource monitoring
-- **Integration Testing**: Multi-environment testing with cross-language support
-- **Automated Issue Detection**: Real-time monitoring with self-healing capabilities
+- **🔍 Functional Testing**: Validate MCP server functionality, tool execution, and resource access
+- **🔒 Security Testing**: Authentication, authorization, input validation, OWASP compliance
+- **⚡ Performance Testing**: Load testing, response time measurement, memory leak detection
+- **🔗 Integration Testing**: Multi-environment testing with cross-language support
+- **🤖 Automated Issue Detection**: Real-time monitoring with self-healing capabilities
+- **📊 Confidence Scoring**: All results include reliability scores (0-100%)
+- **🌐 Universal Compatibility**: Works with any MCP server implementation
 
 ### Configuration
 
-Create test configurations using the provided examples:
+The framework provides intelligent defaults and auto-configuration:
 
-- `examples/test-config-basic.json`: Basic testing setup
-- `examples/test-config-advanced.json`: Comprehensive testing with security and performance
+- **Auto-Detection**: Automatically discovers MCP server type and configuration
+- **Smart Defaults**: Generates appropriate test configurations based on repository structure
+- **Example Configurations**: Pre-built configs for common scenarios
+  - `examples/test-config-basic.json`: Basic testing setup
+  - `examples/test-config-advanced.json`: Comprehensive testing with security and performance
+  - `examples/MCP_SERVER_INTEGRATION.md`: Integration guide for any repository
 
 ### Documentation
 
+#### Universal Guides
+- **[examples/UNIVERSAL_SELF_TESTING_GUIDE.md](examples/UNIVERSAL_SELF_TESTING_GUIDE.md)**: Complete guide for testing any MCP server repository
+- **[examples/MCP_SERVER_SETUP.md](examples/MCP_SERVER_SETUP.md)**: 5-minute setup for any repository
+- **[examples/MCP_SERVER_INTEGRATION.md](examples/MCP_SERVER_INTEGRATION.md)**: Integration patterns and examples
+
+#### Framework Documentation
 - **[TESTING.md](TESTING.md)**: Complete testing framework documentation
 - **[examples/CLI_USAGE_GUIDE.md](examples/CLI_USAGE_GUIDE.md)**: CLI testing commands and usage
 - **[examples/API_REFERENCE.md](examples/API_REFERENCE.md)**: Testing API reference
@@ -280,32 +308,65 @@ Create test configurations using the provided examples:
 - **[examples/BEST_PRACTICES.md](examples/BEST_PRACTICES.md)**: Testing best practices and guidelines
 - **[examples/TROUBLESHOOTING.md](examples/TROUBLESHOOTING.md)**: Common issues and solutions
 
+#### Advanced Features
+- **[MULTI_LANGUAGE_TESTING.md](MULTI_LANGUAGE_TESTING.md)**: Multi-language testing capabilities
+- **[REVERSE_INTEGRATION_SUMMARY.md](REVERSE_INTEGRATION_SUMMARY.md)**: Reverse integration workflows
+- **[prompts/MCP_SERVER_TESTING_PROMPT.md](prompts/MCP_SERVER_TESTING_PROMPT.md)**: AI-powered test generation
+
 ### Key Features
 
-- **Confidence Scoring**: All test results include confidence scores (0-100%) for reliability assessment
-- **Methodological Pragmatism**: Systematic verification with explicit fallibilism
-- **Error Architecture Awareness**: Distinguishes between human-cognitive and artificial-stochastic errors
-- **Multi-Language Support**: Test both Python and Node.js MCP servers
-- **Container Isolation**: Dagger.io provides clean, reproducible test environments
-- **Automated Remediation**: Self-healing capabilities for common issues
+- **🎯 Universal Compatibility**: Test any MCP server repository without modification
+- **📈 Confidence Scoring**: All test results include confidence scores (0-100%) for reliability assessment
+- **🧠 Methodological Pragmatism**: Systematic verification with explicit fallibilism
+- **⚠️ Error Architecture Awareness**: Distinguishes between human-cognitive and artificial-stochastic errors
+- **🌍 Multi-Language Support**: Test Python, Node.js, Go, Rust, and other MCP servers
+- **🐳 Container Isolation**: Dagger.io provides clean, reproducible test environments
+- **🔧 Automated Remediation**: Self-healing capabilities for common issues
+- **🔄 CI/CD Integration**: GitHub Actions workflows for automated testing
 
 ### Example Usage
 
 ```bash
-# Basic server validation
-llm test-server --server my-server --tests functional,security
+# Test any MCP server repository
+llm test-server --repo-url https://github.com/your-org/your-mcp-server.git
 
-# Performance benchmarking
-llm test-performance --server my-server --concurrent-connections 10
+# Auto-detect and test current repository
+llm test-server --auto-detect --tests functional,security,performance
 
-# Issue detection and remediation
-llm detect-issues --server my-server --auto-remediate
+# Performance benchmarking with auto-scaling
+llm test-performance --auto-detect --concurrent-connections 10
 
-# Generate test reports
-llm test-report --format html --output test-results.html
+# Issue detection with automated remediation
+llm detect-issues --auto-detect --auto-remediate
+
+# Generate comprehensive test reports
+llm test-report --format html --output test-results.html --include-confidence-scores
+
+# Multi-language integration testing
+llm test-integration --python-server ./server.py --nodejs-server ./server.js
+
+# AI-powered test generation
+llm generate-tests --repo-url https://github.com/your-org/your-mcp-server.git --ai-enhanced
 ```
 
-For detailed usage instructions, see the [CLI Usage Guide](examples/CLI_USAGE_GUIDE.md).
+### Universal Repository Integration
+
+The framework can be integrated into **any MCP server repository** with minimal setup:
+
+1. **One-Command Setup**: `./scripts/quick-test-local.sh --setup`
+2. **GitHub Actions Integration**: Copy `.github/workflows/test-mcp-server.yml`
+3. **Custom Test Generation**: Use AI prompts to generate repository-specific tests
+4. **Reverse Integration**: Enable your repository to self-test using this framework
+
+For detailed integration instructions, see the [Universal Self-Testing Guide](examples/UNIVERSAL_SELF_TESTING_GUIDE.md).
+
+### Confidence and Reliability
+
+All testing operations include:
+- **Confidence Scores**: 0-100% reliability indicators
+- **Error Classification**: Human-cognitive vs. artificial-stochastic error detection
+- **Systematic Verification**: Methodological pragmatism principles
+- **Fallibilism Awareness**: Explicit acknowledgment of limitations and uncertainties
 
 ## Contributing
 
