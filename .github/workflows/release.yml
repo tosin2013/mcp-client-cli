@@ -33,37 +33,42 @@ jobs:
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - name: Install dependencies and package
         run: |
-          uv venv --python ${{ matrix.python-version }}
+          uv venv
+          source .venv/bin/activate
           uv pip install -e ".[dev]"
+
+      - name: Verify CLI imports
+        run: |
+          source .venv/bin/activate
+          python -c "from mcp_client_cli.cli import main; print('✓ CLI module imported successfully')"
+
+      - name: Test CLI entry points
+        run: |
+          source .venv/bin/activate
+          mcp-test --help
+          mcp-testing --help
+          mcp-client --help
+          llm --help
 
       - name: Run tests
         run: |
-          # Run tests and allow them to pass even if some are not implemented yet
-          uv run pytest tests/ -v --tb=short || {
-            echo "Some tests failed - checking if this is due to missing implementations..."
-            # If tests fail, check if it's just missing test implementations vs real failures
-            if uv run pytest tests/ -v --tb=short 2>&1 | grep -q "collected 0 items"; then
-              echo "No tests collected - tests not yet implemented, continuing..."
-              exit 0
-            elif uv run pytest tests/ -v --tb=short 2>&1 | grep -q "ModuleNotFoundError\|ImportError"; then
-              echo "Import errors detected - failing build"
-              exit 1
-            else
-              echo "Tests failed but dependencies are OK - continuing for now..."
-              exit 0
-            fi
-          }
+          source .venv/bin/activate
+          pytest tests/ --tb=short -v
 
-  release:
+      - name: Run code quality checks
+        run: |
+          source .venv/bin/activate
+          black --check src/ tests/
+          isort --check-only src/ tests/
+          flake8 src/ tests/
+
+  build-and-publish:
     needs: test
-    if: contains(github.event.head_commit.message, 'release') || github.event_name == 'release'
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: write  # Required for creating GitHub releases
-
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    
     steps:
       - uses: actions/checkout@v4
 
@@ -72,71 +77,60 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-
       - name: Install build dependencies
         run: |
-          uv venv
-          uv pip install build twine
+          python -m pip install --upgrade pip
+          pip install build twine
 
       - name: Build package
-        run: |
-          uv run python -m build
+        run: python -m build
 
-      - name: Get version and package info
-        id: get_info
+      - name: Verify package
         run: |
-          uv pip install tomli
-          echo "VERSION=$(uv run python -c 'import tomli; print(tomli.load(open("pyproject.toml", "rb"))["project"]["version"])')" >> $GITHUB_OUTPUT
-          echo "PACKAGE_NAME=$(uv run python -c 'import tomli; print(tomli.load(open("pyproject.toml", "rb"))["project"]["name"])')" >> $GITHUB_OUTPUT
+          twine check dist/*
+          pip install dist/*.whl
+          python -c "import mcp_client_cli; print('Package installed successfully')"
 
-      - name: Verify package contents
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload dist/*
+
+      - name: Create Release Notes
         run: |
-          echo "Package: ${{ steps.get_info.outputs.PACKAGE_NAME }}"
-          echo "Version: ${{ steps.get_info.outputs.VERSION }}"
-          ls -la dist/
-          uv run twine check dist/*
+          echo "## 🚀 mcp-testing-framework v1.0.0 Released!" > release_notes.md
+          echo "" >> release_notes.md
+          echo "### 📦 Installation" >> release_notes.md
+          echo "\`\`\`bash" >> release_notes.md
+          echo "pip install mcp-testing-framework" >> release_notes.md
+          echo "\`\`\`" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "### 🔧 Quick Start" >> release_notes.md
+          echo "\`\`\`bash" >> release_notes.md
+          echo "# Test all configured MCP servers" >> release_notes.md
+          echo "mcp-test --test-mcp-servers" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "# Run specific test suite" >> release_notes.md
+          echo "mcp-test --run-test-suite functional" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "# Generate comprehensive report" >> release_notes.md
+          echo "mcp-test --generate-test-report" >> release_notes.md
+          echo "\`\`\`" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "### 🙏 Attribution" >> release_notes.md
+          echo "Enhanced fork of [mcp-client-cli](https://github.com/original-author/mcp-client-cli) with advanced testing capabilities." >> release_notes.md
+          echo "" >> release_notes.md
+          echo "### 📋 Features" >> release_notes.md
+          echo "- Comprehensive MCP server testing framework" >> release_notes.md
+          echo "- Security vulnerability scanning" >> release_notes.md
+          echo "- Performance benchmarking and monitoring" >> release_notes.md
+          echo "- Issue detection and remediation suggestions" >> release_notes.md
+          echo "- Multiple output formats (table, JSON, HTML)" >> release_notes.md
+          echo "- Parallel test execution support" >> release_notes.md
 
-      - name: Publish package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Upload Release Artifacts
+        uses: actions/upload-artifact@v3
         with:
-          verbose: true
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v${{ steps.get_info.outputs.VERSION }}
-          name: mcp-testing-framework v${{ steps.get_info.outputs.VERSION }}
-          body: |
-            ## 🎉 mcp-testing-framework v${{ steps.get_info.outputs.VERSION }}
-            
-            **Comprehensive testing framework for Model Context Protocol (MCP) servers**
-            
-            ### 🚀 Installation
-            ```bash
-            pip install mcp-testing-framework
-            ```
-            
-            ### 🔧 Quick Start
-            ```bash
-            mcp-test --test-mcp-servers
-            ```
-            
-            ### 📦 Package Information
-            - **Package**: ${{ steps.get_info.outputs.PACKAGE_NAME }}
-            - **Version**: ${{ steps.get_info.outputs.VERSION }}
-            - **Author**: Tosin Akinosho
-            - **Python Support**: 3.10-3.12
-            
-            ### 🤝 Attribution
-            Enhanced fork of the excellent [mcp-client-cli](https://github.com/original-author/mcp-client-cli) project.
-            
-            ---
-            
-            **Full Changelog**: https://github.com/tosinakinosho/mcp-testing-framework/compare/v${{ steps.get_info.outputs.VERSION }}...HEAD
-          generate_release_notes: true
-          files: |
-            dist/* 
+          name: mcp-testing-framework-dist
+          path: dist/ 

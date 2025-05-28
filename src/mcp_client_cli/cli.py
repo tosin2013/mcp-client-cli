@@ -20,7 +20,7 @@ from langgraph.prebuilt import create_react_agent
 from langgraph.managed import IsLastStep
 from langgraph.graph.message import add_messages
 from langchain.chat_models import init_chat_model
-from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+from langgraph.checkpoint.memory import MemorySaver
 from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -279,44 +279,44 @@ async def handle_conversation(args: argparse.Namespace, query: HumanMessage,
 
     conversation_manager = ConversationManager(SQLITE_DB)
     
-    async with AsyncSqliteSaver.from_conn_string(SQLITE_DB) as checkpointer:
-        store = SqliteStore(SQLITE_DB)
-        memories = await get_memories(store)
-        formatted_memories = "\n".join(f"- {memory}" for memory in memories)
-        agent_executor = create_react_agent(
-            model, tools, state_schema=AgentState, 
-            checkpointer=checkpointer, store=store
-        )
-        
-        thread_id = (await conversation_manager.get_last_id() if is_conversation_continuation 
-                    else uuid.uuid4().hex)
+    checkpointer = MemorySaver()
+    store = SqliteStore(SQLITE_DB)
+    memories = await get_memories(store)
+    formatted_memories = "\n".join(f"- {memory}" for memory in memories)
+    agent_executor = create_react_agent(
+        model, tools, state_schema=AgentState, 
+        checkpointer=checkpointer, store=store
+    )
+    
+    thread_id = (await conversation_manager.get_last_id() if is_conversation_continuation 
+                else uuid.uuid4().hex)
 
-        input_messages = AgentState(
-            messages=[query], 
-            today_datetime=datetime.now().isoformat(),
-            memories=formatted_memories,
-            remaining_steps=3
-        )
+    input_messages = AgentState(
+        messages=[query], 
+        today_datetime=datetime.now().isoformat(),
+        memories=formatted_memories,
+        remaining_steps=3
+    )
 
-        output = OutputHandler(text_only=args.text_only, only_last_message=args.no_intermediates)
-        output.start()
-        try:
-            async for chunk in agent_executor.astream(
-                input_messages,
-                stream_mode=["messages", "values"],
-                config={"configurable": {"thread_id": thread_id, "user_id": "myself"}, 
-                       "recursion_limit": 100}
-            ):
-                output.update(chunk)
-                if not args.no_confirmations:
-                    if not output.confirm_tool_call(app_config.__dict__, chunk):
-                        break
-        except Exception as e:
-            output.update_error(e)
-        finally:
-            output.finish()
+    output = OutputHandler(text_only=args.text_only, only_last_message=args.no_intermediates)
+    output.start()
+    try:
+        async for chunk in agent_executor.astream(
+            input_messages,
+            stream_mode=["messages", "values"],
+            config={"configurable": {"thread_id": thread_id, "user_id": "myself"}, 
+                   "recursion_limit": 100}
+        ):
+            output.update(chunk)
+            if not args.no_confirmations:
+                if not output.confirm_tool_call(app_config.__dict__, chunk):
+                    break
+    except Exception as e:
+        output.update_error(e)
+    finally:
+        output.finish()
 
-        await conversation_manager.save_id(thread_id, checkpointer.conn)
+    await conversation_manager.save_id(thread_id, None)  # MemorySaver doesn't have a conn attribute
 
     for toolkit in toolkits:
         await toolkit.close()
