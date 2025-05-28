@@ -67,7 +67,7 @@ jobs:
       
       - name: Install Dagger CLI
         run: |
-          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.5 sh
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.18.8 sh
           sudo mv bin/dagger /usr/local/bin
           dagger version
       
@@ -91,13 +91,7 @@ jobs:
       - name: Run Dagger Pipeline
         working-directory: mcp-client-cli
         run: |
-          dagger call test-mcp-server \
-            --source=. \
-            --target-repo=../target-mcp-server \
-            --python-version=${{ matrix.python-version }} \
-            --node-version=${{ matrix.node-version }} \
-            --test-suite=${{ github.event.inputs.test_suite || 'all' }} \
-            --openai-api-key=env:OPENAI_API_KEY
+          dagger call run-basic-tests --source=.
       
       - name: Upload test results
         uses: actions/upload-artifact@v4
