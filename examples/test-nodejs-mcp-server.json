@@ -1,0 +1,240 @@
+{
+  "server": {
+    "type": "nodejs",
+    "command": "node",
+    "args": ["server.js"],
+    "cwd": "./",
+    "env": {
+      "NODE_ENV": "test",
+      "PORT": "3000",
+      "DEBUG": "mcp:*",
+      "MCP_SERVER_LOG_LEVEL": "debug"
+    },
+    "startup_timeout": 15,
+    "health_check": {
+      "enabled": true,
+      "endpoint": "http://localhost:3000/health",
+      "timeout": 5,
+      "retries": 3,
+      "expected_status": 200
+    },
+    "build_command": null,
+    "install_command": "npm ci"
+  },
+  "testing": {
+    "types": ["functional", "security", "performance", "issue-detection"],
+    "confidence_threshold": 0.8,
+    "parallel_execution": true,
+    "timeout": 300,
+    "retry_failed": true,
+    "retry_count": 2,
+    "fail_fast": false
+  },
+  "functional": {
+    "mcp_protocol": {
+      "enabled": true,
+      "test_initialization": true,
+      "test_capabilities": true,
+      "test_tools": true,
+      "test_resources": true,
+      "test_prompts": true
+    },
+    "tool_execution": {
+      "enabled": true,
+      "test_all_tools": true,
+      "test_error_handling": true,
+      "test_parameter_validation": true
+    },
+    "resource_access": {
+      "enabled": true,
+      "test_all_resources": true,
+      "test_permissions": true,
+      "test_content_types": true
+    }
+  },
+  "security": {
+    "npm_audit": {
+      "enabled": true,
+      "audit_level": "moderate",
+      "exclude_dev": false,
+      "output_format": ["json", "html"],
+      "fail_on_vulnerabilities": true
+    },
+    "eslint_security": {
+      "enabled": true,
+      "config": ".eslintrc.security.json",
+      "extensions": [".js", ".ts", ".mjs"],
+      "ignore_patterns": ["node_modules/", "dist/", "build/", "test/"],
+      "rules": {
+        "security/detect-object-injection": "error",
+        "security/detect-non-literal-regexp": "error",
+        "security/detect-unsafe-regex": "error",
+        "security/detect-buffer-noassert": "error",
+        "security/detect-child-process": "error"
+      }
+    },
+    "semgrep": {
+      "enabled": true,
+      "config": [
+        "p/security-audit",
+        "p/nodejs",
+        "p/typescript",
+        "p/owasp-top-10"
+      ],
+      "exclude_patterns": ["test/", "*.test.js", "*.spec.ts"],
+      "severity": ["ERROR", "WARNING"]
+    },
+    "input_validation": {
+      "enabled": true,
+      "test_sql_injection": true,
+      "test_xss": true,
+      "test_command_injection": true,
+      "test_path_traversal": true
+    },
+    "authentication": {
+      "enabled": true,
+      "test_auth_bypass": true,
+      "test_token_validation": true,
+      "test_session_management": true
+    }
+  },
+  "performance": {
+    "load_testing": {
+      "enabled": true,
+      "tool": "autocannon",
+      "concurrent_connections": [1, 5, 10, 20],
+      "duration": 10,
+      "endpoints": [
+        "http://localhost:3000/",
+        "http://localhost:3000/health"
+      ],
+      "custom_headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "MCP-Testing-Framework/1.0"
+      },
+      "thresholds": {
+        "requests_per_second": 100,
+        "latency_p95": 100,
+        "error_rate": 0.01
+      }
+    },
+    "profiling": {
+      "enabled": true,
+      "tools": ["clinic"],
+      "memory_monitoring": true,
+      "cpu_monitoring": true,
+      "heap_snapshots": false,
+      "duration": 30
+    },
+    "resource_monitoring": {
+      "enabled": true,
+      "monitor_memory": true,
+      "monitor_cpu": true,
+      "monitor_disk": false,
+      "monitor_network": false,
+      "sampling_interval": 1
+    },
+    "benchmarks": {
+      "enabled": true,
+      "scenarios": [
+        {
+          "name": "tool_execution_benchmark",
+          "description": "Benchmark tool execution performance",
+          "endpoint": "/mcp/tools/execute",
+          "method": "POST",
+          "payload": {
+            "tool": "test_tool",
+            "args": {}
+          },
+          "iterations": 100
+        }
+      ]
+    }
+  },
+  "issue_detection": {
+    "enabled": true,
+    "patterns": [
+      {
+        "name": "memory_leak",
+        "type": "memory",
+        "threshold": 100,
+        "unit": "MB"
+      },
+      {
+        "name": "high_cpu_usage",
+        "type": "cpu",
+        "threshold": 80,
+        "unit": "percent"
+      },
+      {
+        "name": "slow_response",
+        "type": "latency",
+        "threshold": 1000,
+        "unit": "ms"
+      }
+    ],
+    "monitoring_duration": 60,
+    "auto_remediation": {
+      "enabled": true,
+      "strategies": ["restart", "scale", "alert"]
+    }
+  },
+  "integration": {
+    "cross_language": {
+      "enabled": false,
+      "python_server": null,
+      "test_interop": false
+    },
+    "external_services": {
+      "enabled": false,
+      "services": []
+    },
+    "database": {
+      "enabled": false,
+      "type": null,
+      "connection_string": null
+    }
+  },
+  "reporting": {
+    "formats": ["json", "html", "markdown"],
+    "include_logs": true,
+    "include_metrics": true,
+    "include_recommendations": true,
+    "confidence_scoring": true,
+    "output_directory": "test-results",
+    "archive_results": true,
+    "retention_days": 30
+  },
+  "notifications": {
+    "enabled": false,
+    "webhook_url": null,
+    "email": null,
+    "slack": null,
+    "on_failure": true,
+    "on_success": false
+  },
+  "advanced": {
+    "custom_scripts": {
+      "pre_test": null,
+      "post_test": null,
+      "cleanup": null
+    },
+    "environment_setup": {
+      "docker": {
+        "enabled": false,
+        "image": null,
+        "ports": [],
+        "volumes": []
+      },
+      "services": {
+        "enabled": false,
+        "required": []
+      }
+    },
+    "test_data": {
+      "enabled": false,
+      "fixtures": [],
+      "generators": []
+    }
+  }
+} 
