@@ -17,6 +17,13 @@ from .issue_detector import (
 )
 from .issue_storage import IssueTrackingManager
 from .mcp_tester import MCPServerTester, TestResult, TestStatus, TestSuite
+from .error_handler import (
+    create_error_response,
+    format_validation_error,
+    format_tool_error,
+    is_error_response,
+    standardize_response,
+)
 from .performance_tester import (
     LoadTestResult,
     MCPPerformanceTester,
@@ -73,4 +80,10 @@ __all__ = [
     "RetryConfig",
     # Issue Storage
     "IssueTrackingManager",
+    # Error Handling
+    "create_error_response",
+    "format_validation_error",
+    "format_tool_error",
+    "is_error_response",
+    "standardize_response",
 ]
