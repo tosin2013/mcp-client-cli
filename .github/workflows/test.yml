@@ -64,8 +64,8 @@ jobs:
 
       - name: Test package import
         run: |
-          uv run python -c "import mcp_client_cli; print('✅ Package imports successfully')"
-          uv run python -c "from mcp_client_cli.cli import main; print('✅ CLI module imports successfully')"
+          uv run python -c "import mcp_client_cli; print('Package imports successfully')"
+          uv run python -c "from mcp_client_cli.cli import main; print('CLI module imports successfully')"
         shell: bash
 
       - name: Validate package metadata
@@ -77,7 +77,7 @@ jobs:
           print(f'Package: {config[\"project\"][\"name\"]}')
           print(f'Version: {config[\"project\"][\"version\"]}')
           print(f'Author: {config[\"project\"][\"authors\"][0][\"name\"]}')
-          print('✅ Package metadata is valid')
+          print('Package metadata is valid')
           "
         shell: bash
 
@@ -106,19 +106,19 @@ jobs:
 
       - name: Run black (code formatting)
         run: |
-          uv run black --check --diff src/ || echo "⚠️  Code formatting issues found - run 'black src/' to fix"
+          uv run black --check --diff src/ || echo "WARNING: Code formatting issues found - run 'black src/' to fix"
 
       - name: Run isort (import sorting)
         run: |
-          uv run isort --check-only --diff src/ || echo "⚠️  Import sorting issues found - run 'isort src/' to fix"
+          uv run isort --check-only --diff src/ || echo "WARNING: Import sorting issues found - run 'isort src/' to fix"
 
       - name: Run flake8 (linting)
         run: |
-          uv run flake8 src/ || echo "⚠️  Linting issues found"
+          uv run flake8 src/ || echo "WARNING: Linting issues found"
 
       - name: Run mypy (type checking)
         run: |
-          uv run mypy src/ || echo "⚠️  Type checking issues found"
+          uv run mypy src/ || echo "WARNING: Type checking issues found"
 
   build:
     name: Build Package
@@ -188,9 +188,9 @@ jobs:
           mcp-testing --help
           mcp-client --help
           llm --help
-          python -c "import mcp_client_cli; print('✅ Installed package works correctly')"
+          python -c "import mcp_client_cli; print('Installed package works correctly')"
 
       - name: Test basic MCP server testing workflow
         run: |
           echo "Testing basic workflow..."
-          mcp-test --test-mcp-servers || echo "⚠️  Full MCP testing requires actual MCP servers - this is expected"
+          mcp-test --test-mcp-servers || echo "WARNING: Full MCP testing requires actual MCP servers - this is expected"
