@@ -1,518 +1,561 @@
-# AI-Driven MCP Repository Configuration Guide
+# AI-Assisted MCP Server Testing Configuration Guide
 
 ## Overview
 
-The MCP Client CLI now features an AI-driven configuration system that allows you to automatically set up testing pipelines for any MCP server repository using natural language commands. Instead of manually copying files and configurations, AI assistants can now clone, configure, and deploy testing infrastructure with a single command.
+The **mcp-testing-framework** provides comprehensive testing capabilities for Model Context Protocol (MCP) servers. While it doesn't have automated AI-driven configuration features, AI assistants like Cursor, Claude, and GitHub Copilot can significantly help you configure, test, and optimize your MCP server testing workflows using the real CLI commands and features.
 
-## How It Works
-
-### The Magic Behind the Scenes
-
-```mermaid
-graph LR
-    A[AI Assistant] --> B[Natural Language Command]
-    B --> C[MCP Client CLI]
-    C --> D[Clone Repository]
-    D --> E[Analyze Structure]
-    E --> F[Generate Configurations]
-    F --> G[Commit & Push]
-    G --> H[Ready to Test!]
-```
-
-**Traditional Approach** (What we replaced):
-- Manual file copying
-- Complex setup instructions
-- Repository-specific modifications
-- Maintenance overhead
-
-**New AI-Driven Approach**:
-- Natural language commands
-- Automatic repository analysis
-- Intelligent configuration generation
-- Zero maintenance overhead
+This guide shows you how to leverage AI assistance to work more effectively with the mcp-testing-framework's actual capabilities.
 
 ## Quick Start
 
-### Prerequisites
-
-1. **Install MCP Client CLI**:
-   ```bash
-   pip install mcp-client-cli
-   ```
-
-2. **Set up Authentication**:
-   ```bash
-   # For SSH (recommended)
-   ssh-add ~/.ssh/id_rsa
-   
-   # For GitHub token
-   export GITHUB_TOKEN="your_token_here"
-   ```
-
-3. **Verify Installation**:
-   ```bash
-   llm --version
-   ```
-
-### Basic Usage
-
-The simplest way to configure a repository:
+### Installation
 
 ```bash
-llm --ai-configure setup-testing --repo-url https://github.com/user/my-mcp-server
+# Install the testing framework from PyPI
+pip install mcp-testing-framework
 ```
 
-That's it! The system will:
-- Clone the repository
-- Analyze its structure
-- Generate appropriate configurations
-- Commit and push the changes
-- Set up GitHub Actions for testing
-
-## AI Assistant Integration
-
-### For Cursor with Windsurd/Claude
-
-**Prompt Template**:
-```
-Configure MCP testing for https://github.com/user/my-mcp-server
-
-Use the MCP Client CLI AI configuration system to set up comprehensive testing for this repository. Include functional testing, security scanning, and performance benchmarks.
-```
-
-**What happens**:
-1. Cursor/Claude recognizes the MCP configuration request
-2. Executes: `llm --ai-configure setup-testing --repo-url https://github.com/user/my-mcp-server`
-3. Shows progress and results
-4. Repository is ready for testing
-
-### For GitHub Copilot
-
-**In VS Code Terminal**:
-```bash
-# Copilot can suggest and execute:
-llm --ai-configure setup-testing --repo-url https://github.com/user/my-mcp-server --auth-method ssh
-```
-
-**In Chat**:
-```
-@terminal Set up MCP testing for my repository using the AI configuration system
-```
-
-### For Claude (Standalone)
-
-**Prompt**:
-```
-I need to configure MCP testing for my repository at https://github.com/user/my-mcp-server. 
-Please use the MCP Client CLI AI configuration system to set this up automatically.
-```
-
-Claude will execute the appropriate commands and guide you through the process.
-
-## Configuration Options
-
-### Authentication Methods
+### Verify Installation
 
 ```bash
-# SSH (default, recommended)
-llm --ai-configure setup-testing --repo-url <url> --auth-method ssh
-
-# GitHub Token
-llm --ai-configure setup-testing --repo-url <url> --auth-method token
-
-# Interactive (prompts for credentials)
-llm --ai-configure setup-testing --repo-url <url> --auth-method interactive
+# All these commands are equivalent entry points
+mcp-test --help
+mcp-testing --help  
+mcp-client --help
+llm --help
 ```
 
-### Configuration Types
+### Basic Testing Commands
 
 ```bash
-# Full testing setup (default)
-llm --ai-configure setup-testing --repo-url <url>
+# Test all configured MCP servers
+mcp-test --test-mcp-servers
 
-# CI/CD pipeline only
-llm --ai-configure add-ci --repo-url <url>
+# Run specific test suite types
+mcp-test --run-test-suite functional
+mcp-test --run-test-suite security
+mcp-test --run-test-suite performance
+mcp-test --run-test-suite integration
+mcp-test --run-test-suite all
 
-# Security testing focus
-llm --ai-configure enable-security --repo-url <url>
+# Generate comprehensive test report
+mcp-test --generate-test-report
 ```
 
-### Preview Mode
+## AI Assistant Integration Patterns
 
+### Working with Cursor/Claude
+
+**Realistic AI Assistance Prompt:**
+```
+I need help setting up MCP server testing for my project. I have the mcp-testing-framework installed. Can you help me:
+
+1. Create a proper configuration file for my Python MCP server
+2. Set up the right testing commands
+3. Configure GitHub Actions for CI/CD
+
+My server entry point is `server.py` and it uses FastMCP.
+```
+
+**AI Assistant Response Pattern:**
 ```bash
-# See what will be configured without applying changes
-llm --ai-configure setup-testing --repo-url <url> --config-preview
+# 1. First, let's create a basic configuration
+# The framework uses standard MCP configuration format
+
+# 2. Test your server locally
+mcp-test --test-mcp-servers --test-timeout 30
+
+# 3. Run comprehensive testing
+mcp-test --run-test-suite all --test-output-format table
+
+# 4. Generate a detailed report
+mcp-test --generate-test-report --test-output-format html
 ```
 
-## What Gets Configured
+### GitHub Copilot Integration
 
-### For Python MCP Servers
-
-**Generated Files**:
-```
-.github/workflows/mcp-testing.yml    # GitHub Actions workflow
-test-config.json                     # MCP testing configuration
-TESTING.md                          # Testing documentation
-requirements-test.txt               # Testing dependencies (if needed)
+**In VS Code Terminal:**
+```bash
+# Copilot can suggest testing workflows like:
+mcp-test --test-mcp-servers --test-parallel --test-timeout 60
 ```
 
-**GitHub Actions Workflow**:
-- Python environment setup (3.8, 3.9, 3.10, 3.11)
-- Dependency installation
-- MCP server functional testing
-- Security vulnerability scanning
-- Performance benchmarking
-- Test result reporting
-
-### For Node.js MCP Servers
-
-**Generated Files**:
+**In Copilot Chat:**
 ```
-.github/workflows/mcp-testing.yml    # GitHub Actions workflow
-test-config.json                     # MCP testing configuration
-TESTING.md                          # Testing documentation
-package.json                        # Updated with test scripts
+@terminal Help me test my MCP server with the mcp-testing-framework. 
+I want to run functional and security tests with JSON output.
 ```
 
-**GitHub Actions Workflow**:
-- Node.js environment setup (16, 18, 20)
-- npm/yarn dependency installation
-- MCP server functional testing
-- Security audit
-- Performance testing
-- Coverage reporting
+**Expected Copilot Response:**
+```bash
+mcp-test --run-test-suite functional --test-output-format json
+mcp-test --run-test-suite security --test-output-format json
+```
 
-### Universal Components
+### Claude (Standalone) Assistance
 
-**test-config.json** (Auto-generated based on repository analysis):
+**Effective Prompt:**
+```
+I'm using mcp-testing-framework to test my MCP server. Can you help me create a comprehensive testing strategy? I need to understand:
+
+- How to configure my server for testing
+- What test suites to run for production readiness  
+- How to interpret test results
+- Best practices for CI/CD integration
+```
+
+## Real Configuration Examples
+
+### Python MCP Server Configuration
+
+**config.json** (Standard MCP configuration format):
 ```json
 {
-  "server_config": {
-    "command": "python",
-    "args": ["server.py"],
-    "env": {
-      "NODE_ENV": "test"
+  "mcpServers": {
+    "my-python-server": {
+      "command": "python",
+      "args": ["server.py"],
+      "env": {
+        "PYTHONPATH": ".",
+        "LOG_LEVEL": "INFO"
+      }
     }
-  },
-  "test_config": {
-    "timeout": 30,
-    "max_retries": 3,
-    "test_types": ["functional", "security", "performance"]
   }
 }
 ```
 
-**TESTING.md** (Comprehensive testing guide):
-- Local testing instructions
-- CI/CD pipeline explanation
-- Troubleshooting guide
-- Badge integration
+### Node.js MCP Server Configuration
+
+**config.json**:
+```json
+{
+  "mcpServers": {
+    "my-nodejs-server": {
+      "command": "node",
+      "args": ["dist/index.js"],
+      "env": {
+        "NODE_ENV": "test",
+        "LOG_LEVEL": "debug"
+      }
+    }
+  }
+}
+```
+
+### Testing with Custom Configuration
+
+```bash
+# Use custom configuration file
+mcp-test --test-config ./my-test-config.json --test-mcp-servers
+
+# Test with specific timeout and parallel execution
+mcp-test --test-mcp-servers --test-timeout 45 --test-parallel
+```
+
+## Real Testing Workflows
+
+### Local Development Testing
+
+```bash
+# Quick connectivity test
+mcp-test --test-mcp-servers
+
+# Comprehensive local testing
+mcp-test --run-test-suite all --test-output-format table
+
+# Performance testing for optimization
+mcp-test --run-test-suite performance --test-timeout 60
+```
+
+### CI/CD Integration
+
+**GitHub Actions Workflow (.github/workflows/mcp-testing.yml):**
+```yaml
+name: MCP Server Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11, 3.12]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install mcp-testing-framework
+        pip install -r requirements.txt
+    
+    - name: Test MCP Server
+      run: |
+        mcp-test --test-mcp-servers --test-output-format json
+    
+    - name: Run Test Suite
+      run: |
+        mcp-test --run-test-suite all --test-parallel
+    
+    - name: Generate Test Report
+      run: |
+        mcp-test --generate-test-report --test-output-format html
+    
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.python-version }}
+        path: test-results/
+```
+
+## AI-Assisted Troubleshooting
+
+### Common Issues and AI Prompts
+
+**Connection Issues:**
+```
+My MCP server testing is failing with connection errors. I'm using mcp-testing-framework. 
+Here's the error: [paste error]. Can you help me debug this?
+```
+
+**Performance Issues:**
+```
+My MCP server tests are timing out. I'm running:
+mcp-test --run-test-suite performance --test-timeout 30
+
+What are some optimization strategies and better testing approaches?
+```
+
+**Configuration Problems:**
+```
+I'm having trouble configuring my MCP server for testing. My server uses [describe setup].
+Can you help me create the right configuration for mcp-testing-framework?
+```
+
+## Advanced Testing Scenarios
+
+### Custom Test Configurations
+
+**AI Prompt for Custom Setup:**
+```
+I need to create a custom test configuration for my MCP server that:
+- Tests specific tools only
+- Uses custom environment variables
+- Has different timeout settings for different test types
+
+Can you help me structure this with mcp-testing-framework?
+```
+
+### Performance Optimization
+
+```bash
+# AI can suggest performance testing strategies
+mcp-test --run-test-suite performance --test-parallel --test-timeout 120
+
+# Monitor resource usage during testing
+mcp-test --test-mcp-servers --test-output-format json | jq '.performance_metrics'
+```
+
+### Security Testing
+
+```bash
+# Security-focused testing
+mcp-test --run-test-suite security --test-output-format table
+
+# Comprehensive security and functional testing
+mcp-test --run-test-suite all --test-parallel
+```
 
 ## Real-World Examples
 
 ### Example 1: Python FastMCP Server
 
-**Repository**: `https://github.com/user/weather-mcp-server`
-
-**Command**:
-```bash
-llm --ai-configure setup-testing --repo-url https://github.com/user/weather-mcp-server
+**AI Assistance Request:**
+```
+I have a Python MCP server using FastMCP. Help me set up comprehensive testing.
 ```
 
-**Repository Analysis Results**:
-- **Detected**: Python MCP server
-- **Entry Point**: `weather_server.py`
-- **Dependencies**: `requirements.txt` with `mcp`, `requests`
-- **Server Type**: FastMCP-based
+**AI-Suggested Workflow:**
+```bash
+# 1. Install testing framework
+pip install mcp-testing-framework
 
-**Generated Configuration**:
-```yaml
-# .github/workflows/mcp-testing.yml
-name: MCP Server Testing
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install mcp-client-cli
-      - name: Test MCP Server
-        run: |
-          llm --test-config test-config.json --timeout 30
+# 2. Create configuration (AI can help generate this)
+# config.json with your server details
+
+# 3. Run tests
+mcp-test --test-mcp-servers
+mcp-test --run-test-suite functional
+mcp-test --run-test-suite security
+
+# 4. Generate report
+mcp-test --generate-test-report --test-output-format html
 ```
 
 ### Example 2: Node.js TypeScript Server
 
-**Repository**: `https://github.com/user/database-mcp-server`
+**AI Assistance Request:**
+```
+My Node.js MCP server is built with TypeScript. What's the best testing approach with mcp-testing-framework?
+```
 
-**Command**:
+**AI-Suggested Commands:**
 ```bash
-llm --ai-configure setup-testing --repo-url https://github.com/user/database-mcp-server --auth-method token
+# Build first
+npm run build
+
+# Test the built server
+mcp-test --test-mcp-servers --test-timeout 45
+
+# Run comprehensive tests
+mcp-test --run-test-suite all --test-output-format json
 ```
 
-**Repository Analysis Results**:
-- **Detected**: Node.js TypeScript MCP server
-- **Entry Point**: `dist/index.js` (built from `src/index.ts`)
-- **Dependencies**: `package.json` with `@modelcontextprotocol/sdk`
-- **Build System**: TypeScript with npm scripts
+## Best Practices for AI-Assisted Development
 
-**Generated Configuration**:
-```yaml
-# .github/workflows/mcp-testing.yml
-name: MCP Server Testing
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16, 18, 20]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: npm ci
-      - name: Build project
-        run: npm run build
-      - name: Test MCP Server
-        run: |
-          npm install -g mcp-client-cli
-          llm --test-config test-config.json --timeout 30
+### 1. Configuration Management
+
+**AI Prompt Template:**
+```
+Help me create a robust MCP server configuration for testing. My server:
+- Language: [Python/Node.js/Go/Rust]
+- Framework: [FastMCP/TypeScript SDK/Custom]
+- Special requirements: [list any special needs]
 ```
 
-## Advanced Usage
+### 2. Test Strategy Development
 
-### Custom Configuration Templates
-
-You can customize the generated configurations by providing template overrides:
-
-```bash
-llm --ai-configure setup-testing \
-    --repo-url https://github.com/user/my-server \
-    --template-override github-actions=custom-workflow.yml \
-    --template-override test-config=custom-test-config.json
+**AI Prompt Template:**
+```
+I need a comprehensive testing strategy for my MCP server using mcp-testing-framework. 
+Help me plan:
+- Which test suites to run
+- Appropriate timeouts and settings
+- CI/CD integration approach
+- Performance benchmarking strategy
 ```
 
-### Batch Configuration
+### 3. Debugging and Optimization
 
-Configure multiple repositories:
+**AI Prompt Template:**
+```
+My MCP server tests are showing [specific issues]. I'm using these commands:
+[paste your commands]
 
-```bash
-# Using a repository list file
-llm --ai-configure batch-setup --repo-list repositories.txt
-
-# repositories.txt content:
-# https://github.com/user/server1
-# https://github.com/user/server2
-# https://github.com/user/server3
+Can you help me:
+- Diagnose the problem
+- Suggest better testing approaches
+- Optimize my test configuration
 ```
 
-### Integration with Existing CI/CD
-
-If the repository already has GitHub Actions:
-
-```bash
-# Merge with existing workflows
-llm --ai-configure add-ci --repo-url <url> --merge-existing
-
-# Replace existing workflows
-llm --ai-configure add-ci --repo-url <url> --replace-existing
-```
-
-## Troubleshooting
+## Troubleshooting Guide
 
 ### Common Issues
 
-**Authentication Failures**:
+**Installation Problems:**
 ```bash
-# Check SSH key
-ssh -T git@github.com
+# Verify installation
+pip show mcp-testing-framework
 
-# Verify token permissions
-curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user
+# Reinstall if needed
+pip uninstall mcp-testing-framework
+pip install mcp-testing-framework
 ```
 
-**Repository Analysis Errors**:
+**Configuration Errors:**
 ```bash
-# Enable verbose logging
-llm --ai-configure setup-testing --repo-url <url> --verbose
+# Test configuration validation
+mcp-test --test-mcp-servers --test-timeout 10
 
-# Manual analysis
-llm --analyze-repo --repo-url <url> --local-clone
+# Check server connectivity
+mcp-test --run-test-suite functional
 ```
 
-**Configuration Validation Failures**:
+**Performance Issues:**
 ```bash
-# Preview and validate before applying
-llm --ai-configure setup-testing --repo-url <url> --config-preview --validate
+# Increase timeouts
+mcp-test --test-mcp-servers --test-timeout 60
+
+# Run tests in parallel
+mcp-test --run-test-suite all --test-parallel
 ```
 
 ### Getting Help
 
-**Built-in Help**:
+**Built-in Help:**
 ```bash
-llm --ai-configure --help
-llm --ai-configure setup-testing --help
+mcp-test --help
+mcp-test --run-test-suite --help
+mcp-test --generate-test-report --help
 ```
 
-**Verbose Output**:
-```bash
-llm --ai-configure setup-testing --repo-url <url> --verbose --debug
+**AI-Assisted Debugging:**
+```
+I'm getting this error with mcp-testing-framework: [paste error]
+My configuration is: [paste config]
+My command was: [paste command]
+
+Can you help me fix this?
 ```
 
-**Configuration Validation**:
-```bash
-llm --validate-config --config-file test-config.json
-llm --validate-workflow --workflow-file .github/workflows/mcp-testing.yml
-```
+## Advanced Features
 
-## Best Practices
-
-### Repository Preparation
-
-1. **Clear Entry Points**: Ensure your MCP server has a clear entry point (`server.py`, `index.js`, etc.)
-2. **Dependencies**: Maintain up-to-date `requirements.txt` or `package.json`
-3. **Documentation**: Include basic README with server description
-4. **Environment Variables**: Document required environment variables
-
-### Security Considerations
-
-1. **Secrets Management**: Use GitHub Secrets for sensitive data
-2. **Token Permissions**: Use minimal required permissions for GitHub tokens
-3. **SSH Keys**: Use dedicated SSH keys for automation
-4. **Code Review**: Review generated configurations before merging
-
-### Performance Optimization
-
-1. **Caching**: Generated workflows include dependency caching
-2. **Parallel Testing**: Matrix builds for multiple environments
-3. **Selective Testing**: Configure test types based on repository needs
-4. **Resource Limits**: Set appropriate timeouts and resource limits
-
-## Migration from Legacy Reverse Integration
-
-If you're migrating from the old reverse integration approach:
-
-### Automatic Migration
+### Test Output Formats
 
 ```bash
-# Migrate existing reverse integration setup
-llm --migrate-from-reverse-integration --repo-url <url>
+# Table format (default, human-readable)
+mcp-test --test-mcp-servers --test-output-format table
+
+# JSON format (machine-readable, CI/CD friendly)
+mcp-test --run-test-suite all --test-output-format json
+
+# HTML format (detailed reports)
+mcp-test --generate-test-report --test-output-format html
 ```
 
-### Manual Migration Steps
-
-1. **Remove Old Files**:
-   ```bash
-   # Remove old reverse integration files
-   rm -rf .github/workflows/pytest-mcp-server-self-test.yml
-   rm -rf scripts/test-pytest-mcp-server.py
-   rm -rf test-pytest-mcp-server.json
-   ```
-
-2. **Apply New Configuration**:
-   ```bash
-   llm --ai-configure setup-testing --repo-url <current-repo>
-   ```
-
-3. **Update Documentation**:
-   - Remove references to old testing approach
-   - Update badges and status indicators
-   - Add new testing documentation
-
-## API Reference
-
-### Command Line Interface
+### Parallel Testing
 
 ```bash
-llm --ai-configure <command> [options]
+# Enable parallel execution for faster testing
+mcp-test --test-mcp-servers --test-parallel
 
-Commands:
-  setup-testing     Complete MCP testing setup
-  add-ci           Add CI/CD pipeline only
-  enable-security  Enable security testing
-  batch-setup      Configure multiple repositories
-
-Options:
-  --repo-url URL              Target repository URL
-  --auth-method METHOD        Authentication method (ssh|token|interactive)
-  --config-preview           Preview configuration without applying
-  --template-override KEY=VAL Override specific templates
-  --merge-existing           Merge with existing configurations
-  --replace-existing         Replace existing configurations
-  --verbose                  Enable verbose output
-  --debug                    Enable debug logging
+# Combine with custom timeouts
+mcp-test --run-test-suite all --test-parallel --test-timeout 45
 ```
 
-### Configuration File Schema
+### Custom Test Configurations
 
-**test-config.json**:
+```bash
+# Use custom configuration file
+mcp-test --test-config ./custom-test-config.json --test-mcp-servers
+
+# Override specific settings
+mcp-test --test-mcp-servers --test-timeout 120 --test-parallel
+```
+
+## Integration with Development Tools
+
+### VS Code Integration
+
+**AI-Suggested Tasks (.vscode/tasks.json):**
 ```json
 {
-  "server_config": {
-    "command": "string",           // Server command
-    "args": ["string"],           // Command arguments
-    "env": {"key": "value"},      // Environment variables
-    "working_dir": "string"       // Working directory
-  },
-  "test_config": {
-    "timeout": 30,                // Test timeout in seconds
-    "max_retries": 3,             // Maximum retry attempts
-    "test_types": ["string"],     // Test types to run
-    "parallel": true,             // Run tests in parallel
-    "coverage": true              // Enable coverage reporting
-  },
-  "github_actions": {
-    "environments": ["string"],   // Test environments
-    "triggers": ["string"],       // Workflow triggers
-    "secrets": ["string"]         // Required secrets
-  }
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Test MCP Server",
+      "type": "shell",
+      "command": "mcp-test",
+      "args": ["--test-mcp-servers"],
+      "group": "test"
+    },
+    {
+      "label": "Run Full Test Suite",
+      "type": "shell", 
+      "command": "mcp-test",
+      "args": ["--run-test-suite", "all", "--test-parallel"],
+      "group": "test"
+    }
+  ]
 }
 ```
 
-## Contributing
+### Pre-commit Hooks
 
-### Adding New Server Types
+**AI-Suggested Hook (.pre-commit-config.yaml):**
+```yaml
+repos:
+  - repo: local
+    hooks:
+      - id: mcp-test
+        name: MCP Server Tests
+        entry: mcp-test --test-mcp-servers --test-timeout 30
+        language: system
+        pass_filenames: false
+```
 
-1. **Create Template**: Add Jinja2 templates for new server type
-2. **Update Analysis**: Extend repository analysis logic
-3. **Add Tests**: Include test cases for new server type
-4. **Update Documentation**: Add examples and configuration details
+## Performance Optimization
 
-### Improving AI Prompts
+### AI-Assisted Performance Tuning
 
-1. **Test Prompts**: Validate with different AI assistants
-2. **Gather Feedback**: Collect user experience data
-3. **Iterate**: Refine prompts based on success rates
-4. **Document**: Update prompt templates and examples
+**AI Prompt for Optimization:**
+```
+My MCP server tests are slow. I'm using:
+mcp-test --run-test-suite performance
+
+Can you help me:
+- Identify bottlenecks
+- Optimize test configuration
+- Improve server performance
+- Set up better monitoring
+```
+
+**AI-Suggested Optimization Commands:**
+```bash
+# Performance-focused testing
+mcp-test --run-test-suite performance --test-parallel --test-timeout 60
+
+# Monitor specific aspects
+mcp-test --test-mcp-servers --test-output-format json | jq '.performance_metrics'
+```
+
+## Security Considerations
+
+### AI-Assisted Security Testing
+
+**AI Prompt for Security:**
+```
+Help me set up comprehensive security testing for my MCP server using mcp-testing-framework.
+I need to test for common vulnerabilities and ensure secure communication.
+```
+
+**AI-Suggested Security Commands:**
+```bash
+# Security-focused test suite
+mcp-test --run-test-suite security --test-output-format table
+
+# Comprehensive security and functional testing
+mcp-test --run-test-suite all --test-parallel
+```
 
 ## Conclusion
 
-The AI-driven MCP repository configuration system transforms the complex process of setting up testing infrastructure into a simple, natural language interaction. Whether you're using Cursor, Claude, GitHub Copilot, or the command line directly, you can now configure comprehensive MCP testing with a single command.
+While mcp-testing-framework doesn't have automated AI-driven configuration features, AI assistants can significantly enhance your testing workflow by:
 
-**Key Benefits**:
-- ⚡ **Speed**: Configure repositories in seconds, not hours
-- 🤖 **Intelligence**: Automatic analysis and appropriate configuration
-- 🔒 **Security**: Built-in security testing and best practices
-- 🔄 **Maintenance**: Zero ongoing maintenance overhead
-- 🌐 **Universal**: Works with any MCP server type
-- 🎯 **Accurate**: Intelligent analysis ensures correct configuration
+- **Helping create configurations** for different server types
+- **Suggesting optimal test commands** for your specific use case  
+- **Debugging issues** with detailed error analysis
+- **Optimizing performance** through better test strategies
+- **Setting up CI/CD** with appropriate workflows
 
-The system preserves all the testing intelligence and best practices from the previous reverse integration approach while making it dramatically easier to use and maintain.
+**Key Benefits of AI-Assisted Testing:**
+- 🚀 **Faster Setup**: AI helps you quickly understand and configure testing
+- 🎯 **Better Commands**: Get suggestions for optimal test parameters
+- 🔍 **Smart Debugging**: AI can analyze errors and suggest solutions
+- 📊 **Improved Workflows**: Better CI/CD and automation strategies
+- 🛡️ **Security Focus**: AI helps identify security testing needs
+
+The mcp-testing-framework provides the robust testing capabilities, while AI assistants help you use them more effectively.
 
 ---
 
-*For more information, visit the [MCP Client CLI Documentation](https://github.com/user/mcp-client-cli) or join our [Discord Community](https://discord.gg/mcp).* 
+**Package Information:**
+- **Name**: mcp-testing-framework
+- **Version**: 1.0.1
+- **PyPI**: https://pypi.org/project/mcp-testing-framework/
+- **Author**: Tosin Akinosho (tosin@decisioncrafters.com)
+- **CLI Commands**: `mcp-test`, `mcp-testing`, `mcp-client`, `llm`
+
+*For more information, visit the [GitHub Repository](https://github.com/tosin2013/mcp-client-cli) or check the [PyPI Package](https://pypi.org/project/mcp-testing-framework/).* 
