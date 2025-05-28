@@ -6,4 +6,6 @@ CONFIG_FILE = "mcp-server-config.json"
 CONFIG_DIR = Path.home() / ".llm"
 SQLITE_DB = CONFIG_DIR / "conversations.db"
 CACHE_DIR = CONFIG_DIR / "mcp-tools"
-DATA_DIR = CONFIG_DIR / "data"  # Directory for storing testing data and databases
+DATA_DIR = (
+    CONFIG_DIR / "data"
+)  # Directory for storing testing data and databases

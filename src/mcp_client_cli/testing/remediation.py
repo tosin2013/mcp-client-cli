@@ -7,22 +7,17 @@ following methodological pragmatism principles.
 """
 
 import asyncio
-import json
 import os
-import shutil
-import subprocess
 import time
 import traceback
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
-from pathlib import Path
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from ..config import ServerConfig
 from ..tool import McpServerConfig, McpToolkit
-from .issue_detector import Issue, IssueSeverity, IssueType, MCPIssueDetector
-from .mcp_tester import TestResult, TestStatus
+from .issue_detector import Issue, IssueType, MCPIssueDetector
 
 
 class RemediationStatus(Enum):
@@ -115,7 +110,9 @@ class MCPRemediationEngine:
         self._active_remediations: Dict[str, RemediationResult] = {}
         self._retry_configs: Dict[str, RetryConfig] = {}
 
-    def _initialize_strategies(self) -> Dict[IssueType, List[RemediationAction]]:
+    def _initialize_strategies(
+        self,
+    ) -> Dict[IssueType, List[RemediationAction]]:
         """Initialize remediation strategies for different issue types."""
         return {
             IssueType.CONNECTION_FAILURE: [
@@ -173,7 +170,10 @@ class MCPRemediationEngine:
                     confidence_score=0.7,
                     estimated_time=30.0,
                     risk_level="low",
-                    validation_steps=["Monitor response times", "Check success rate"],
+                    validation_steps=[
+                        "Monitor response times",
+                        "Check success rate",
+                    ],
                 ),
             ],
             IssueType.AUTHENTICATION_ERROR: [
@@ -184,7 +184,10 @@ class MCPRemediationEngine:
                     confidence_score=0.85,
                     estimated_time=5.0,
                     risk_level="low",
-                    validation_steps=["Check required env vars", "Test authentication"],
+                    validation_steps=[
+                        "Check required env vars",
+                        "Test authentication",
+                    ],
                 ),
                 RemediationAction(
                     action_id="refresh_credentials",
@@ -204,8 +207,14 @@ class MCPRemediationEngine:
                     confidence_score=0.9,
                     estimated_time=60.0,
                     risk_level="medium",
-                    commands=["pip install {dependency}", "npm install {dependency}"],
-                    validation_steps=["Verify installation", "Test import/require"],
+                    commands=[
+                        "pip install {dependency}",
+                        "npm install {dependency}",
+                    ],
+                    validation_steps=[
+                        "Verify installation",
+                        "Test import/require",
+                    ],
                     rollback_steps=["Uninstall if needed"],
                 )
             ],
@@ -217,7 +226,10 @@ class MCPRemediationEngine:
                     confidence_score=0.8,
                     estimated_time=15.0,
                     risk_level="low",
-                    validation_steps=["Check memory usage", "Monitor resource levels"],
+                    validation_steps=[
+                        "Check memory usage",
+                        "Monitor resource levels",
+                    ],
                 ),
                 RemediationAction(
                     action_id="restart_service",
@@ -226,7 +238,10 @@ class MCPRemediationEngine:
                     confidence_score=0.75,
                     estimated_time=20.0,
                     risk_level="medium",
-                    validation_steps=["Verify service restart", "Test connectivity"],
+                    validation_steps=[
+                        "Verify service restart",
+                        "Test connectivity",
+                    ],
                 ),
             ],
             IssueType.CONFIGURATION_ERROR: [
@@ -237,7 +252,10 @@ class MCPRemediationEngine:
                     confidence_score=0.85,
                     estimated_time=10.0,
                     risk_level="low",
-                    validation_steps=["Parse configuration", "Test with fixed config"],
+                    validation_steps=[
+                        "Parse configuration",
+                        "Test with fixed config",
+                    ],
                 )
             ],
         }
@@ -314,14 +332,19 @@ class MCPRemediationEngine:
         )
 
     async def _execute_remediation_action(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute a specific remediation action."""
         start_time = time.time()
 
         try:
             if action.strategy == RemediationStrategy.RETRY:
-                return await self._execute_retry_strategy(action, issue, server_config)
+                return await self._execute_retry_strategy(
+                    action, issue, server_config
+                )
 
             elif action.strategy == RemediationStrategy.CONFIGURATION_FIX:
                 return await self._execute_config_fix_strategy(
@@ -375,13 +398,18 @@ class MCPRemediationEngine:
             )
 
     async def _execute_retry_strategy(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute retry strategy with exponential backoff."""
         start_time = time.time()
 
         # Get retry configuration
-        retry_config = self._retry_configs.get(issue.server_name, RetryConfig())
+        retry_config = self._retry_configs.get(
+            issue.server_name, RetryConfig()
+        )
 
         last_error = None
         for attempt in range(retry_config.max_attempts):
@@ -438,7 +466,10 @@ class MCPRemediationEngine:
         )
 
     async def _execute_config_fix_strategy(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute configuration fix strategy."""
         start_time = time.time()
@@ -504,14 +535,19 @@ class MCPRemediationEngine:
             )
 
     async def _execute_dependency_install_strategy(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute dependency installation strategy."""
         start_time = time.time()
 
         try:
             # Extract dependency information from error message
-            dependency_name = self._extract_dependency_name(issue.error_message or "")
+            dependency_name = self._extract_dependency_name(
+                issue.error_message or ""
+            )
 
             if not dependency_name:
                 return RemediationResult(
@@ -567,7 +603,10 @@ class MCPRemediationEngine:
             )
 
     async def _execute_permission_fix_strategy(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute permission fix strategy."""
         start_time = time.time()
@@ -632,7 +671,10 @@ class MCPRemediationEngine:
             )
 
     async def _execute_environment_setup_strategy(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute environment setup strategy."""
         start_time = time.time()
@@ -655,7 +697,8 @@ class MCPRemediationEngine:
                     execution_time=time.time() - start_time,
                     message=f"Missing environment variables: {', '.join(missing_vars)}",
                     follow_up_actions=[
-                        f"Set environment variable: {var}" for var in missing_vars
+                        f"Set environment variable: {var}"
+                        for var in missing_vars
                     ],
                 )
 
@@ -695,7 +738,10 @@ class MCPRemediationEngine:
             )
 
     async def _execute_resource_cleanup_strategy(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute resource cleanup strategy."""
         start_time = time.time()
@@ -744,7 +790,10 @@ class MCPRemediationEngine:
             )
 
     async def _execute_service_restart_strategy(
-        self, action: RemediationAction, issue: Issue, server_config: ServerConfig
+        self,
+        action: RemediationAction,
+        issue: Issue,
+        server_config: ServerConfig,
     ) -> RemediationResult:
         """Execute service restart strategy."""
         start_time = time.time()
@@ -789,7 +838,10 @@ class MCPRemediationEngine:
             )
 
     async def _test_server_connectivity(
-        self, server_config: ServerConfig, server_name: str, timeout: float = 10.0
+        self,
+        server_config: ServerConfig,
+        server_name: str,
+        timeout: float = 10.0,
     ) -> bool:
         """Test server connectivity to validate remediation."""
         try:
@@ -819,7 +871,9 @@ class MCPRemediationEngine:
         except Exception:
             return False
 
-    def _get_remediation_actions(self, issue: Issue) -> List[RemediationAction]:
+    def _get_remediation_actions(
+        self, issue: Issue
+    ) -> List[RemediationAction]:
         """Get applicable remediation actions for an issue."""
         return self._remediation_strategies.get(issue.issue_type, [])
 
@@ -864,10 +918,14 @@ class MCPRemediationEngine:
     ) -> List[RemediationResult]:
         """Get remediation history, optionally filtered by issue ID."""
         if issue_id:
-            return [r for r in self._remediation_history if r.issue_id == issue_id]
+            return [
+                r for r in self._remediation_history if r.issue_id == issue_id
+            ]
         return self._remediation_history.copy()
 
-    def get_success_rate(self, issue_type: Optional[IssueType] = None) -> float:
+    def get_success_rate(
+        self, issue_type: Optional[IssueType] = None
+    ) -> float:
         """Get remediation success rate, optionally filtered by issue type."""
         relevant_results = self._remediation_history
 
@@ -879,6 +937,10 @@ class MCPRemediationEngine:
             return 0.0
 
         successful = len(
-            [r for r in relevant_results if r.status == RemediationStatus.SUCCESS]
+            [
+                r
+                for r in relevant_results
+                if r.status == RemediationStatus.SUCCESS
+            ]
         )
         return successful / len(relevant_results)

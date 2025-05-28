@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, List, Optional, Type, override
+from typing import List, Optional, Type
 
 import pydantic
 from jsonschema_pydantic import jsonschema_to_pydantic
@@ -66,7 +66,9 @@ class McpToolkit(BaseToolkit):
             for tool in cached_tools:
                 if tool.name in self.exclude_tools:
                     continue
-                self._tools.append(create_langchain_tool(tool, self._session, self))
+                self._tools.append(
+                    create_langchain_tool(tool, self._session, self)
+                )
             return
 
         try:
@@ -76,7 +78,9 @@ class McpToolkit(BaseToolkit):
             for tool in tools.tools:
                 if tool.name in self.exclude_tools:
                     continue
-                self._tools.append(create_langchain_tool(tool, self._session, self))
+                self._tools.append(
+                    create_langchain_tool(tool, self._session, self)
+                )
         except Exception as e:
             print(
                 f"Error gathering tools for {self.server_param.command} {' '.join(self.server_param.args)}: {e}"
@@ -95,7 +99,7 @@ class McpToolkit(BaseToolkit):
                         )
                 except asyncio.TimeoutError:
                     pass
-                except Exception as e:
+                except Exception:
                     pass
         finally:
             try:
@@ -109,7 +113,7 @@ class McpToolkit(BaseToolkit):
                             )
                     except asyncio.TimeoutError:
                         pass
-                    except Exception as e:
+                    except Exception:
                         pass
             except:
                 pass

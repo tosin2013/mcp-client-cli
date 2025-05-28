@@ -27,7 +27,8 @@ class LLMConfig:
             model=config.get("model", cls.model),
             provider=config.get("provider", cls.provider),
             api_key=config.get(
-                "api_key", os.getenv("LLM_API_KEY", os.getenv("OPENAI_API_KEY", ""))
+                "api_key",
+                os.getenv("LLM_API_KEY", os.getenv("OPENAI_API_KEY", "")),
             ),
             temperature=config.get("temperature", cls.temperature),
             base_url=config.get("base_url"),
@@ -82,7 +83,9 @@ class TestConfig:
         return cls(
             enabled=config.get("enabled", cls.enabled),
             timeout=config.get("timeout", cls.timeout),
-            parallel_execution=config.get("parallel_execution", cls.parallel_execution),
+            parallel_execution=config.get(
+                "parallel_execution", cls.parallel_execution
+            ),
             output_format=config.get("output_format", cls.output_format),
             security_tests_enabled=config.get(
                 "security_tests_enabled", cls.security_tests_enabled
@@ -165,7 +168,9 @@ class AppConfig:
     def get_enabled_servers(self) -> Dict[str, ServerConfig]:
         """Get only enabled server configurations."""
         return {
-            name: config for name, config in self.mcp_servers.items() if config.enabled
+            name: config
+            for name, config in self.mcp_servers.items()
+            if config.enabled
         }
 
     def get_test_config(self) -> TestConfig:
@@ -181,7 +186,8 @@ class AppConfig:
         else:
             config_paths = [CONFIG_FILE, CONFIG_DIR / "config.json"]
             target_path = next(
-                (path for path in config_paths if os.path.exists(path)), config_paths[0]
+                (path for path in config_paths if os.path.exists(path)),
+                config_paths[0],
             )
 
         # Load existing config

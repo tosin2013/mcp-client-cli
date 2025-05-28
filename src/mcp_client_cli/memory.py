@@ -57,7 +57,9 @@ async def get_memories(
     store: BaseStore, user_id: str = "myself", query: str = None
 ) -> List[str]:
     namespace = ("memories", user_id)
-    memories = [m.value["data"] for m in await store.asearch(namespace, query=query)]
+    memories = [
+        m.value["data"] for m in await store.asearch(namespace, query=query)
+    ]
     return memories
 
 
@@ -174,11 +176,15 @@ class SqliteStore(BaseStore):
 
             if search_ops:
                 query_vectors = await self._embed_search_queries(search_ops)
-                await self._batch_search(db, search_ops, query_vectors, results)
+                await self._batch_search(
+                    db, search_ops, query_vectors, results
+                )
 
             to_embed = self._extract_texts(put_ops)
             if to_embed and self.index_config and self.embeddings:
-                embeddings = await self.embeddings.aembed_documents(list(to_embed))
+                embeddings = await self.embeddings.aembed_documents(
+                    list(to_embed)
+                )
                 await self._insert_vectors(db, to_embed, embeddings)
 
             await self._apply_put_ops(db, put_ops)
@@ -250,7 +256,9 @@ class SqliteStore(BaseStore):
                     for key, filter_value in op.filter.items()
                 ):
                     if op.query and self.index_config:
-                        vectors = await self._get_vectors(db, item.namespace, item.key)
+                        vectors = await self._get_vectors(
+                            db, item.namespace, item.key
+                        )
                         filtered.append((item, vectors))
                     else:
                         filtered.append((item, []))
@@ -288,7 +296,9 @@ class SqliteStore(BaseStore):
         Returns:
             List[Tuple[str, ...]]: List of matching namespaces
         """
-        async with db.execute("SELECT DISTINCT namespace FROM items") as cursor:
+        async with db.execute(
+            "SELECT DISTINCT namespace FROM items"
+        ) as cursor:
             rows = await cursor.fetchall()
             namespaces = [tuple(ns.split("/")) for (ns,) in rows]
 
@@ -311,7 +321,9 @@ class SqliteStore(BaseStore):
 
     async def _embed_search_queries(
         self,
-        search_ops: Dict[int, Tuple[SearchOp, List[Tuple[Item, List[List[float]]]]]],
+        search_ops: Dict[
+            int, Tuple[SearchOp, List[Tuple[Item, List[List[float]]]]]
+        ],
     ) -> Dict[str, List[float]]:
         """Embed search queries.
 
@@ -325,7 +337,9 @@ class SqliteStore(BaseStore):
         if self.index_config and self.embeddings and search_ops:
             queries = {op.query for (op, _) in search_ops.values() if op.query}
             if queries:
-                embeddings = await self.embeddings.aembed_documents(list(queries))
+                embeddings = await self.embeddings.aembed_documents(
+                    list(queries)
+                )
                 query_vectors = dict(zip(queries, embeddings))
         return query_vectors
 
@@ -382,7 +396,8 @@ class SqliteStore(BaseStore):
 
                 if scoreless and len(kept) < op.limit:
                     kept.extend(
-                        (None, item) for item in scoreless[: op.limit - len(kept)]
+                        (None, item)
+                        for item in scoreless[: op.limit - len(kept)]
                     )
 
                 results[i] = [
@@ -405,7 +420,9 @@ class SqliteStore(BaseStore):
                         created_at=item.created_at,
                         updated_at=item.updated_at,
                     )
-                    for (item, _) in candidates[op.offset : op.offset + op.limit]
+                    for (item, _) in candidates[
+                        op.offset : op.offset + op.limit
+                    ]
                 ]
 
     async def _apply_put_ops(
@@ -544,7 +561,9 @@ class SqliteStore(BaseStore):
         else:
             return item_value == filter_value
 
-    def _apply_operator(self, value: Any, operator: str, op_value: Any) -> bool:
+    def _apply_operator(
+        self, value: Any, operator: str, op_value: Any
+    ) -> bool:
         """Apply a comparison operator.
 
         Args:
@@ -605,7 +624,9 @@ class SqliteStore(BaseStore):
         else:
             raise ValueError(f"Unsupported match type: {match_type}")
 
-    def _cosine_similarity(self, X: List[float], Y: List[List[float]]) -> List[float]:
+    def _cosine_similarity(
+        self, X: List[float], Y: List[List[float]]
+    ) -> List[float]:
         """Compute cosine similarity between a vector X and a matrix Y.
 
         Args:
@@ -628,7 +649,9 @@ class SqliteStore(BaseStore):
 
             mask = Y_norm != 0
             similarities = np.zeros_like(Y_norm)
-            similarities[mask] = np.dot(Y_arr[mask], X_arr) / (Y_norm[mask] * X_norm)
+            similarities[mask] = np.dot(Y_arr[mask], X_arr) / (
+                Y_norm[mask] * X_norm
+            )
             return similarities.tolist()
         except ImportError:
             logger.warning(
@@ -642,7 +665,9 @@ class SqliteStore(BaseStore):
                 norm1 = sum(a * a for a in X) ** 0.5
                 norm2 = sum(a * a for a in y) ** 0.5
                 similarity = (
-                    dot_product / (norm1 * norm2) if norm1 > 0 and norm2 > 0 else 0.0
+                    dot_product / (norm1 * norm2)
+                    if norm1 > 0 and norm2 > 0
+                    else 0.0
                 )
                 similarities.append(similarity)
             return similarities

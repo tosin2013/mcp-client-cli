@@ -5,9 +5,6 @@ This module provides command-line integration for the MCP testing capabilities,
 allowing users to run tests directly from the CLI interface.
 """
 
-import asyncio
-import json
-from pathlib import Path
 from typing import Any, Dict, Optional
 
 from rich.console import Console
@@ -61,15 +58,20 @@ class MCPTestCLI:
             ) as progress:
 
                 if server_name:
-                    task = progress.add_task(f"Testing {server_name}...", total=None)
+                    task = progress.add_task(
+                        f"Testing {server_name}...", total=None
+                    )
                 else:
                     enabled_servers = self.config.get_enabled_servers()
                     task = progress.add_task(
-                        f"Testing {len(enabled_servers)} servers...", total=None
+                        f"Testing {len(enabled_servers)} servers...",
+                        total=None,
                     )
 
                 # Run tests
-                results = await self.tester.run_comprehensive_test_suite(server_name)
+                results = await self.tester.run_comprehensive_test_suite(
+                    server_name
+                )
 
                 progress.update(task, description="Tests completed!")
 
@@ -99,7 +101,9 @@ class MCPTestCLI:
             limit: Maximum number of results to show
         """
         try:
-            suites = await self.storage.get_latest_test_suites(server_name, limit)
+            suites = await self.storage.get_latest_test_suites(
+                server_name, limit
+            )
 
             if not suites:
                 self.console.print("[yellow]No test history found.[/yellow]")
@@ -108,7 +112,9 @@ class MCPTestCLI:
             self._display_test_history(suites)
 
         except Exception as e:
-            self.console.print(f"[red]Error retrieving test history: {e}[/red]")
+            self.console.print(
+                f"[red]Error retrieving test history: {e}[/red]"
+            )
 
     async def show_test_statistics(
         self, server_name: Optional[str] = None, days: int = 30
@@ -125,7 +131,9 @@ class MCPTestCLI:
             self._display_test_statistics(stats, server_name, days)
 
         except Exception as e:
-            self.console.print(f"[red]Error retrieving test statistics: {e}[/red]")
+            self.console.print(
+                f"[red]Error retrieving test statistics: {e}[/red]"
+            )
 
     def _display_test_results(self, results: Dict[str, TestSuite]):
         """Display test results in a formatted table."""
@@ -264,7 +272,9 @@ class MCPTestCLI:
             for suite in results.values():
                 await self.storage.save_test_suite(suite)
 
-            self.console.print("[green]✅ Test results saved to storage.[/green]")
+            self.console.print(
+                "[green]✅ Test results saved to storage.[/green]"
+            )
 
         except Exception as e:
             self.console.print(
@@ -274,7 +284,9 @@ class MCPTestCLI:
 
 # CLI command functions that can be integrated into the main CLI
 async def run_mcp_tests(
-    config: AppConfig, server_name: Optional[str] = None, save_results: bool = True
+    config: AppConfig,
+    server_name: Optional[str] = None,
+    save_results: bool = True,
 ) -> Dict[str, TestSuite]:
     """
     Run MCP server tests from CLI.

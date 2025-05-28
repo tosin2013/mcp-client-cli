@@ -22,16 +22,13 @@ import anyio
 from langchain.chat_models import init_chat_model
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import BaseMessage, HumanMessage
-from langchain_core.prompts import ChatPromptTemplate
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.message import add_messages
 from langgraph.managed import IsLastStep
 from langgraph.prebuilt import create_react_agent
 from rich.console import Console
-from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
-from rich.text import Text
 
 from .config import AppConfig
 from .const import *
@@ -44,13 +41,11 @@ from .testing import (
     IssueTrackingManager,
     MCPIssueDetector,
     MCPPerformanceTester,
-    MCPRemediationEngine,
     MCPSecurityTester,
     MCPServerTester,
     MCPTestCLI,
     TestResult,
     TestStatus,
-    TestSuite,
 )
 from .tool import *
 
@@ -104,7 +99,9 @@ async def run() -> None:
         await handle_generate_test_report(app_config, args)
         return
 
-    await handle_conversation(args, query, is_conversation_continuation, app_config)
+    await handle_conversation(
+        args, query, is_conversation_continuation, app_config
+    )
 
 
 def setup_argument_parser() -> argparse.Namespace:
@@ -137,10 +134,14 @@ Examples:
         "  p: Use prompt template",
     )
     parser.add_argument(
-        "--list-tools", action="store_true", help="List all available LLM tools"
+        "--list-tools",
+        action="store_true",
+        help="List all available LLM tools",
     )
     parser.add_argument(
-        "--list-prompts", action="store_true", help="List all available prompts"
+        "--list-prompts",
+        action="store_true",
+        help="List all available prompts",
     )
     parser.add_argument(
         "--no-confirmations",
@@ -157,14 +158,20 @@ Examples:
         action="store_true",
         help="Print output as raw text instead of parsing markdown",
     )
-    parser.add_argument("--no-tools", action="store_true", help="Do not add any tools")
     parser.add_argument(
-        "--no-intermediates", action="store_true", help="Only print the final message"
+        "--no-tools", action="store_true", help="Do not add any tools"
+    )
+    parser.add_argument(
+        "--no-intermediates",
+        action="store_true",
+        help="Only print the final message",
     )
     parser.add_argument(
         "--show-memories", action="store_true", help="Show user memories"
     )
-    parser.add_argument("--model", help="Override the model specified in config")
+    parser.add_argument(
+        "--model", help="Override the model specified in config"
+    )
 
     # Testing-related arguments
     parser.add_argument(
@@ -174,10 +181,18 @@ Examples:
     )
     parser.add_argument(
         "--run-test-suite",
-        choices=["functional", "security", "performance", "integration", "all"],
+        choices=[
+            "functional",
+            "security",
+            "performance",
+            "integration",
+            "all",
+        ],
         help="Run specific test suite type",
     )
-    parser.add_argument("--test-config", help="Path to custom test configuration file")
+    parser.add_argument(
+        "--test-config", help="Path to custom test configuration file"
+    )
     parser.add_argument(
         "--generate-test-report",
         action="store_true",
@@ -204,7 +219,9 @@ Examples:
     return parser.parse_args()
 
 
-async def handle_list_tools(app_config: AppConfig, args: argparse.Namespace) -> None:
+async def handle_list_tools(
+    app_config: AppConfig, args: argparse.Namespace
+) -> None:
     """Handle the --list-tools command."""
     server_configs = [
         McpServerConfig(
@@ -258,7 +275,9 @@ def handle_list_prompts() -> None:
     table.add_column("Arguments")
 
     for name, template in prompt_templates.items():
-        table.add_row(name, template, ", ".join(re.findall(r"\{(\w+)\}", template)))
+        table.add_row(
+            name, template, ", ".join(re.findall(r"\{(\w+)\}", template))
+        )
 
     console.print(table)
 
@@ -274,7 +293,9 @@ async def load_tools(
     langchain_tools = []
 
     async def convert_toolkit(server_config: McpServerConfig):
-        toolkit = await convert_mcp_to_langchain_tools(server_config, force_refresh)
+        toolkit = await convert_mcp_to_langchain_tools(
+            server_config, force_refresh
+        )
         toolkits.append(toolkit)
         langchain_tools.extend(toolkit.get_tools())
 
@@ -329,10 +350,6 @@ async def handle_conversation(
         extra_body=extra_body,
     )
 
-    prompt = ChatPromptTemplate.from_messages(
-        [("system", app_config.system_prompt), ("placeholder", "{messages}")]
-    )
-
     conversation_manager = ConversationManager(SQLITE_DB)
 
     checkpointer = MemorySaver()
@@ -340,7 +357,11 @@ async def handle_conversation(
     memories = await get_memories(store)
     formatted_memories = "\n".join(f"- {memory}" for memory in memories)
     agent_executor = create_react_agent(
-        model, tools, state_schema=AgentState, checkpointer=checkpointer, store=store
+        model,
+        tools,
+        state_schema=AgentState,
+        checkpointer=checkpointer,
+        store=store,
     )
 
     thread_id = (
@@ -420,7 +441,8 @@ def parse_query(args: argparse.Namespace) -> tuple[HumanMessage, bool]:
             # It's an image, encode it as base64
             stdin_image = base64.b64encode(stdin_data).decode("utf-8")
             mime_type = (
-                mimetypes.guess_type(f"dummy.{image_type}")[0] or f"image/{image_type}"
+                mimetypes.guess_type(f"dummy.{image_type}")[0]
+                or f"image/{image_type}"
             )
         else:
             # It's text
@@ -436,7 +458,9 @@ def parse_query(args: argparse.Namespace) -> tuple[HumanMessage, bool]:
             template_name = query_parts[1]
             if template_name not in prompt_templates:
                 print(f"Error: Prompt template '{template_name}' not found.")
-                print("Available templates:", ", ".join(prompt_templates.keys()))
+                print(
+                    "Available templates:", ", ".join(prompt_templates.keys())
+                )
                 return HumanMessage(content=""), False
 
             template = prompt_templates[template_name]
@@ -464,7 +488,10 @@ def parse_query(args: argparse.Namespace) -> tuple[HumanMessage, bool]:
     # Create the message content
     if stdin_image:
         content = [
-            {"type": "text", "text": query_text or "What do you see in this image?"},
+            {
+                "type": "text",
+                "text": query_text or "What do you see in this image?",
+            },
             {
                 "type": "image_url",
                 "image_url": {"url": f"data:{mime_type};base64,{stdin_image}"},
@@ -517,12 +544,14 @@ async def handle_test_mcp_servers(
 
         # Initialize tester
         tester = MCPServerTester(app_config)
-        test_cli = MCPTestCLI(app_config)
+        MCPTestCLI(app_config)
 
         # Run tests for each server
         all_results = []
         for server_config in server_configs:
-            progress.update(task, description=f"Testing {server_config.server_name}...")
+            progress.update(
+                task, description=f"Testing {server_config.server_name}..."
+            )
 
             try:
                 # Run comprehensive test suite
@@ -572,7 +601,9 @@ async def handle_run_test_suite(
     ]
 
     if not server_configs:
-        console.print("[yellow]No enabled MCP servers found in configuration[/yellow]")
+        console.print(
+            "[yellow]No enabled MCP servers found in configuration[/yellow]"
+        )
         return
 
     all_results = []
@@ -609,7 +640,9 @@ async def handle_run_test_suite(
                         description=f"Running security tests for {server_config.server_name}...",
                     )
                     security_tester = MCPSecurityTester()
-                    results = await security_tester.run_security_tests(server_config)
+                    results = await security_tester.run_security_tests(
+                        server_config
+                    )
                     all_results.extend(results)
 
                 if suite_type in ["performance", "all"]:
@@ -618,7 +651,9 @@ async def handle_run_test_suite(
                         description=f"Running performance tests for {server_config.server_name}...",
                     )
                     perf_tester = MCPPerformanceTester()
-                    results = await perf_tester.run_performance_tests(server_config)
+                    results = await perf_tester.run_performance_tests(
+                        server_config
+                    )
                     all_results.extend(results)
 
                 if suite_type in ["integration", "all"]:
@@ -649,16 +684,22 @@ async def handle_run_test_suite(
 
     # Run issue detection if there are failures
     failed_results = [
-        r for r in all_results if r.status in [TestStatus.FAILED, TestStatus.ERROR]
+        r
+        for r in all_results
+        if r.status in [TestStatus.FAILED, TestStatus.ERROR]
     ]
     if failed_results:
-        console.print("\n[yellow]Analyzing failures for potential issues...[/yellow]")
+        console.print(
+            "\n[yellow]Analyzing failures for potential issues...[/yellow]"
+        )
         issue_detector = MCPIssueDetector()
 
         for result in failed_results:
             issues = await issue_detector.analyze_test_failures(result)
             if issues:
-                console.print(f"\n[red]Issues detected for {result.test_name}:[/red]")
+                console.print(
+                    f"\n[red]Issues detected for {result.test_name}:[/red]"
+                )
                 for issue in issues:
                     console.print(
                         f"  • {issue.issue_type.value}: {issue.error_message}"
@@ -675,7 +716,9 @@ async def handle_generate_test_report(
     """Handle the --generate-test-report command."""
     console = Console()
 
-    console.print("[bold blue]Generating comprehensive test report...[/bold blue]")
+    console.print(
+        "[bold blue]Generating comprehensive test report...[/bold blue]"
+    )
 
     # Get server configurations
     server_configs = [
@@ -692,7 +735,9 @@ async def handle_generate_test_report(
     ]
 
     if not server_configs:
-        console.print("[yellow]No enabled MCP servers found in configuration[/yellow]")
+        console.print(
+            "[yellow]No enabled MCP servers found in configuration[/yellow]"
+        )
         return
 
     # Run comprehensive tests
@@ -708,7 +753,8 @@ async def handle_generate_test_report(
 
         for server_config in server_configs:
             task = progress.add_task(
-                f"Comprehensive testing of {server_config.server_name}...", total=None
+                f"Comprehensive testing of {server_config.server_name}...",
+                total=None,
             )
 
             try:
@@ -727,10 +773,13 @@ async def handle_generate_test_report(
 
                 # Security tests
                 progress.update(
-                    task, description=f"Security tests - {server_config.server_name}..."
+                    task,
+                    description=f"Security tests - {server_config.server_name}...",
                 )
                 security_tester = MCPSecurityTester()
-                sec_results = await security_tester.run_security_tests(server_config)
+                sec_results = await security_tester.run_security_tests(
+                    server_config
+                )
                 all_results.extend(sec_results)
 
                 # Performance tests
@@ -739,12 +788,15 @@ async def handle_generate_test_report(
                     description=f"Performance tests - {server_config.server_name}...",
                 )
                 perf_tester = MCPPerformanceTester()
-                perf_results = await perf_tester.run_performance_tests(server_config)
+                perf_results = await perf_tester.run_performance_tests(
+                    server_config
+                )
                 all_results.extend(perf_results)
 
                 # Issue detection and tracking
                 progress.update(
-                    task, description=f"Issue analysis - {server_config.server_name}..."
+                    task,
+                    description=f"Issue analysis - {server_config.server_name}...",
                 )
                 issue_detector = MCPIssueDetector()
                 failed_results = [
@@ -790,7 +842,9 @@ async def _display_test_results(
                     "message": result.message,
                     "confidence_score": result.confidence_score,
                     "timestamp": (
-                        result.timestamp.isoformat() if result.timestamp else None
+                        result.timestamp.isoformat()
+                        if result.timestamp
+                        else None
                     ),
                     "error_info": result.error_info,
                 }
@@ -807,7 +861,9 @@ async def _display_test_results(
         output_file = Path("test_results.html")
         with open(output_file, "w") as f:
             f.write(html_content)
-        console.print(f"[green]HTML test report saved to {output_file}[/green]")
+        console.print(
+            f"[green]HTML test report saved to {output_file}[/green]"
+        )
 
     else:  # table format (default)
         # Display results in a table
@@ -834,8 +890,16 @@ async def _display_test_results(
             table.add_row(
                 result.test_name,
                 status_style,
-                f"{result.execution_time:.2f}" if result.execution_time else "N/A",
-                f"{result.confidence_score:.1%}" if result.confidence_score else "N/A",
+                (
+                    f"{result.execution_time:.2f}"
+                    if result.execution_time
+                    else "N/A"
+                ),
+                (
+                    f"{result.confidence_score:.1%}"
+                    if result.confidence_score
+                    else "N/A"
+                ),
                 message,
             )
 
@@ -867,7 +931,9 @@ async def _generate_comprehensive_report(
     # Get issue statistics
     issue_stats = await issue_tracking.get_issue_statistics()
 
-    console.print("\n[bold green]Comprehensive Test Report Generated[/bold green]")
+    console.print(
+        "\n[bold green]Comprehensive Test Report Generated[/bold green]"
+    )
 
     # Display basic results
     await _display_test_results(results, output_format, console)

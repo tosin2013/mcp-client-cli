@@ -7,15 +7,12 @@ and data sanitization checks following methodological pragmatism principles.
 """
 
 import asyncio
-import json
 import time
 import traceback
-from dataclasses import dataclass, field
-from datetime import datetime
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
 
-from mcp import StdioServerParameters, types
+from mcp import StdioServerParameters
 
 from ..config import ServerConfig
 from ..tool import McpServerConfig, McpToolkit
@@ -217,7 +214,9 @@ class MCPSecurityTester:
 
             vulnerabilities_found = []
             passed_tests = sum(
-                1 for r in results if isinstance(r, dict) and r.get("secure", False)
+                1
+                for r in results
+                if isinstance(r, dict) and r.get("secure", False)
             )
 
             for i, result in enumerate(results):
@@ -231,7 +230,9 @@ class MCPSecurityTester:
                             confidence_score=0.75,
                         )
                     )
-                elif isinstance(result, dict) and not result.get("secure", True):
+                elif isinstance(result, dict) and not result.get(
+                    "secure", True
+                ):
                     vulnerabilities_found.append(
                         SecurityVulnerability(
                             vulnerability_type="authorization_bypass",
@@ -421,12 +422,20 @@ class MCPSecurityTester:
             # Test data sanitization scenarios
             sanitization_tests = [
                 self._test_xss_prevention(server_config, server_name),
-                self._test_sql_injection_prevention(server_config, server_name),
-                self._test_command_injection_prevention(server_config, server_name),
-                self._test_path_traversal_prevention(server_config, server_name),
+                self._test_sql_injection_prevention(
+                    server_config, server_name
+                ),
+                self._test_command_injection_prevention(
+                    server_config, server_name
+                ),
+                self._test_path_traversal_prevention(
+                    server_config, server_name
+                ),
             ]
 
-            results = await asyncio.gather(*sanitization_tests, return_exceptions=True)
+            results = await asyncio.gather(
+                *sanitization_tests, return_exceptions=True
+            )
 
             vulnerabilities_found = []
             passed_tests = 0
@@ -451,7 +460,8 @@ class MCPSecurityTester:
                                 vulnerability_type="sanitization_bypass",
                                 severity=result.get("severity", "high"),
                                 description=result.get(
-                                    "issue", "Data sanitization bypass detected"
+                                    "issue",
+                                    "Data sanitization bypass detected",
                                 ),
                                 affected_component="data_sanitization",
                                 test_payload=result.get("payload"),
@@ -585,7 +595,9 @@ class MCPSecurityTester:
             )
 
             toolkit = McpToolkit(
-                name=server_name, server_param=mcp_config.server_param, exclude_tools=[]
+                name=server_name,
+                server_param=mcp_config.server_param,
+                exclude_tools=[],
             )
 
             await asyncio.wait_for(toolkit._start_session(), timeout=5.0)
@@ -624,7 +636,9 @@ class MCPSecurityTester:
             )
 
             toolkit = McpToolkit(
-                name=server_name, server_param=mcp_config.server_param, exclude_tools=[]
+                name=server_name,
+                server_param=mcp_config.server_param,
+                exclude_tools=[],
             )
 
             await asyncio.wait_for(toolkit._start_session(), timeout=5.0)
@@ -810,7 +824,9 @@ class MCPSecurityTester:
         vuln_types = set(v.vulnerability_type for v in self._vulnerabilities)
 
         if "authentication_bypass" in vuln_types:
-            recommendations.append("Implement proper authentication mechanisms")
+            recommendations.append(
+                "Implement proper authentication mechanisms"
+            )
 
         if "authorization_bypass" in vuln_types:
             recommendations.append("Add role-based access controls")
@@ -819,9 +835,13 @@ class MCPSecurityTester:
             recommendations.append("Implement comprehensive input validation")
 
         if "sanitization_bypass" in vuln_types:
-            recommendations.append("Add proper output encoding and sanitization")
+            recommendations.append(
+                "Add proper output encoding and sanitization"
+            )
 
         if not recommendations:
-            recommendations.append("Continue regular security testing and monitoring")
+            recommendations.append(
+                "Continue regular security testing and monitoring"
+            )
 
         return recommendations

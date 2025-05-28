@@ -1,5 +1,6 @@
 """
-mcp-testing-framework: Comprehensive testing framework for Model Context Protocol (MCP) servers
+mcp-testing-framework: Comprehensive testing framework for Model Context
+Protocol (MCP) servers
 
 Enhanced fork of mcp-client-cli with advanced testing capabilities.
 Author: Tosin Akinosho (tosin@decisioncrafters.com)

@@ -5,18 +5,19 @@ This module contains comprehensive tests for the MCP testing infrastructure,
 including functional testing capabilities and configuration validation.
 """
 
-import asyncio
-import tempfile
-from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from mcp_client_cli.config import AppConfig, LLMConfig, ServerConfig, TestConfig
+from mcp_client_cli.config import (
+    AppConfig,
+    LLMConfig,
+    ServerConfig,
+    TestConfig,
+)
 from mcp_client_cli.testing import (
     MCPServerTester,
     TestResult,
-    TestResultManager,
     TestStatus,
     TestSuite,
 )
@@ -96,7 +97,9 @@ async def test_server_connectivity_mock():
     server_config = config.mcp_servers["test"]
 
     # Mock successful connection
-    with patch("mcp_client_cli.testing.mcp_tester.McpToolkit") as mock_toolkit_class:
+    with patch(
+        "mcp_client_cli.testing.mcp_tester.McpToolkit"
+    ) as mock_toolkit_class:
         mock_toolkit = AsyncMock()
         mock_toolkit._start_session = AsyncMock()
         mock_toolkit_class.return_value = mock_toolkit

@@ -343,7 +343,9 @@ class TestResultManager:
             threshold_date = datetime.now().replace(
                 hour=0, minute=0, second=0, microsecond=0
             )
-            threshold_date = threshold_date.replace(day=threshold_date.day - days)
+            threshold_date = threshold_date.replace(
+                day=threshold_date.day - days
+            )
             threshold_str = threshold_date.isoformat()
 
             # Build base query conditions
@@ -378,7 +380,11 @@ class TestResultManager:
                     "success_rate": 0.0,
                     "average_confidence": 0.0,
                     "average_execution_time": 0.0,
-                    "test_distribution": {"passed": 0, "failed": 0, "errors": 0},
+                    "test_distribution": {
+                        "passed": 0,
+                        "failed": 0,
+                        "errors": 0,
+                    },
                     "server_breakdown": {},
                 }
 
@@ -393,7 +399,9 @@ class TestResultManager:
             ) = stats_row
 
             # Calculate success rate
-            success_rate = (total_passed / total_tests) if total_tests > 0 else 0.0
+            success_rate = (
+                (total_passed / total_tests) if total_tests > 0 else 0.0
+            )
 
             # Get server breakdown if not filtering by server
             server_breakdown = {}
@@ -423,7 +431,9 @@ class TestResultManager:
                         server_total,
                     ) = row
                     server_success_rate = (
-                        (server_passed / server_total) if server_total > 0 else 0.0
+                        (server_passed / server_total)
+                        if server_total > 0
+                        else 0.0
                     )
                     server_breakdown[server] = {
                         "suite_count": suite_count,
@@ -461,7 +471,9 @@ class TestResultManager:
             cutoff_date = datetime.now().replace(
                 hour=0, minute=0, second=0, microsecond=0
             )
-            cutoff_date = cutoff_date.replace(day=cutoff_date.day - days_to_keep)
+            cutoff_date = cutoff_date.replace(
+                day=cutoff_date.day - days_to_keep
+            )
             cutoff_str = cutoff_date.isoformat()
 
             # Get suite IDs to delete

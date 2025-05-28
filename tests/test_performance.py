@@ -190,7 +190,9 @@ class TestMCPPerformanceTester:
                 return_value=mock_toolkit,
             ),
             patch.object(
-                performance_tester, "_benchmark_single_tool", return_value=mock_metrics
+                performance_tester,
+                "_benchmark_single_tool",
+                return_value=mock_metrics,
             ),
         ):
 
@@ -246,7 +248,9 @@ class TestMCPPerformanceTester:
             assert result.error_info is not None
 
     @pytest.mark.asyncio
-    async def test_test_concurrent_connections(self, performance_tester, server_config):
+    async def test_test_concurrent_connections(
+        self, performance_tester, server_config
+    ):
         """Test concurrent connection testing."""
 
         # Mock the _run_load_test method to return consistent results
@@ -281,7 +285,9 @@ class TestMCPPerformanceTester:
         assert "load_test_results" in result.details
 
     @pytest.mark.asyncio
-    async def test_measure_response_times(self, performance_tester, server_config):
+    async def test_measure_response_times(
+        self, performance_tester, server_config
+    ):
         """Test response time measurement."""
         mock_toolkit = Mock()
         mock_toolkit.initialize = AsyncMock()
@@ -336,7 +342,9 @@ class TestMCPPerformanceTester:
             assert "No tools available" in result.message
 
     @pytest.mark.asyncio
-    async def test_test_resource_usage(self, performance_tester, server_config):
+    async def test_test_resource_usage(
+        self, performance_tester, server_config
+    ):
         """Test resource usage testing."""
         mock_toolkit = Mock()
         mock_toolkit.initialize = AsyncMock()
@@ -384,11 +392,15 @@ class TestMCPPerformanceTester:
         """Test comprehensive performance suite."""
         # Mock all individual test methods
         with (
-            patch.object(performance_tester, "measure_response_times") as mock_response,
+            patch.object(
+                performance_tester, "measure_response_times"
+            ) as mock_response,
             patch.object(
                 performance_tester, "test_concurrent_connections"
             ) as mock_concurrent,
-            patch.object(performance_tester, "test_resource_usage") as mock_resource,
+            patch.object(
+                performance_tester, "test_resource_usage"
+            ) as mock_resource,
             patch.object(
                 performance_tester, "benchmark_tool_execution"
             ) as mock_benchmark,
@@ -400,8 +412,10 @@ class TestMCPPerformanceTester:
             mock_resource.return_value = Mock(status=TestStatus.PASSED)
             mock_benchmark.return_value = Mock(status=TestStatus.PASSED)
 
-            results = await performance_tester.run_comprehensive_performance_suite(
-                server_config, "test_server"
+            results = (
+                await performance_tester.run_comprehensive_performance_suite(
+                    server_config, "test_server"
+                )
             )
 
             assert len(results) == 4
@@ -412,9 +426,13 @@ class TestMCPPerformanceTester:
 
             # Verify all tests were called
             mock_response.assert_called_once_with(server_config, "test_server")
-            mock_concurrent.assert_called_once_with(server_config, "test_server")
+            mock_concurrent.assert_called_once_with(
+                server_config, "test_server"
+            )
             mock_resource.assert_called_once_with(server_config, "test_server")
-            mock_benchmark.assert_called_once_with(server_config, "test_server")
+            mock_benchmark.assert_called_once_with(
+                server_config, "test_server"
+            )
 
     def test_get_performance_report_empty(self, performance_tester):
         """Test performance report with no results."""
@@ -435,8 +453,12 @@ class TestMCPPerformanceTester:
         metrics2.avg_response_time = 200.0
         metrics2.throughput_rps = 8.0
 
-        result1 = LoadTestResult("test1", 5, 30.0, metrics1, performance_grade="A")
-        result2 = LoadTestResult("test2", 10, 30.0, metrics2, performance_grade="B")
+        result1 = LoadTestResult(
+            "test1", 5, 30.0, metrics1, performance_grade="A"
+        )
+        result2 = LoadTestResult(
+            "test2", 10, 30.0, metrics2, performance_grade="B"
+        )
 
         performance_tester._test_results = [result1, result2]
 
@@ -463,10 +485,14 @@ class TestMCPPerformanceTester:
         assert mock_toolkit.call_tool.call_count == 3
 
     @pytest.mark.asyncio
-    async def test_benchmark_single_tool_with_failures(self, performance_tester):
+    async def test_benchmark_single_tool_with_failures(
+        self, performance_tester
+    ):
         """Test single tool benchmarking with failures."""
         mock_toolkit = Mock()
-        mock_toolkit.call_tool = AsyncMock(side_effect=[None, Exception("Error"), None])
+        mock_toolkit.call_tool = AsyncMock(
+            side_effect=[None, Exception("Error"), None]
+        )
 
         metrics = await performance_tester._benchmark_single_tool(
             mock_toolkit, "test_tool", iterations=3
@@ -569,7 +595,9 @@ class TestResourceMonitor:
             "mcp_client_cli.testing.performance_tester.psutil.Process"
         ) as mock_process_class:
             mock_process = Mock()
-            mock_process.memory_info.return_value.rss = 100 * 1024 * 1024  # 100MB
+            mock_process.memory_info.return_value.rss = (
+                100 * 1024 * 1024
+            )  # 100MB
             mock_process.cpu_percent.return_value = 50.0
             mock_process_class.return_value = mock_process
 

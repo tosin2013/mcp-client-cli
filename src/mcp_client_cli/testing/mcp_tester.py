@@ -12,14 +12,11 @@ import traceback
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
-from mcp import ClientSession, StdioServerParameters, types
-from mcp.client.stdio import stdio_client
+from mcp import StdioServerParameters
 
 from ..config import AppConfig, ServerConfig
-from ..storage import ConversationManager
 from ..tool import McpServerConfig, McpToolkit
 
 
@@ -267,7 +264,9 @@ class MCPServerTester:
 
             # Find the tool
             tools = toolkit.get_tools()
-            target_tool = next((tool for tool in tools if tool.name == tool_name), None)
+            target_tool = next(
+                (tool for tool in tools if tool.name == tool_name), None
+            )
 
             if not target_tool:
                 return TestResult(
@@ -281,7 +280,9 @@ class MCPServerTester:
             # Execute tool with test arguments or empty args
             test_args = test_args or {}
 
-            async with asyncio.timeout(30.0):  # 30 second timeout for tool execution
+            async with asyncio.timeout(
+                30.0
+            ):  # 30 second timeout for tool execution
                 result = await target_tool._arun(**test_args)
 
             execution_time = time.time() - start_time
@@ -345,7 +346,10 @@ class MCPServerTester:
                 issues.append("LLM provider not specified")
 
             # Check system prompt
-            if not config.system_prompt or len(config.system_prompt.strip()) == 0:
+            if (
+                not config.system_prompt
+                or len(config.system_prompt.strip()) == 0
+            ):
                 issues.append("System prompt is empty")
 
             # Check MCP servers
@@ -407,7 +411,7 @@ class MCPServerTester:
         Returns:
             Dict[str, TestSuite]: Test results for each server
         """
-        start_time = time.time()
+        time.time()
         results = {}
 
         # First validate configuration
@@ -417,7 +421,9 @@ class MCPServerTester:
         servers_to_test = {}
         if server_name:
             if server_name in self.config.mcp_servers:
-                servers_to_test[server_name] = self.config.mcp_servers[server_name]
+                servers_to_test[server_name] = self.config.mcp_servers[
+                    server_name
+                ]
         else:
             servers_to_test = self.config.get_enabled_servers()
 
@@ -430,12 +436,16 @@ class MCPServerTester:
             test_results.append(config_result)
 
             # Test connectivity
-            conn_result = await self.test_server_connectivity(server_config, name)
+            conn_result = await self.test_server_connectivity(
+                server_config, name
+            )
             test_results.append(conn_result)
 
             # Test tool discovery if connectivity passed
             if conn_result.status == TestStatus.PASSED:
-                discovery_result = await self.test_tool_discovery(server_config, name)
+                discovery_result = await self.test_tool_discovery(
+                    server_config, name
+                )
                 test_results.append(discovery_result)
 
                 # Test tool execution for discovered tools (sample testing)
@@ -452,10 +462,18 @@ class MCPServerTester:
                         test_results.append(execution_result)
 
             # Calculate suite statistics
-            passed = sum(1 for r in test_results if r.status == TestStatus.PASSED)
-            failed = sum(1 for r in test_results if r.status == TestStatus.FAILED)
-            errors = sum(1 for r in test_results if r.status == TestStatus.ERROR)
-            skipped = sum(1 for r in test_results if r.status == TestStatus.SKIPPED)
+            passed = sum(
+                1 for r in test_results if r.status == TestStatus.PASSED
+            )
+            failed = sum(
+                1 for r in test_results if r.status == TestStatus.FAILED
+            )
+            errors = sum(
+                1 for r in test_results if r.status == TestStatus.ERROR
+            )
+            skipped = sum(
+                1 for r in test_results if r.status == TestStatus.SKIPPED
+            )
 
             # Calculate overall confidence (weighted average)
             if test_results:

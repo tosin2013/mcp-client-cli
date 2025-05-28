@@ -7,18 +7,14 @@ monitoring following methodological pragmatism principles.
 """
 
 import asyncio
-import json
 import statistics
 import time
 import traceback
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional
 
 import psutil
-from mcp import StdioServerParameters, types
+from mcp import StdioServerParameters
 
 from ..config import ServerConfig
 from ..tool import McpServerConfig, McpToolkit
@@ -83,8 +79,12 @@ class PerformanceMetrics:
 
             sorted_times = sorted(self.response_times)
             n = len(sorted_times)
-            self.p95_response_time = sorted_times[int(0.95 * n)] if n > 0 else 0.0
-            self.p99_response_time = sorted_times[int(0.99 * n)] if n > 0 else 0.0
+            self.p95_response_time = (
+                sorted_times[int(0.95 * n)] if n > 0 else 0.0
+            )
+            self.p99_response_time = (
+                sorted_times[int(0.99 * n)] if n > 0 else 0.0
+            )
 
         if self.memory_usage:
             self.avg_memory_usage = statistics.mean(self.memory_usage)
@@ -94,7 +94,9 @@ class PerformanceMetrics:
             self.avg_cpu_usage = statistics.mean(self.cpu_usage)
             self.peak_cpu_usage = max(self.cpu_usage)
 
-        total_requests = self.success_count + self.failure_count + self.error_count
+        total_requests = (
+            self.success_count + self.failure_count + self.error_count
+        )
         self.success_rate = (
             self.success_count / total_requests if total_requests > 0 else 0.0
         )
@@ -189,11 +191,15 @@ class MCPPerformanceTester:
             for tool_name in tools[
                 :5
             ]:  # Limit to first 5 tools for reasonable test time
-                tool_metrics = await self._benchmark_single_tool(toolkit, tool_name)
+                tool_metrics = await self._benchmark_single_tool(
+                    toolkit, tool_name
+                )
                 tool_benchmarks[tool_name] = tool_metrics
 
                 # Aggregate metrics
-                overall_metrics.response_times.extend(tool_metrics.response_times)
+                overall_metrics.response_times.extend(
+                    tool_metrics.response_times
+                )
                 overall_metrics.success_count += tool_metrics.success_count
                 overall_metrics.failure_count += tool_metrics.failure_count
                 overall_metrics.error_count += tool_metrics.error_count
@@ -203,11 +209,16 @@ class MCPPerformanceTester:
             overall_metrics.calculate_derived_metrics(test_duration)
 
             # Determine performance grade
-            performance_grade = self._calculate_performance_grade(overall_metrics)
+            performance_grade = self._calculate_performance_grade(
+                overall_metrics
+            )
 
             # Check against thresholds
             issues = []
-            if overall_metrics.avg_response_time > self.config.max_response_time_ms:
+            if (
+                overall_metrics.avg_response_time
+                > self.config.max_response_time_ms
+            ):
                 issues.append(
                     f"Average response time ({overall_metrics.avg_response_time:.1f}ms) exceeds threshold"
                 )
@@ -275,7 +286,9 @@ class MCPPerformanceTester:
             # Test with increasing concurrent connections
             connection_levels = [1, 5, 10, 20, 30]
             if self.config.max_concurrent_connections > 30:
-                connection_levels.append(self.config.max_concurrent_connections)
+                connection_levels.append(
+                    self.config.max_concurrent_connections
+                )
 
             load_test_results = []
 
@@ -286,7 +299,9 @@ class MCPPerformanceTester:
                     server_config,
                     server_name,
                     concurrent_users,
-                    duration_seconds=min(30, self.config.test_duration_seconds),
+                    duration_seconds=min(
+                        30, self.config.test_duration_seconds
+                    ),
                 )
 
                 load_test_results.append(load_result)
@@ -424,11 +439,16 @@ class MCPPerformanceTester:
             if all_response_times:
                 overall_metrics = PerformanceMetrics()
                 overall_metrics.response_times = all_response_times
-                overall_metrics.calculate_derived_metrics(time.time() - start_time)
+                overall_metrics.calculate_derived_metrics(
+                    time.time() - start_time
+                )
 
                 # Check for performance issues
                 issues = []
-                if overall_metrics.p95_response_time > self.config.max_response_time_ms:
+                if (
+                    overall_metrics.p95_response_time
+                    > self.config.max_response_time_ms
+                ):
                     issues.append(
                         f"P95 response time ({overall_metrics.p95_response_time:.1f}ms) exceeds threshold"
                     )
@@ -444,8 +464,13 @@ class MCPPerformanceTester:
                 # Check for response time variability
                 if len(all_response_times) > 1:
                     response_time_std = statistics.stdev(all_response_times)
-                    if response_time_std > overall_metrics.avg_response_time * 0.5:
-                        issues.append("High response time variability detected")
+                    if (
+                        response_time_std
+                        > overall_metrics.avg_response_time * 0.5
+                    ):
+                        issues.append(
+                            "High response time variability detected"
+                        )
 
                 status = TestStatus.PASSED if not issues else TestStatus.FAILED
                 confidence = 0.88
@@ -576,18 +601,26 @@ class MCPPerformanceTester:
             # Analyze resource usage patterns
             issues = []
 
-            if resource_data["peak_memory_mb"] > self.config.max_memory_usage_mb:
+            if (
+                resource_data["peak_memory_mb"]
+                > self.config.max_memory_usage_mb
+            ):
                 issues.append(
                     f"Peak memory usage ({resource_data['peak_memory_mb']:.1f}MB) exceeds threshold"
                 )
 
-            if resource_data["avg_cpu_percent"] > self.config.max_cpu_usage_percent:
+            if (
+                resource_data["avg_cpu_percent"]
+                > self.config.max_cpu_usage_percent
+            ):
                 issues.append(
                     f"Average CPU usage ({resource_data['avg_cpu_percent']:.1f}%) exceeds threshold"
                 )
 
             # Check for memory leaks
-            memory_trend = self._analyze_memory_trend(resource_data["memory_samples"])
+            memory_trend = self._analyze_memory_trend(
+                resource_data["memory_samples"]
+            )
             if memory_trend > 0.1:  # More than 10% increase over time
                 issues.append(
                     f"Potential memory leak detected (trend: +{memory_trend:.1%})"
@@ -648,8 +681,10 @@ class MCPPerformanceTester:
             )
 
         if self.config.test_concurrent_connections:
-            results["concurrent_connections"] = await self.test_concurrent_connections(
-                server_config, server_name
+            results["concurrent_connections"] = (
+                await self.test_concurrent_connections(
+                    server_config, server_name
+                )
             )
 
         if self.config.test_resource_usage:
@@ -672,7 +707,9 @@ class MCPPerformanceTester:
         # Aggregate results
         total_tests = len(self._test_results)
         grades = [result.performance_grade for result in self._test_results]
-        grade_distribution = {grade: grades.count(grade) for grade in set(grades)}
+        grade_distribution = {
+            grade: grades.count(grade) for grade in set(grades)
+        }
 
         # Calculate overall performance score
         grade_scores = {"A": 5, "B": 4, "C": 3, "D": 2, "F": 1}
@@ -756,7 +793,8 @@ class MCPPerformanceTester:
 
         # Initialize all toolkits
         await asyncio.gather(
-            *[toolkit.initialize() for toolkit in toolkits], return_exceptions=True
+            *[toolkit.initialize() for toolkit in toolkits],
+            return_exceptions=True,
         )
 
         # Run concurrent load test
@@ -810,7 +848,11 @@ class MCPPerformanceTester:
         )
 
     async def _measure_scenario_response_times(
-        self, toolkit: McpToolkit, tool_name: str, scenario_name: str, call_count: int
+        self,
+        toolkit: McpToolkit,
+        tool_name: str,
+        scenario_name: str,
+        call_count: int,
     ) -> PerformanceMetrics:
         """Measure response times for a specific scenario."""
         metrics = PerformanceMetrics()
@@ -853,7 +895,8 @@ class MCPPerformanceTester:
                     metrics.failure_count += 1
 
             await asyncio.gather(
-                *[single_call() for _ in range(call_count)], return_exceptions=True
+                *[single_call() for _ in range(call_count)],
+                return_exceptions=True,
             )
 
         metrics.calculate_derived_metrics(call_count * 0.1)  # Rough estimate
@@ -866,7 +909,9 @@ class MCPPerformanceTester:
         # Response time scoring
         if metrics.avg_response_time > self.config.max_response_time_ms:
             score -= 20
-        elif metrics.avg_response_time > self.config.max_response_time_ms * 0.8:
+        elif (
+            metrics.avg_response_time > self.config.max_response_time_ms * 0.8
+        ):
             score -= 10
 
         # Success rate scoring
@@ -923,7 +968,8 @@ class MCPPerformanceTester:
         y_mean = sum(memory_samples) / n
 
         numerator = sum(
-            (x - x_mean) * (y - y_mean) for x, y in zip(x_values, memory_samples)
+            (x - x_mean) * (y - y_mean)
+            for x, y in zip(x_values, memory_samples)
         )
         denominator = sum((x - x_mean) ** 2 for x in x_values)
 
@@ -973,7 +1019,8 @@ class ResourceMonitor:
 
         return {
             "peak_memory_mb": max(self.memory_samples),
-            "avg_memory_mb": sum(self.memory_samples) / len(self.memory_samples),
+            "avg_memory_mb": sum(self.memory_samples)
+            / len(self.memory_samples),
             "peak_cpu_percent": max(self.cpu_samples),
             "avg_cpu_percent": sum(self.cpu_samples) / len(self.cpu_samples),
             "memory_samples": self.memory_samples.copy(),

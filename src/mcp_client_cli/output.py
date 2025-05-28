@@ -1,6 +1,9 @@
-import json
-
-from langchain_core.messages import AIMessage, AIMessageChunk, BaseMessage, ToolMessage
+from langchain_core.messages import (
+    AIMessage,
+    AIMessageChunk,
+    BaseMessage,
+    ToolMessage,
+)
 from rich.console import Console, ConsoleDimensions
 from rich.live import Live
 from rich.markdown import Markdown
@@ -8,7 +11,9 @@ from rich.prompt import Confirm
 
 
 class OutputHandler:
-    def __init__(self, text_only: bool = False, only_last_message: bool = False):
+    def __init__(
+        self, text_only: bool = False, only_last_message: bool = False
+    ):
         self.console = Console()
         self.text_only = text_only
         self.only_last_message = only_last_message
@@ -48,7 +53,9 @@ class OutputHandler:
     def update_error(self, error: Exception):
         import traceback
 
-        error = f"Error: {error}\n\nStack trace:\n```\n{traceback.format_exc()}```"
+        error = (
+            f"Error: {error}\n\nStack trace:\n```\n{traceback.format_exc()}```"
+        )
         self.md += error
         if self.only_last_message:
             self.console.print(error)
@@ -79,7 +86,9 @@ class OutputHandler:
 
     def finish(self):
         self.stop()
-        to_print = self.last_message if self.only_last_message else Markdown(self.md)
+        to_print = (
+            self.last_message if self.only_last_message else Markdown(self.md)
+        )
         if not self.text_only and not self.only_last_message:
             self.console.clear()
             self.console.print(Markdown(self.md))
@@ -135,13 +144,18 @@ class OutputHandler:
                     lines.append("```\n")
                     md += "\n".join(lines)
                 self.last_message = ""
-            elif isinstance(message, ToolMessage) and message.status != "success":
+            elif (
+                isinstance(message, ToolMessage)
+                and message.status != "success"
+            ):
                 md += "Failed call with error:"
                 md += f"\n\n{message.content}"
             md += "\n"
         return md
 
-    def _truncate_md_to_fit(self, md: str, dimensions: ConsoleDimensions) -> str:
+    def _truncate_md_to_fit(
+        self, md: str, dimensions: ConsoleDimensions
+    ) -> str:
         """
         Truncate the markdown to fit the console size, with few line safety margin.
         """
@@ -175,11 +189,18 @@ class OutputHandler:
         Check if the chunk contains a tool call request and requires confirmation.
         """
         if isinstance(chunk, tuple) and chunk[0] == "values":
-            if len(chunk) > 1 and isinstance(chunk[1], dict) and "messages" in chunk[1]:
+            if (
+                len(chunk) > 1
+                and isinstance(chunk[1], dict)
+                and "messages" in chunk[1]
+            ):
                 message = chunk[1]["messages"][-1]
                 if isinstance(message, AIMessage) and message.tool_calls:
                     for tc in message.tool_calls:
-                        if tc.get("name") in config["tools_requires_confirmation"]:
+                        if (
+                            tc.get("name")
+                            in config["tools_requires_confirmation"]
+                        ):
                             return True
         return False
 

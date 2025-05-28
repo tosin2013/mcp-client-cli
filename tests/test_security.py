@@ -5,7 +5,6 @@ This module tests the security testing capabilities including authentication,
 authorization, input validation, and vulnerability detection.
 """
 
-import asyncio
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -67,7 +66,9 @@ class TestSecurityTestConfig:
     def test_custom_config(self):
         """Test custom configuration values."""
         config = SecurityTestConfig(
-            test_authentication=False, timeout_seconds=60, max_payload_size=2048
+            test_authentication=False,
+            timeout_seconds=60,
+            max_payload_size=2048,
         )
 
         assert config.test_authentication is False
@@ -115,11 +116,15 @@ class TestMCPSecurityTester:
         assert tester.config.test_authentication is True
 
     @pytest.mark.asyncio
-    async def test_authentication_test_success(self, security_tester, server_config):
+    async def test_authentication_test_success(
+        self, security_tester, server_config
+    ):
         """Test successful authentication testing."""
         with (
             patch.object(
-                security_tester, "_test_no_credentials", return_value={"secure": True}
+                security_tester,
+                "_test_no_credentials",
+                return_value={"secure": True},
             ),
             patch.object(
                 security_tester,
@@ -148,7 +153,9 @@ class TestMCPSecurityTester:
             assert len(security_tester._vulnerabilities) == 0
 
     @pytest.mark.asyncio
-    async def test_authentication_test_failure(self, security_tester, server_config):
+    async def test_authentication_test_failure(
+        self, security_tester, server_config
+    ):
         """Test authentication testing with vulnerabilities."""
         with (
             patch.object(
@@ -191,11 +198,15 @@ class TestMCPSecurityTester:
             )
 
     @pytest.mark.asyncio
-    async def test_authentication_test_error(self, security_tester, server_config):
+    async def test_authentication_test_error(
+        self, security_tester, server_config
+    ):
         """Test authentication test with error."""
         # Mock the internal authentication test methods to raise exceptions
         with patch.object(
-            security_tester, "_test_no_credentials", side_effect=Exception("Test error")
+            security_tester,
+            "_test_no_credentials",
+            side_effect=Exception("Test error"),
         ):
             result = await security_tester.test_authentication(
                 server_config, "test_server"
@@ -272,11 +283,15 @@ class TestMCPSecurityTester:
             assert "0 vulnerabilities found" in result.message
 
     @pytest.mark.asyncio
-    async def test_data_sanitization_test(self, security_tester, server_config):
+    async def test_data_sanitization_test(
+        self, security_tester, server_config
+    ):
         """Test data sanitization testing."""
         with (
             patch.object(
-                security_tester, "_test_xss_prevention", return_value={"secure": True}
+                security_tester,
+                "_test_xss_prevention",
+                return_value={"secure": True},
             ),
             patch.object(
                 security_tester,
@@ -304,13 +319,17 @@ class TestMCPSecurityTester:
             assert "0 vulnerabilities found" in result.message
 
     @pytest.mark.asyncio
-    async def test_comprehensive_security_scan(self, security_tester, server_config):
+    async def test_comprehensive_security_scan(
+        self, security_tester, server_config
+    ):
         """Test comprehensive security scan."""
         # Mock all individual test methods
         with (
             patch.object(security_tester, "test_authentication") as mock_auth,
             patch.object(security_tester, "test_authorization") as mock_authz,
-            patch.object(security_tester, "test_input_validation") as mock_input,
+            patch.object(
+                security_tester, "test_input_validation"
+            ) as mock_input,
             patch.object(
                 security_tester, "test_data_sanitization"
             ) as mock_sanitization,
@@ -336,7 +355,9 @@ class TestMCPSecurityTester:
             mock_auth.assert_called_once_with(server_config, "test_server")
             mock_authz.assert_called_once_with(server_config, "test_server")
             mock_input.assert_called_once_with(server_config, "test_server")
-            mock_sanitization.assert_called_once_with(server_config, "test_server")
+            mock_sanitization.assert_called_once_with(
+                server_config, "test_server"
+            )
 
     def test_get_vulnerabilities(self, security_tester):
         """Test getting vulnerabilities."""
@@ -363,7 +384,9 @@ class TestMCPSecurityTester:
         assert vulnerabilities[1] == vuln2
 
         # Verify it returns a copy
-        vulnerabilities.append(SecurityVulnerability("test", "low", "test", "test"))
+        vulnerabilities.append(
+            SecurityVulnerability("test", "low", "test", "test")
+        )
         assert len(security_tester._vulnerabilities) == 2
 
     def test_get_security_report(self, security_tester):
@@ -441,10 +464,14 @@ class TestMCPSecurityTester:
         assert result["vulnerable"] is False
 
     @pytest.mark.asyncio
-    async def test_test_tool_with_payload_validation_error(self, security_tester):
+    async def test_test_tool_with_payload_validation_error(
+        self, security_tester
+    ):
         """Test tool testing with validation error."""
         mock_toolkit = Mock()
-        mock_toolkit.call_tool = AsyncMock(side_effect=Exception("Invalid input"))
+        mock_toolkit.call_tool = AsyncMock(
+            side_effect=Exception("Invalid input")
+        )
 
         result = await security_tester._test_tool_with_payload(
             mock_toolkit, "test_tool", "malicious_payload"
@@ -453,10 +480,14 @@ class TestMCPSecurityTester:
         assert result["vulnerable"] is False  # Validation error is good
 
     @pytest.mark.asyncio
-    async def test_test_tool_with_payload_unexpected_error(self, security_tester):
+    async def test_test_tool_with_payload_unexpected_error(
+        self, security_tester
+    ):
         """Test tool testing with unexpected error."""
         mock_toolkit = Mock()
-        mock_toolkit.call_tool = AsyncMock(side_effect=Exception("Unexpected error"))
+        mock_toolkit.call_tool = AsyncMock(
+            side_effect=Exception("Unexpected error")
+        )
 
         result = await security_tester._test_tool_with_payload(
             mock_toolkit, "test_tool", "malicious_payload"

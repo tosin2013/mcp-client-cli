@@ -9,7 +9,9 @@ from mcp import StdioServerParameters, types
 from .const import *
 
 
-def get_cached_tools(server_param: StdioServerParameters) -> Optional[List[types.Tool]]:
+def get_cached_tools(
+    server_param: StdioServerParameters,
+) -> Optional[List[types.Tool]]:
     """Retrieve cached tools if available and not expired.
 
     Args:
@@ -19,8 +21,10 @@ def get_cached_tools(server_param: StdioServerParameters) -> Optional[List[types
         Optional[List[types.Tool]]: A list of tools if cache is available and not expired, otherwise None.
     """
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    cache_key = f"{server_param.command}-{'-'.join(server_param.args)}".replace(
-        "/", "-"
+    cache_key = (
+        f"{server_param.command}-{'-'.join(server_param.args)}".replace(
+            "/", "-"
+        )
     )
     cache_file = CACHE_DIR / f"{cache_key}.json"
 
@@ -45,8 +49,10 @@ def save_tools_cache(
         server_param (StdioServerParameters): The server parameters to identify the cache.
         tools (List[types.Tool]): The list of tools to be cached.
     """
-    cache_key = f"{server_param.command}-{'-'.join(server_param.args)}".replace(
-        "/", "-"
+    cache_key = (
+        f"{server_param.command}-{'-'.join(server_param.args)}".replace(
+            "/", "-"
+        )
     )
     cache_file = CACHE_DIR / f"{cache_key}.json"
 
@@ -118,6 +124,7 @@ class ConversationManager:
             await self._init_db(db)
             await cursor.execute("DELETE FROM last_conversation")
             await cursor.execute(
-                "INSERT INTO last_conversation (thread_id) VALUES (?)", (thread_id,)
+                "INSERT INTO last_conversation (thread_id) VALUES (?)",
+                (thread_id,),
             )
             await db.commit()

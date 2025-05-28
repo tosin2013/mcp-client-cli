@@ -10,12 +10,11 @@ import json
 import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import aiosqlite
 
 from ..const import DATA_DIR
-from ..storage import ConversationManager
 from .issue_detector import HealthMetrics, Issue, IssueSeverity, IssueType
 from .remediation import RemediationResult, RemediationStatus
 
@@ -331,7 +330,9 @@ class IssueTrackingManager:
                     error_message=row[9],
                     stack_trace=row[10],
                     context=json.loads(row[11]) if row[11] else {},
-                    suggested_remediation=json.loads(row[12]) if row[12] else [],
+                    suggested_remediation=(
+                        json.loads(row[12]) if row[12] else []
+                    ),
                     related_issues=json.loads(row[13]) if row[13] else [],
                 )
                 issues.append(issue)
@@ -450,7 +451,9 @@ class IssueTrackingManager:
 
             return metrics_list
 
-    async def resolve_issue(self, issue_id: str, resolution_notes: str = "") -> bool:
+    async def resolve_issue(
+        self, issue_id: str, resolution_notes: str = ""
+    ) -> bool:
         """
         Mark an issue as resolved.
 
@@ -477,7 +480,9 @@ class IssueTrackingManager:
             return cursor.rowcount > 0
 
     async def get_issue_statistics(
-        self, server_name: Optional[str] = None, since: Optional[datetime] = None
+        self,
+        server_name: Optional[str] = None,
+        since: Optional[datetime] = None,
     ) -> Dict[str, Any]:
         """
         Get comprehensive issue statistics.
@@ -544,7 +549,9 @@ class IssueTrackingManager:
                 status_counts = dict(await cursor.fetchall())
 
             resolved_count = status_counts.get("resolved", 0)
-            resolution_rate = resolved_count / total_issues if total_issues > 0 else 0.0
+            resolution_rate = (
+                resolved_count / total_issues if total_issues > 0 else 0.0
+            )
 
             # Average confidence score
             async with db.execute(
@@ -559,7 +566,8 @@ class IssueTrackingManager:
             # Remediation success rate
             remediation_params = params.copy()
             remediation_where = where_clause.replace(
-                "issues", "remediation_results r JOIN issues i ON r.issue_id = i.id"
+                "issues",
+                "remediation_results r JOIN issues i ON r.issue_id = i.id",
             )
 
             async with db.execute(
@@ -575,7 +583,9 @@ class IssueTrackingManager:
                 remediation_status_counts = dict(await cursor.fetchall())
 
             total_remediations = sum(remediation_status_counts.values())
-            successful_remediations = remediation_status_counts.get("success", 0)
+            successful_remediations = remediation_status_counts.get(
+                "success", 0
+            )
             remediation_success_rate = (
                 successful_remediations / total_remediations
                 if total_remediations > 0
@@ -593,7 +603,9 @@ class IssueTrackingManager:
                 "remediation_status_distribution": remediation_status_counts,
             }
 
-    async def learn_from_pattern(self, issue: Issue, remediation_success: bool) -> None:
+    async def learn_from_pattern(
+        self, issue: Issue, remediation_success: bool
+    ) -> None:
         """
         Learn from issue patterns to improve future detection and remediation.
 
@@ -752,7 +764,9 @@ class IssueTrackingManager:
                 ],
             }
 
-    async def cleanup_old_data(self, retention_days: int = 90) -> Dict[str, int]:
+    async def cleanup_old_data(
+        self, retention_days: int = 90
+    ) -> Dict[str, int]:
         """
         Clean up old data beyond retention period.
 

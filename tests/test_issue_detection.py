@@ -5,7 +5,6 @@ This module provides comprehensive tests for the automated issue detection,
 remediation, and storage components of the MCP testing framework.
 """
 
-import asyncio
 import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -45,7 +44,9 @@ class TestMCPIssueDetector:
     def server_config(self):
         """Create a test server configuration."""
         return ServerConfig(
-            command="python", args=["-m", "test_server"], env={"TEST_ENV": "true"}
+            command="python",
+            args=["-m", "test_server"],
+            env={"TEST_ENV": "true"},
         )
 
     @pytest.fixture
@@ -102,7 +103,9 @@ class TestMCPIssueDetector:
             assert pattern.remediation_suggestions
 
     @pytest.mark.asyncio
-    async def test_monitor_server_health_success(self, issue_detector, server_config):
+    async def test_monitor_server_health_success(
+        self, issue_detector, server_config
+    ):
         """Test successful server health monitoring."""
         # Mock the toolkit creation and session to simulate success
         with patch(
@@ -126,7 +129,9 @@ class TestMCPIssueDetector:
             assert metrics.last_successful_connection is not None
 
     @pytest.mark.asyncio
-    async def test_monitor_server_health_failure(self, issue_detector, server_config):
+    async def test_monitor_server_health_failure(
+        self, issue_detector, server_config
+    ):
         """Test server health monitoring with failure."""
         # Mock the toolkit creation to simulate failure
         with patch(
@@ -170,7 +175,9 @@ class TestMCPIssueDetector:
         self, issue_detector, test_result_timeout
     ):
         """Test analysis of timeout failure."""
-        issues = await issue_detector.analyze_test_failures(test_result_timeout)
+        issues = await issue_detector.analyze_test_failures(
+            test_result_timeout
+        )
 
         assert len(issues) > 0
         issue = issues[0]
@@ -257,7 +264,9 @@ class TestMCPIssueDetector:
         suggestions = await issue_detector.suggest_remediation(issue)
 
         assert len(suggestions) > 0
-        assert any("Install the required server executable" in s for s in suggestions)
+        assert any(
+            "Install the required server executable" in s for s in suggestions
+        )
 
     def test_get_health_metrics(self, issue_detector):
         """Test health metrics retrieval."""
@@ -315,12 +324,16 @@ class TestMCPIssueDetector:
         assert len(all_issues) == 2
 
         # Test server name filter
-        server1_issues = issue_detector.get_issue_history(server_name="server1")
+        server1_issues = issue_detector.get_issue_history(
+            server_name="server1"
+        )
         assert len(server1_issues) == 1
         assert server1_issues[0].server_name == "server1"
 
         # Test issue type filter
-        timeout_issues = issue_detector.get_issue_history(issue_type=IssueType.TIMEOUT)
+        timeout_issues = issue_detector.get_issue_history(
+            issue_type=IssueType.TIMEOUT
+        )
         assert len(timeout_issues) == 1
         assert timeout_issues[0].issue_type == IssueType.TIMEOUT
 
@@ -342,7 +355,9 @@ class TestMCPRemediationEngine:
     def server_config(self):
         """Create a test server configuration."""
         return ServerConfig(
-            command="python", args=["-m", "test_server"], env={"TEST_ENV": "true"}
+            command="python",
+            args=["-m", "test_server"],
+            env={"TEST_ENV": "true"},
         )
 
     @pytest.fixture
@@ -406,7 +421,9 @@ class TestMCPRemediationEngine:
             ]
 
     @pytest.mark.asyncio
-    async def test_remediate_issue_no_actions(self, remediation_engine, server_config):
+    async def test_remediate_issue_no_actions(
+        self, remediation_engine, server_config
+    ):
         """Test remediation when no actions are available."""
         unknown_issue = Issue(
             issue_id="unknown_issue",
@@ -420,9 +437,13 @@ class TestMCPRemediationEngine:
         )
 
         # Clear strategies for unknown error type
-        remediation_engine._remediation_strategies[IssueType.UNKNOWN_ERROR] = []
+        remediation_engine._remediation_strategies[IssueType.UNKNOWN_ERROR] = (
+            []
+        )
 
-        result = await remediation_engine.remediate_issue(unknown_issue, server_config)
+        result = await remediation_engine.remediate_issue(
+            unknown_issue, server_config
+        )
 
         assert result.status == RemediationStatus.SKIPPED
         assert "No remediation actions available" in result.message
@@ -444,9 +465,16 @@ class TestMCPRemediationEngine:
             side_effect=connectivity_results,
         ):
             # Get retry action
-            actions = remediation_engine._get_remediation_actions(connection_issue)
+            actions = remediation_engine._get_remediation_actions(
+                connection_issue
+            )
             retry_action = next(
-                (a for a in actions if a.strategy == RemediationStrategy.RETRY), None
+                (
+                    a
+                    for a in actions
+                    if a.strategy == RemediationStrategy.RETRY
+                ),
+                None,
             )
             assert retry_action is not None
 
@@ -458,7 +486,9 @@ class TestMCPRemediationEngine:
             assert result.details["attempts"] == 2
 
     @pytest.mark.asyncio
-    async def test_dependency_install_strategy(self, remediation_engine, server_config):
+    async def test_dependency_install_strategy(
+        self, remediation_engine, server_config
+    ):
         """Test dependency installation strategy."""
         dependency_issue = Issue(
             issue_id="dep_issue",
@@ -521,7 +551,9 @@ class TestMCPRemediationEngine:
         assert len(all_results) == 2
 
         # Test filtered by issue ID
-        issue1_results = remediation_engine.get_remediation_history(issue_id="issue1")
+        issue1_results = remediation_engine.get_remediation_history(
+            issue_id="issue1"
+        )
         assert len(issue1_results) == 1
         assert issue1_results[0].issue_id == "issue1"
 
@@ -535,7 +567,9 @@ class TestMCPRemediationEngine:
             RemediationResult(
                 "a2", "i2", RemediationStatus.SUCCESS, 0.8, 2.0, "Success"
             ),
-            RemediationResult("a3", "i3", RemediationStatus.FAILED, 0.7, 3.0, "Failed"),
+            RemediationResult(
+                "a3", "i3", RemediationStatus.FAILED, 0.7, 3.0, "Failed"
+            ),
         ]
 
         remediation_engine._remediation_history = results
@@ -708,10 +742,14 @@ class TestIssueTrackingManager:
     async def test_learn_from_pattern(self, issue_manager, test_issue):
         """Test learning from issue patterns."""
         # Learn from successful remediation
-        await issue_manager.learn_from_pattern(test_issue, remediation_success=True)
+        await issue_manager.learn_from_pattern(
+            test_issue, remediation_success=True
+        )
 
         # Learn from failed remediation (same pattern)
-        await issue_manager.learn_from_pattern(test_issue, remediation_success=False)
+        await issue_manager.learn_from_pattern(
+            test_issue, remediation_success=False
+        )
 
         # Get pattern insights
         insights = await issue_manager.get_pattern_insights()
@@ -719,7 +757,8 @@ class TestIssueTrackingManager:
         assert len(insights["most_common_patterns"]) > 0
         # Should have at least one pattern with 2 occurrences
         assert any(
-            pattern["occurrences"] >= 2 for pattern in insights["most_common_patterns"]
+            pattern["occurrences"] >= 2
+            for pattern in insights["most_common_patterns"]
         )
 
     @pytest.mark.asyncio
@@ -745,7 +784,9 @@ class TestIssueTrackingManager:
             await db.commit()
 
         # Cleanup data older than 90 days
-        cleanup_result = await issue_manager.cleanup_old_data(retention_days=90)
+        cleanup_result = await issue_manager.cleanup_old_data(
+            retention_days=90
+        )
 
         assert cleanup_result["cleaned_issues"] == 1
 
@@ -758,7 +799,9 @@ class TestIssueTrackingManager:
             issue = Issue(
                 issue_id=f"issue_{i}",
                 issue_type=(
-                    IssueType.CONNECTION_FAILURE if i % 2 == 0 else IssueType.TIMEOUT
+                    IssueType.CONNECTION_FAILURE
+                    if i % 2 == 0
+                    else IssueType.TIMEOUT
                 ),
                 severity=IssueSeverity.HIGH if i < 3 else IssueSeverity.MEDIUM,
                 confidence_score=0.8 + i * 0.02,
@@ -771,7 +814,9 @@ class TestIssueTrackingManager:
             await issue_manager.save_issue(issue)
 
         # Test server name filtering
-        server_0_issues = await issue_manager.get_issues(server_name="server_0")
+        server_0_issues = await issue_manager.get_issues(
+            server_name="server_0"
+        )
         assert len(server_0_issues) == 3  # Issues 0, 2, 4
 
         # Test issue type filtering

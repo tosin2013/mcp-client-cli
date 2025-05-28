@@ -7,18 +7,15 @@ methodological pragmatism principles with confidence scoring and error architect
 """
 
 import asyncio
-import json
 import re
 import time
-import traceback
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
-from mcp import StdioServerParameters, types
+from mcp import StdioServerParameters
 
 from ..config import ServerConfig
 from ..tool import McpServerConfig, McpToolkit
@@ -319,7 +316,9 @@ class MCPIssueDetector:
                     connection_success = True
             except Exception as e:
                 error_count += 1
-                await self._log_health_issue(server_name, "connection_failure", str(e))
+                await self._log_health_issue(
+                    server_name, "connection_failure", str(e)
+                )
 
             # Test tool discovery if connection successful
             tool_execution_success = False
@@ -352,7 +351,8 @@ class MCPIssueDetector:
                     + (1.0 if tool_execution_success else 0.0) * 0.2
                 )
                 current_metrics.average_response_time = (
-                    current_metrics.average_response_time * 0.8 + response_time * 0.2
+                    current_metrics.average_response_time * 0.8
+                    + response_time * 0.2
                 )
                 current_metrics.error_count += error_count
                 current_metrics.warning_count += warning_count
@@ -369,7 +369,9 @@ class MCPIssueDetector:
                     server_name=server_name,
                     timestamp=datetime.now(),
                     connection_success_rate=1.0 if connection_success else 0.0,
-                    tool_execution_success_rate=1.0 if tool_execution_success else 0.0,
+                    tool_execution_success_rate=(
+                        1.0 if tool_execution_success else 0.0
+                    ),
                     average_response_time=response_time,
                     error_count=error_count,
                     warning_count=warning_count,
@@ -392,7 +394,7 @@ class MCPIssueDetector:
 
             return current_metrics
 
-        except Exception as e:
+        except Exception:
             # Create error metrics
             error_metrics = HealthMetrics(
                 server_name=server_name,
@@ -443,7 +445,9 @@ class MCPIssueDetector:
 
         return grouped_issues
 
-    async def _analyze_single_failure(self, test_result: TestResult) -> List[Issue]:
+    async def _analyze_single_failure(
+        self, test_result: TestResult
+    ) -> List[Issue]:
         """Analyze a single test failure for issues."""
         detected_issues = []
 
@@ -456,7 +460,9 @@ class MCPIssueDetector:
 
         # Match against known patterns
         for pattern in self._issue_patterns:
-            confidence = await self._match_pattern(pattern, error_text, test_result)
+            confidence = await self._match_pattern(
+                pattern, error_text, test_result
+            )
 
             if confidence > 0.5:  # Threshold for issue detection
                 issue = Issue(
@@ -538,8 +544,12 @@ class MCPIssueDetector:
             confidence = base_confidence
         else:
             # Multiple matches increase confidence
-            match_ratio = min(pattern_matches / len(pattern.error_patterns), 1.0)
-            confidence = base_confidence + (1.0 - base_confidence) * match_ratio * 0.5
+            match_ratio = min(
+                pattern_matches / len(pattern.error_patterns), 1.0
+            )
+            confidence = (
+                base_confidence + (1.0 - base_confidence) * match_ratio * 0.5
+            )
 
         # Adjust confidence based on context
         if (
@@ -583,14 +593,19 @@ class MCPIssueDetector:
                 # Merge similar issues and boost confidence
                 primary_issue = group[0]
                 primary_issue.confidence_score = min(
-                    primary_issue.confidence_score + (len(group) - 1) * 0.05, 1.0
+                    primary_issue.confidence_score + (len(group) - 1) * 0.05,
+                    1.0,
                 )
-                primary_issue.related_issues = [issue.issue_id for issue in group[1:]]
+                primary_issue.related_issues = [
+                    issue.issue_id for issue in group[1:]
+                ]
                 final_issues.append(primary_issue)
 
         return final_issues
 
-    async def categorize_issues(self, issues: List[Issue]) -> Dict[str, List[Issue]]:
+    async def categorize_issues(
+        self, issues: List[Issue]
+    ) -> Dict[str, List[Issue]]:
         """
         Categorize issues by type, severity, and other criteria.
 
@@ -669,7 +684,8 @@ class MCPIssueDetector:
 
         elif issue.issue_type == IssueType.AUTHENTICATION_ERROR:
             suggestions.insert(
-                0, "Check environment variables and authentication configuration"
+                0,
+                "Check environment variables and authentication configuration",
             )
 
         # Add confidence-based suggestions
@@ -685,7 +701,6 @@ class MCPIssueDetector:
     ):
         """Log health monitoring issues for tracking."""
         # This could be extended to integrate with logging systems
-        pass
 
     def get_health_metrics(
         self, server_name: Optional[str] = None
@@ -710,9 +725,13 @@ class MCPIssueDetector:
             ]
 
         if issue_type:
-            filtered_issues = [i for i in filtered_issues if i.issue_type == issue_type]
+            filtered_issues = [
+                i for i in filtered_issues if i.issue_type == issue_type
+            ]
 
         if since:
-            filtered_issues = [i for i in filtered_issues if i.timestamp >= since]
+            filtered_issues = [
+                i for i in filtered_issues if i.timestamp >= since
+            ]
 
         return filtered_issues

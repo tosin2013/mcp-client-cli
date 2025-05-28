@@ -1,5 +1,4 @@
 import base64
-import io
 import platform
 import subprocess
 
@@ -34,7 +33,9 @@ def get_clipboard_content() -> tuple[str | bytes, str | None] | None:
             # Execute PowerShell script
             powershell_cmd = "powershell.exe" if is_wsl else "powershell"
             result = subprocess.run(
-                [powershell_cmd, "-Command", ps_script], capture_output=True, text=True
+                [powershell_cmd, "-Command", ps_script],
+                capture_output=True,
+                text=True,
             )
             if result.stdout.strip():
                 lines = result.stdout.strip().split("\n", 1)
@@ -57,7 +58,9 @@ def get_clipboard_content() -> tuple[str | bytes, str | None] | None:
                 return result.stdout, "image/png"
 
             # If no image, try text
-            result = subprocess.run(["pbpaste"], capture_output=True, text=True)
+            result = subprocess.run(
+                ["pbpaste"], capture_output=True, text=True
+            )
             if result.stdout:
                 return result.stdout.strip(), None
         except FileNotFoundError:
@@ -66,7 +69,9 @@ def get_clipboard_content() -> tuple[str | bytes, str | None] | None:
                 "Error: pngpaste not installed. Install it with 'brew install pngpaste' for image clipboard support"
             )
             try:
-                result = subprocess.run(["pbpaste"], capture_output=True, text=True)
+                result = subprocess.run(
+                    ["pbpaste"], capture_output=True, text=True
+                )
                 if result.stdout:
                     return result.stdout.strip(), None
             except:
