@@ -1,0 +1,137 @@
+{
+  "servers": {
+    "python-server": {
+      "command": "python",
+      "args": ["examples/python_mcp_server.py"],
+      "env": {
+        "DEBUG": "true",
+        "LOG_LEVEL": "INFO"
+      },
+      "timeout": 30,
+      "retry_attempts": 3
+    },
+    "nodejs-server": {
+      "command": "node",
+      "args": ["examples/nodejs_mcp_server.js"],
+      "env": {
+        "NODE_ENV": "test",
+        "DEBUG": "mcp:*"
+      },
+      "timeout": 30,
+      "retry_attempts": 3
+    }
+  },
+  "testing": {
+    "functional": {
+      "enabled": true,
+      "test_tools": true,
+      "test_resources": true,
+      "test_prompts": true,
+      "timeout": 15,
+      "custom_tests": [
+        "test_tool_echo",
+        "test_tool_calculate",
+        "test_resource_list",
+        "test_prompt_generation"
+      ]
+    },
+    "security": {
+      "enabled": true,
+      "test_authentication": true,
+      "test_authorization": true,
+      "test_input_validation": true,
+      "malicious_payloads": true,
+      "custom_security_tests": [
+        "test_sql_injection",
+        "test_xss_prevention",
+        "test_command_injection",
+        "test_path_traversal"
+      ],
+      "authentication_scenarios": [
+        "no_credentials",
+        "invalid_credentials",
+        "expired_credentials",
+        "malformed_headers"
+      ]
+    },
+    "performance": {
+      "enabled": true,
+      "benchmark_tools": true,
+      "concurrent_connections": 25,
+      "test_duration": 120,
+      "memory_monitoring": true,
+      "resource_limits": {
+        "max_memory_mb": 256,
+        "max_cpu_percent": 75,
+        "max_response_time_ms": 1000
+      },
+      "load_testing": {
+        "ramp_up_duration": 30,
+        "steady_state_duration": 60,
+        "ramp_down_duration": 30
+      }
+    },
+    "issue_detection": {
+      "enabled": true,
+      "auto_remediation": true,
+      "monitoring_interval": 5,
+      "health_checks": true,
+      "pattern_learning": true,
+      "remediation_strategies": [
+        "restart_server",
+        "clear_cache",
+        "reset_connections",
+        "update_configuration"
+      ]
+    },
+    "cross_language": {
+      "enabled": true,
+      "test_interoperability": true,
+      "compare_implementations": true,
+      "protocol_compliance": true
+    }
+  },
+  "reporting": {
+    "format": "html",
+    "output_file": "test-report.html",
+    "include_charts": true,
+    "confidence_analysis": true,
+    "remediation_suggestions": true,
+    "performance_graphs": true,
+    "security_summary": true,
+    "save_results": true,
+    "export_formats": ["json", "csv", "xml"]
+  },
+  "confidence_thresholds": {
+    "minimum_pass": 85,
+    "high_confidence": 95,
+    "security_minimum": 90,
+    "performance_minimum": 80,
+    "cross_language_minimum": 85
+  },
+  "optimization": {
+    "parallel_execution": true,
+    "max_concurrent_tests": 6,
+    "cache_test_results": true,
+    "cache_duration": 1800,
+    "reuse_connections": true,
+    "connection_pooling": {
+      "max_connections": 15,
+      "idle_timeout": 60
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "on_failure": true,
+    "on_success": false,
+    "confidence_threshold": 70,
+    "channels": ["console", "file"]
+  },
+  "debugging": {
+    "verbose_logging": true,
+    "save_debug_info": true,
+    "debug_output_dir": "debug-output",
+    "capture_network_traffic": false,
+    "profile_performance": true
+  }
+} 

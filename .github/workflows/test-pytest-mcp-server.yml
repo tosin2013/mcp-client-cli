@@ -1,0 +1,334 @@
+name: Test MCP Framework against pytest-mcp-server
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run daily at 2 AM UTC to catch regressions
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of tests to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - functional
+          - security
+          - performance
+          - issue-detection
+      server_branch:
+        description: 'pytest-mcp-server branch to test against'
+        required: false
+        default: 'main'
+        type: string
+
+jobs:
+  test-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    strategy:
+      matrix:
+        python-version: ['3.12']
+        node-version: ['18', '20']
+      fail-fast: false
+    
+    steps:
+    - name: Checkout mcp-client-cli
+      uses: actions/checkout@v4
+      with:
+        path: mcp-client-cli
+    
+    - name: Checkout pytest-mcp-server
+      uses: actions/checkout@v4
+      with:
+        repository: tosin2013/pytest-mcp-server
+        ref: ${{ github.event.inputs.server_branch || 'main' }}
+        path: pytest-mcp-server
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: Install Python dependencies
+      working-directory: mcp-client-cli
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[testing]"
+    
+    - name: Install Node.js dependencies for pytest-mcp-server
+      working-directory: pytest-mcp-server
+      run: |
+        npm ci
+        npm run build || echo "Build failed, continuing with source files"
+    
+    - name: Install Dagger CLI
+      run: |
+        curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.3 sh
+        sudo mv bin/dagger /usr/local/bin
+        dagger version
+    
+    - name: Verify Dagger functions
+      working-directory: mcp-client-cli
+      run: |
+        dagger functions
+    
+    - name: Run MCP Framework Tests (Python)
+      working-directory: mcp-client-cli
+      run: |
+        python scripts/test-pytest-mcp-server.py \
+          --server-path ../pytest-mcp-server \
+          --test-type ${{ github.event.inputs.test_type || 'all' }}
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    
+    - name: Run Dagger Pipeline Tests
+      working-directory: mcp-client-cli
+      run: |
+        # Test basic Dagger functionality
+        dagger call test-environment --return-stdout
+        
+        # Test Node.js environment
+        dagger call nodejs-test-environment --return-stdout
+        
+        # Test multi-language environment
+        dagger call multi-language-environment --return-stdout
+        
+        # Run functional tests via Dagger
+        dagger call run-functional-tests \
+          --server-path ../pytest-mcp-server \
+          --config-path examples/test-pytest-mcp-server.json
+    
+    - name: Run Security Tests via Dagger
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'security' }}
+      working-directory: mcp-client-cli
+      run: |
+        dagger call run-security-tests \
+          --server-path ../pytest-mcp-server \
+          --config-path examples/test-pytest-mcp-server.json
+    
+    - name: Run Performance Tests via Dagger
+      if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'performance' }}
+      working-directory: mcp-client-cli
+      run: |
+        dagger call run-performance-tests \
+          --server-path ../pytest-mcp-server \
+          --config-path examples/test-pytest-mcp-server.json
+    
+    - name: Run Full Test Suite via Dagger
+      if: ${{ github.event.inputs.test_type == 'all' }}
+      working-directory: mcp-client-cli
+      run: |
+        dagger call run-full-test-suite \
+          --server-path ../pytest-mcp-server \
+          --config-path examples/test-pytest-mcp-server.json \
+          --parallel true
+    
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-python${{ matrix.python-version }}-node${{ matrix.node-version }}
+        path: |
+          mcp-client-cli/test-results/
+          mcp-client-cli/test-data/
+        retention-days: 30
+    
+    - name: Upload Test Reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-reports-python${{ matrix.python-version }}-node${{ matrix.node-version }}
+        path: |
+          mcp-client-cli/test-results/*.md
+          mcp-client-cli/test-results/*.html
+          mcp-client-cli/test-results/*.json
+        retention-days: 30
+
+  test-cross-platform:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.12']
+      fail-fast: false
+    
+    steps:
+    - name: Checkout mcp-client-cli
+      uses: actions/checkout@v4
+      with:
+        path: mcp-client-cli
+    
+    - name: Checkout pytest-mcp-server
+      uses: actions/checkout@v4
+      with:
+        repository: tosin2013/pytest-mcp-server
+        ref: ${{ github.event.inputs.server_branch || 'main' }}
+        path: pytest-mcp-server
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install Python dependencies
+      working-directory: mcp-client-cli
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[testing]"
+    
+    - name: Install Node.js dependencies for pytest-mcp-server
+      working-directory: pytest-mcp-server
+      run: |
+        npm ci
+        npm run build || echo "Build failed, continuing with source files"
+    
+    - name: Run Basic Integration Tests
+      working-directory: mcp-client-cli
+      run: |
+        python scripts/test-pytest-mcp-server.py \
+          --server-path ../pytest-mcp-server \
+          --test-type functional
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+  generate-report:
+    needs: [test-integration, test-cross-platform]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Download all test artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: test-artifacts
+    
+    - name: Generate Consolidated Report
+      run: |
+        echo "# MCP Framework Integration Test Report" > integration-report.md
+        echo "" >> integration-report.md
+        echo "## Test Run Information" >> integration-report.md
+        echo "- **Date**: $(date)" >> integration-report.md
+        echo "- **Commit**: ${{ github.sha }}" >> integration-report.md
+        echo "- **Branch**: ${{ github.ref_name }}" >> integration-report.md
+        echo "- **Test Type**: ${{ github.event.inputs.test_type || 'all' }}" >> integration-report.md
+        echo "- **pytest-mcp-server Branch**: ${{ github.event.inputs.server_branch || 'main' }}" >> integration-report.md
+        echo "" >> integration-report.md
+        
+        echo "## Test Matrix Results" >> integration-report.md
+        echo "" >> integration-report.md
+        
+        # Process test results from artifacts
+        find test-artifacts -name "*.md" -type f | while read -r file; do
+          echo "### $(basename "$file" .md)" >> integration-report.md
+          echo "" >> integration-report.md
+          cat "$file" >> integration-report.md
+          echo "" >> integration-report.md
+        done
+        
+        echo "## Artifacts" >> integration-report.md
+        echo "" >> integration-report.md
+        find test-artifacts -type f | sort >> integration-report.md
+    
+    - name: Upload Consolidated Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: integration-test-report
+        path: integration-report.md
+        retention-days: 90
+    
+    - name: Comment PR with Results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('integration-report.md', 'utf8');
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## 🧪 MCP Framework Integration Test Results\n\n${report}`
+          });
+
+  benchmark:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.test_type == 'performance'
+    timeout-minutes: 45
+    
+    steps:
+    - name: Checkout mcp-client-cli
+      uses: actions/checkout@v4
+      with:
+        path: mcp-client-cli
+    
+    - name: Checkout pytest-mcp-server
+      uses: actions/checkout@v4
+      with:
+        repository: tosin2013/pytest-mcp-server
+        ref: main
+        path: pytest-mcp-server
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install dependencies
+      working-directory: mcp-client-cli
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[testing]"
+    
+    - name: Install pytest-mcp-server dependencies
+      working-directory: pytest-mcp-server
+      run: |
+        npm ci
+        npm run build
+    
+    - name: Run Performance Benchmarks
+      working-directory: mcp-client-cli
+      run: |
+        python scripts/test-pytest-mcp-server.py \
+          --server-path ../pytest-mcp-server \
+          --test-type performance
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    
+    - name: Upload Benchmark Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: benchmark-results
+        path: |
+          mcp-client-cli/test-results/
+        retention-days: 90 

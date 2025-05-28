@@ -1,0 +1,8 @@
+{
+  "name": "mcp-testing",
+  "engineVersion": "v0.18.8",
+  "sdk": {
+    "source": "python"
+  },
+  "source": ".dagger"
+}

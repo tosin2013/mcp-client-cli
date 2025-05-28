@@ -1,0 +1,6 @@
+{
+  "name": "mcp-testing",
+  "sdk": "python",
+  "source": "src",
+  "dependencies": []
+} 

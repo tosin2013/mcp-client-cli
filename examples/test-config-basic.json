@@ -1,0 +1,51 @@
+{
+  "servers": {
+    "python-example": {
+      "command": "python",
+      "args": ["examples/python_mcp_server.py"],
+      "timeout": 30,
+      "retry_attempts": 3,
+      "env": {
+        "DEBUG": "false"
+      }
+    }
+  },
+  "testing": {
+    "functional": {
+      "enabled": true,
+      "test_tools": true,
+      "test_resources": true,
+      "test_prompts": true,
+      "timeout": 10
+    },
+    "security": {
+      "enabled": false,
+      "test_authentication": false,
+      "test_authorization": false,
+      "test_input_validation": false
+    },
+    "performance": {
+      "enabled": false,
+      "benchmark_tools": false,
+      "concurrent_connections": 5,
+      "test_duration": 30
+    },
+    "issue_detection": {
+      "enabled": true,
+      "auto_remediation": false,
+      "monitoring_interval": 10
+    }
+  },
+  "reporting": {
+    "format": "console",
+    "include_charts": false,
+    "confidence_analysis": true,
+    "save_results": true
+  },
+  "confidence_thresholds": {
+    "minimum_pass": 75,
+    "high_confidence": 90,
+    "security_minimum": 80,
+    "performance_minimum": 70
+  }
+} 

@@ -23,9 +23,14 @@ from langchain.chat_models import init_chat_model
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from rich.console import Console
 from rich.table import Table
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.panel import Panel
+from rich.text import Text
 import base64
 import imghdr as imghdr
 import mimetypes
+import json
+from pathlib import Path
 
 from .input import *
 from .const import *
@@ -35,6 +40,11 @@ from .tool import *
 from .prompt import *
 from .memory import *
 from .config import AppConfig
+from .testing import (
+    MCPServerTester, MCPTestCLI, TestResult, TestStatus, TestSuite,
+    MCPSecurityTester, MCPPerformanceTester, MCPIssueDetector, MCPRemediationEngine,
+    IssueTrackingManager
+)
 
 # The AgentState class is used to maintain the state of the agent during a conversation.
 class AgentState(TypedDict):
@@ -52,7 +62,12 @@ async def run() -> None:
     """Run the LLM agent."""
     args = setup_argument_parser()
     query, is_conversation_continuation = parse_query(args)
-    app_config = AppConfig.load()
+    
+    # Load configuration (with custom test config if provided)
+    if args.test_config and hasattr(args, 'test_config'):
+        app_config = AppConfig.load(args.test_config)
+    else:
+        app_config = AppConfig.load()
     
     if args.list_tools:
         await handle_list_tools(app_config, args)
@@ -64,6 +79,19 @@ async def run() -> None:
         
     if args.list_prompts:
         handle_list_prompts()
+        return
+    
+    # Handle testing commands
+    if args.test_mcp_servers:
+        await handle_test_mcp_servers(app_config, args)
+        return
+    
+    if args.run_test_suite:
+        await handle_run_test_suite(app_config, args)
+        return
+    
+    if args.generate_test_report:
+        await handle_generate_test_report(app_config, args)
         return
         
     await handle_conversation(args, query, is_conversation_continuation, app_config)
@@ -82,6 +110,10 @@ Examples:
   llm --list-tools                         Show available tools
   llm --list-prompts                       Show available prompt templates
   llm --no-confirmations "search web"      Run tools without confirmation
+  llm --test-mcp-servers                   Test all configured MCP servers
+  llm --run-test-suite functional          Run specific test suite
+  llm --test-config config.json           Use custom test configuration
+  llm --generate-test-report               Generate comprehensive test report
         """
     )
     parser.add_argument('query', nargs='*', default=[],
@@ -107,6 +139,26 @@ Examples:
                        help='Show user memories')
     parser.add_argument('--model',
                        help='Override the model specified in config')
+    
+    # Testing-related arguments
+    parser.add_argument('--test-mcp-servers', action='store_true',
+                       help='Test all configured MCP servers')
+    parser.add_argument('--run-test-suite', 
+                       choices=['functional', 'security', 'performance', 'integration', 'all'],
+                       help='Run specific test suite type')
+    parser.add_argument('--test-config',
+                       help='Path to custom test configuration file')
+    parser.add_argument('--generate-test-report', action='store_true',
+                       help='Generate comprehensive test report')
+    parser.add_argument('--test-output-format',
+                       choices=['table', 'json', 'html'],
+                       default='table',
+                       help='Output format for test results')
+    parser.add_argument('--test-timeout', type=int, default=30,
+                       help='Timeout for individual tests in seconds')
+    parser.add_argument('--test-parallel', action='store_true',
+                       help='Run tests in parallel when possible')
+    
     return parser.parse_args()
 
 async def handle_list_tools(app_config: AppConfig, args: argparse.Namespace) -> None:
@@ -357,6 +409,391 @@ def main() -> None:
     """Entry point of the script."""
     asyncio.run(run())
 
+async def handle_test_mcp_servers(app_config: AppConfig, args: argparse.Namespace) -> None:
+    """Handle the --test-mcp-servers command."""
+    console = Console()
+    
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+        transient=True,
+    ) as progress:
+        task = progress.add_task("Testing MCP servers...", total=None)
+        
+        # Get server configurations
+        server_configs = [
+            McpServerConfig(
+                server_name=name,
+                server_param=StdioServerParameters(
+                    command=config.command,
+                    args=config.args or [],
+                    env={**(config.env or {}), **os.environ}
+                ),
+                exclude_tools=config.exclude_tools or []
+            )
+            for name, config in app_config.get_enabled_servers().items()
+        ]
+        
+        if not server_configs:
+            console.print("[yellow]No enabled MCP servers found in configuration[/yellow]")
+            return
+        
+        # Initialize tester
+        tester = MCPServerTester()
+        test_cli = MCPTestCLI()
+        
+        # Run tests for each server
+        all_results = []
+        for server_config in server_configs:
+            progress.update(task, description=f"Testing {server_config.server_name}...")
+            
+            try:
+                # Run basic functionality tests
+                results = await tester.test_server_functionality(server_config)
+                all_results.extend(results)
+                
+                # Run connection tests
+                connection_result = await tester.test_server_connection(server_config)
+                all_results.append(connection_result)
+                
+            except Exception as e:
+                error_result = TestResult(
+                    test_name=f"{server_config.server_name}_error",
+                    status=TestStatus.ERROR,
+                    error_message=str(e),
+                    server_name=server_config.server_name,
+                    confidence_score=0.95
+                )
+                all_results.append(error_result)
+    
+    # Display results
+    await _display_test_results(all_results, args.test_output_format, console)
+
+async def handle_run_test_suite(app_config: AppConfig, args: argparse.Namespace) -> None:
+    """Handle the --run-test-suite command."""
+    console = Console()
+    suite_type = args.run_test_suite
+    
+    console.print(f"[bold blue]Running {suite_type} test suite...[/bold blue]")
+    
+    # Get server configurations
+    server_configs = [
+        McpServerConfig(
+            server_name=name,
+            server_param=StdioServerParameters(
+                command=config.command,
+                args=config.args or [],
+                env={**(config.env or {}), **os.environ}
+            ),
+            exclude_tools=config.exclude_tools or []
+        )
+        for name, config in app_config.get_enabled_servers().items()
+    ]
+    
+    if not server_configs:
+        console.print("[yellow]No enabled MCP servers found in configuration[/yellow]")
+        return
+    
+    all_results = []
+    
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+        transient=True,
+    ) as progress:
+        
+        for server_config in server_configs:
+            task = progress.add_task(f"Testing {server_config.server_name}...", total=None)
+            
+            try:
+                if suite_type in ['functional', 'all']:
+                    progress.update(task, description=f"Running functional tests for {server_config.server_name}...")
+                    tester = MCPServerTester()
+                    results = await tester.test_server_functionality(server_config)
+                    all_results.extend(results)
+                
+                if suite_type in ['security', 'all']:
+                    progress.update(task, description=f"Running security tests for {server_config.server_name}...")
+                    security_tester = MCPSecurityTester()
+                    results = await security_tester.run_security_tests(server_config)
+                    all_results.extend(results)
+                
+                if suite_type in ['performance', 'all']:
+                    progress.update(task, description=f"Running performance tests for {server_config.server_name}...")
+                    perf_tester = MCPPerformanceTester()
+                    results = await perf_tester.run_performance_tests(server_config)
+                    all_results.extend(results)
+                
+                if suite_type in ['integration', 'all']:
+                    progress.update(task, description=f"Running integration tests for {server_config.server_name}...")
+                    tester = MCPServerTester()
+                    # Run cross-tool integration tests
+                    results = await tester.test_server_functionality(server_config)
+                    all_results.extend(results)
+                    
+            except Exception as e:
+                error_result = TestResult(
+                    test_name=f"{server_config.server_name}_{suite_type}_error",
+                    status=TestStatus.ERROR,
+                    error_message=str(e),
+                    server_name=server_config.server_name,
+                    confidence_score=0.95
+                )
+                all_results.append(error_result)
+    
+    # Display results
+    await _display_test_results(all_results, args.test_output_format, console)
+    
+    # Run issue detection if there are failures
+    failed_results = [r for r in all_results if r.status in [TestStatus.FAILED, TestStatus.ERROR]]
+    if failed_results:
+        console.print("\n[yellow]Analyzing failures for potential issues...[/yellow]")
+        issue_detector = MCPIssueDetector()
+        
+        for result in failed_results:
+            issues = await issue_detector.analyze_test_failures(result)
+            if issues:
+                console.print(f"\n[red]Issues detected for {result.test_name}:[/red]")
+                for issue in issues:
+                    console.print(f"  • {issue.issue_type.value}: {issue.error_message}")
+                    if issue.remediation_suggestions:
+                        console.print(f"    Suggestions: {', '.join(issue.remediation_suggestions[:2])}")
+
+async def handle_generate_test_report(app_config: AppConfig, args: argparse.Namespace) -> None:
+    """Handle the --generate-test-report command."""
+    console = Console()
+    
+    console.print("[bold blue]Generating comprehensive test report...[/bold blue]")
+    
+    # Get server configurations
+    server_configs = [
+        McpServerConfig(
+            server_name=name,
+            server_param=StdioServerParameters(
+                command=config.command,
+                args=config.args or [],
+                env={**(config.env or {}), **os.environ}
+            ),
+            exclude_tools=config.exclude_tools or []
+        )
+        for name, config in app_config.get_enabled_servers().items()
+    ]
+    
+    if not server_configs:
+        console.print("[yellow]No enabled MCP servers found in configuration[/yellow]")
+        return
+    
+    # Run comprehensive tests
+    all_results = []
+    issue_tracking = IssueTrackingManager()
+    
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+        transient=True,
+    ) as progress:
+        
+        for server_config in server_configs:
+            task = progress.add_task(f"Comprehensive testing of {server_config.server_name}...", total=None)
+            
+            try:
+                # Functional tests
+                progress.update(task, description=f"Functional tests - {server_config.server_name}...")
+                tester = MCPServerTester()
+                func_results = await tester.test_server_functionality(server_config)
+                all_results.extend(func_results)
+                
+                # Security tests
+                progress.update(task, description=f"Security tests - {server_config.server_name}...")
+                security_tester = MCPSecurityTester()
+                sec_results = await security_tester.run_security_tests(server_config)
+                all_results.extend(sec_results)
+                
+                # Performance tests
+                progress.update(task, description=f"Performance tests - {server_config.server_name}...")
+                perf_tester = MCPPerformanceTester()
+                perf_results = await perf_tester.run_performance_tests(server_config)
+                all_results.extend(perf_results)
+                
+                # Issue detection and tracking
+                progress.update(task, description=f"Issue analysis - {server_config.server_name}...")
+                issue_detector = MCPIssueDetector()
+                failed_results = [r for r in all_results if r.status in [TestStatus.FAILED, TestStatus.ERROR]]
+                
+                for result in failed_results:
+                    issues = await issue_detector.analyze_test_failures(result)
+                    for issue in issues:
+                        await issue_tracking.save_issue(issue)
+                        
+            except Exception as e:
+                error_result = TestResult(
+                    test_name=f"{server_config.server_name}_comprehensive_error",
+                    status=TestStatus.ERROR,
+                    error_message=str(e),
+                    server_name=server_config.server_name,
+                    confidence_score=0.95
+                )
+                all_results.append(error_result)
+    
+    # Generate and display comprehensive report
+    await _generate_comprehensive_report(all_results, issue_tracking, args.test_output_format, console)
+
+async def _display_test_results(results: list[TestResult], output_format: str, console: Console) -> None:
+    """Display test results in the specified format."""
+    if output_format == 'json':
+        # Convert results to JSON
+        results_data = []
+        for result in results:
+            results_data.append({
+                'test_name': result.test_name,
+                'status': result.status.value,
+                'server_name': result.server_name,
+                'execution_time': result.execution_time,
+                'error_message': result.error_message,
+                'confidence_score': result.confidence_score,
+                'timestamp': result.timestamp.isoformat() if result.timestamp else None
+            })
+        
+        output_file = Path("test_results.json")
+        with open(output_file, 'w') as f:
+            json.dump(results_data, f, indent=2)
+        console.print(f"[green]Test results saved to {output_file}[/green]")
+        
+    elif output_format == 'html':
+        # Generate HTML report
+        html_content = _generate_html_report(results)
+        output_file = Path("test_results.html")
+        with open(output_file, 'w') as f:
+            f.write(html_content)
+        console.print(f"[green]HTML test report saved to {output_file}[/green]")
+        
+    else:  # table format (default)
+        # Display results in a table
+        table = Table(title="MCP Server Test Results")
+        table.add_column("Server", style="cyan")
+        table.add_column("Test", style="blue")
+        table.add_column("Status", style="bold")
+        table.add_column("Time (s)", justify="right")
+        table.add_column("Confidence", justify="right")
+        table.add_column("Error", style="red")
+        
+        for result in results:
+            status_style = {
+                TestStatus.PASSED: "[green]PASSED[/green]",
+                TestStatus.FAILED: "[red]FAILED[/red]",
+                TestStatus.ERROR: "[bold red]ERROR[/bold red]",
+                TestStatus.SKIPPED: "[yellow]SKIPPED[/yellow]"
+            }.get(result.status, str(result.status.value))
+            
+            table.add_row(
+                result.server_name or "Unknown",
+                result.test_name,
+                status_style,
+                f"{result.execution_time:.2f}" if result.execution_time else "N/A",
+                f"{result.confidence_score:.1%}" if result.confidence_score else "N/A",
+                result.error_message[:50] + "..." if result.error_message and len(result.error_message) > 50 else result.error_message or ""
+            )
+        
+        console.print(table)
+        
+        # Summary statistics
+        total_tests = len(results)
+        passed = len([r for r in results if r.status == TestStatus.PASSED])
+        failed = len([r for r in results if r.status == TestStatus.FAILED])
+        errors = len([r for r in results if r.status == TestStatus.ERROR])
+        skipped = len([r for r in results if r.status == TestStatus.SKIPPED])
+        
+        summary_text = Text()
+        summary_text.append(f"Total: {total_tests} | ", style="bold")
+        summary_text.append(f"Passed: {passed} | ", style="green")
+        summary_text.append(f"Failed: {failed} | ", style="red")
+        summary_text.append(f"Errors: {errors} | ", style="bold red")
+        summary_text.append(f"Skipped: {skipped}", style="yellow")
+        
+        console.print(Panel(summary_text, title="Test Summary", border_style="blue"))
+
+async def _generate_comprehensive_report(results: list[TestResult], issue_tracking: IssueTrackingManager, 
+                                       output_format: str, console: Console) -> None:
+    """Generate a comprehensive test report with issue analysis."""
+    # Get issue statistics
+    issue_stats = await issue_tracking.get_issue_statistics()
+    
+    console.print("\n[bold green]Comprehensive Test Report Generated[/bold green]")
+    
+    # Display basic results
+    await _display_test_results(results, output_format, console)
+    
+    # Display issue analysis
+    if issue_stats:
+        console.print("\n[bold yellow]Issue Analysis Summary[/bold yellow]")
+        issue_table = Table()
+        issue_table.add_column("Issue Type", style="cyan")
+        issue_table.add_column("Count", justify="right")
+        issue_table.add_column("Avg Confidence", justify="right")
+        
+        for issue_type, stats in issue_stats.items():
+            issue_table.add_row(
+                issue_type,
+                str(stats.get('count', 0)),
+                f"{stats.get('avg_confidence', 0):.1%}"
+            )
+        
+        console.print(issue_table)
+
+def _generate_html_report(results: list[TestResult]) -> str:
+    """Generate an HTML report for test results."""
+    html_template = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>MCP Server Test Results</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            .passed { color: green; font-weight: bold; }
+            .failed { color: red; font-weight: bold; }
+            .error { color: darkred; font-weight: bold; }
+            .skipped { color: orange; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <h1>MCP Server Test Results</h1>
+        <table>
+            <tr>
+                <th>Server</th>
+                <th>Test</th>
+                <th>Status</th>
+                <th>Execution Time (s)</th>
+                <th>Confidence</th>
+                <th>Error Message</th>
+            </tr>
+    """
+    
+    for result in results:
+        status_class = result.status.value.lower()
+        html_template += f"""
+            <tr>
+                <td>{result.server_name or 'Unknown'}</td>
+                <td>{result.test_name}</td>
+                <td class="{status_class}">{result.status.value}</td>
+                <td>{result.execution_time:.2f if result.execution_time else 'N/A'}</td>
+                <td>{result.confidence_score:.1% if result.confidence_score else 'N/A'}</td>
+                <td>{result.error_message or ''}</td>
+            </tr>
+        """
+    
+    html_template += """
+        </table>
+    </body>
+    </html>
+    """
+    
+    return html_template
 
 if __name__ == "__main__":
     main()

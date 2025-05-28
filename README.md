@@ -224,6 +224,89 @@ $ llm --show-memories             # Show user memories
 $ llm --model gpt-4               # Override the model specified in config
 ```
 
+## MCP Testing Framework
+
+This project includes a comprehensive testing framework for MCP servers, built with methodological pragmatism principles and powered by Dagger.io pipelines.
+
+### Quick Start
+
+1. **Install testing dependencies:**
+   ```bash
+   pip install -e ".[testing]"
+   ```
+
+2. **Run basic tests:**
+   ```bash
+   # Test a specific MCP server
+   llm test-server --config examples/test-config-basic.json
+
+   # Run comprehensive test suite
+   llm test-suite --config examples/test-config-advanced.json
+
+   # Run security tests
+   llm test-security --server my-server --config examples/test-config-advanced.json
+   ```
+
+3. **Use Dagger.io pipelines:**
+   ```bash
+   # Run full test suite with Dagger
+   dagger call run-full-test-suite --config-path examples/test-config-advanced.json
+
+   # Run performance tests
+   dagger call run-performance-tests --server-name my-server
+   ```
+
+### Testing Capabilities
+
+- **Functional Testing**: Validate MCP server functionality, tool execution, and resource access
+- **Security Testing**: Authentication, authorization, input validation, and vulnerability scanning
+- **Performance Testing**: Load testing, response time measurement, and resource monitoring
+- **Integration Testing**: Multi-environment testing with cross-language support
+- **Automated Issue Detection**: Real-time monitoring with self-healing capabilities
+
+### Configuration
+
+Create test configurations using the provided examples:
+
+- `examples/test-config-basic.json`: Basic testing setup
+- `examples/test-config-advanced.json`: Comprehensive testing with security and performance
+
+### Documentation
+
+- **[TESTING.md](TESTING.md)**: Complete testing framework documentation
+- **[examples/CLI_USAGE_GUIDE.md](examples/CLI_USAGE_GUIDE.md)**: CLI testing commands and usage
+- **[examples/API_REFERENCE.md](examples/API_REFERENCE.md)**: Testing API reference
+- **[examples/TESTING_EXAMPLES.md](examples/TESTING_EXAMPLES.md)**: Practical testing examples
+- **[examples/BEST_PRACTICES.md](examples/BEST_PRACTICES.md)**: Testing best practices and guidelines
+- **[examples/TROUBLESHOOTING.md](examples/TROUBLESHOOTING.md)**: Common issues and solutions
+
+### Key Features
+
+- **Confidence Scoring**: All test results include confidence scores (0-100%) for reliability assessment
+- **Methodological Pragmatism**: Systematic verification with explicit fallibilism
+- **Error Architecture Awareness**: Distinguishes between human-cognitive and artificial-stochastic errors
+- **Multi-Language Support**: Test both Python and Node.js MCP servers
+- **Container Isolation**: Dagger.io provides clean, reproducible test environments
+- **Automated Remediation**: Self-healing capabilities for common issues
+
+### Example Usage
+
+```bash
+# Basic server validation
+llm test-server --server my-server --tests functional,security
+
+# Performance benchmarking
+llm test-performance --server my-server --concurrent-connections 10
+
+# Issue detection and remediation
+llm detect-issues --server my-server --auto-remediate
+
+# Generate test reports
+llm test-report --format html --output test-results.html
+```
+
+For detailed usage instructions, see the [CLI Usage Guide](examples/CLI_USAGE_GUIDE.md).
+
 ## Contributing
 
 Feel free to submit issues and pull requests for improvements or bug fixes.

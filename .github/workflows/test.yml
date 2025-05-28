@@ -1,4 +1,4 @@
-name: Test Installation
+name: MCP Testing with Dagger.io
 
 on:
   push:
@@ -11,7 +11,64 @@ on:
       - master
 
 jobs:
-  test-installation:
+  test-with-dagger:
+    name: Test MCP Infrastructure with Dagger
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Dagger CLI
+        run: |
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.3 sh
+          sudo mv bin/dagger /usr/local/bin
+          dagger version
+
+      - name: Install project dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Validate Dagger module
+        working-directory: .dagger
+        run: |
+          dagger functions
+
+      - name: Run installation validation
+        run: |
+          dagger call validate-installation
+
+      - name: Run functional tests
+        run: |
+          dagger call run-functional-tests
+
+      - name: Run security tests
+        run: |
+          dagger call run-functional-tests --include-security=true
+
+      - name: Run performance tests
+        run: |
+          dagger call run-performance-tests
+
+      - name: Run integration tests
+        run: |
+          dagger call run-integration-tests
+
+      - name: Run full test suite
+        run: |
+          dagger call run-full-test-suite --parallel=true
+
+      - name: Generate test report
+        run: |
+          dagger call run-full-test-suite --generate-report=true
+
+  test-multi-platform:
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -20,98 +77,142 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
-      - name: Install uv (Linux)
-        if: runner.os == 'Linux'
+      - name: Install Dagger CLI (Linux/macOS)
+        if: runner.os != 'Windows'
         run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.3 sh
+          sudo mv bin/dagger /usr/local/bin
+          dagger version
 
-      - name: Install uv (Windows)
+      - name: Install Dagger CLI (Windows)
         if: runner.os == 'Windows'
         run: |
-          iwr -useb https://astral.sh/uv/install.ps1 | iex
-          echo "$HOME\.cargo\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          Invoke-WebRequest -Uri "https://github.com/dagger/dagger/releases/download/v0.9.3/dagger_v0.9.3_windows_amd64.zip" -OutFile "dagger.zip"
+          Expand-Archive -Path "dagger.zip" -DestinationPath "."
+          Move-Item -Path "dagger.exe" -Destination "C:\Windows\System32\"
+          dagger version
 
-      - name: Install uv (macOS)
-        if: runner.os == 'macOS'
+      - name: Install project dependencies
         run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
+          pip install -e .
 
-      - name: Create virtual environment (Linux)
-        if: runner.os == 'Linux'
+      - name: Test CLI installation
         run: |
-          uv venv
-          echo "$PWD/.venv/bin" >> $GITHUB_PATH
+          llm --help
 
-      - name: Create virtual environment (Windows)
-        if: runner.os == 'Windows'
+      - name: Run basic Dagger tests
         run: |
-          uv venv
-          echo "$PWD\.venv\Scripts" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          dagger call validate-installation
 
-      - name: Create virtual environment (macOS)
-        if: runner.os == 'macOS'
+      - name: Test multi-language environment (Linux/macOS only)
+        if: runner.os != 'Windows'
         run: |
-          uv venv
-          echo "$PWD/.venv/bin" >> $GITHUB_PATH
+          dagger call multi-language-environment
 
-      - name: Install package
-        run: |
-          uv pip install -e .
+  test-examples:
+    name: Test Example MCP Servers
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Verify CLI works (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          # Run the help command and capture output
-          output=$(llm --help)
-          
-          # Check if the output contains expected help text
-          if [[ "$output" == *"Run LangChain agent with MCP tools"* ]]; then
-            echo "CLI help command works correctly"
-          else
-            echo "CLI help command failed to produce expected output"
-            echo "Actual output:"
-            echo "$output"
-            exit 1
-          fi
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
 
-      - name: Verify CLI works (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          # Run the help command and capture output
-          $output = llm --help
-          
-          # Check if the output contains expected help text
-          if ($output -match "Run LangChain agent with MCP tools") {
-            Write-Host "CLI help command works correctly"
-          } else {
-            Write-Host "CLI help command failed to produce expected output"
-            Write-Host "Actual output:"
-            Write-Host $output
-            exit 1
-          }
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
 
-      - name: Verify CLI works (macOS)
-        if: runner.os == 'macOS'
+      - name: Install Dagger CLI
         run: |
-          # Run the help command and capture output
-          output=$(llm --help)
-          
-          # Check if the output contains expected help text
-          if [[ "$output" == *"Run LangChain agent with MCP tools"* ]]; then
-            echo "CLI help command works correctly"
-          else
-            echo "CLI help command failed to produce expected output"
-            echo "Actual output:"
-            echo "$output"
-            exit 1
-          fi
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.3 sh
+          sudo mv bin/dagger /usr/local/bin
+          dagger version
+
+      - name: Install project dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Install Node.js dependencies for examples
+        working-directory: examples
+        run: |
+          npm install
+
+      - name: Test Python MCP server example
+        run: |
+          dagger call test-python-mcp-server --server-path="examples/python_mcp_server.py"
+
+      - name: Test Node.js MCP server example
+        run: |
+          dagger call test-nodejs-mcp-server --server-path="examples/nodejs_mcp_server.js"
+
+      - name: Test cross-language integration
+        run: |
+          dagger call test-cross-language-integration
+
+  security-and-performance:
+    name: Security and Performance Testing
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Dagger CLI
+        run: |
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.3 sh
+          sudo mv bin/dagger /usr/local/bin
+          dagger version
+
+      - name: Install project dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run comprehensive security tests
+        run: |
+          dagger call run-functional-tests --security-focus=true
+
+      - name: Run performance benchmarks
+        run: |
+          dagger call run-performance-tests --benchmark-mode=true
+
+      - name: Run issue detection and remediation tests
+        run: |
+          dagger call run-full-test-suite --include-remediation=true
+
+      - name: Generate security report
+        run: |
+          llm --run-test-suite security --test-output-format json
+
+      - name: Generate performance report
+        run: |
+          llm --run-test-suite performance --test-output-format html
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports-${{ github.run_id }}
+          path: |
+            test_results.json
+            test_results.html
+          retention-days: 30
