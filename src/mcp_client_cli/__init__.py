@@ -6,7 +6,7 @@ Enhanced fork of mcp-client-cli with advanced testing capabilities.
 Author: Tosin Akinosho (tosin@decisioncrafters.com)
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Tosin Akinosho"
 __email__ = "tosin@decisioncrafters.com"
 __description__ = (

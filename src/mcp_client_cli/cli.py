@@ -7,7 +7,6 @@ Simple llm CLI that acts as MCP client.
 import argparse
 import asyncio
 import base64
-import imghdr as imghdr
 import json
 import mimetypes
 import os
@@ -435,15 +434,26 @@ def parse_query(args: argparse.Namespace) -> tuple[HumanMessage, bool]:
     # Check if there's input from pipe
     elif not sys.stdin.isatty():
         stdin_data = sys.stdin.buffer.read()
-        # Try to detect if it's an image
-        image_type = imghdr.what(None, h=stdin_data)
+        # Try to detect if it's an image by checking magic bytes
+        image_type = None
+        mime_type = None
+        
+        if stdin_data.startswith(b'\xff\xd8\xff'):
+            image_type = 'jpeg'
+            mime_type = 'image/jpeg'
+        elif stdin_data.startswith(b'\x89PNG\r\n\x1a\n'):
+            image_type = 'png'
+            mime_type = 'image/png'
+        elif stdin_data.startswith(b'GIF87a') or stdin_data.startswith(b'GIF89a'):
+            image_type = 'gif'
+            mime_type = 'image/gif'
+        elif stdin_data.startswith(b'RIFF') and b'WEBP' in stdin_data[:12]:
+            image_type = 'webp'
+            mime_type = 'image/webp'
+        
         if image_type:
             # It's an image, encode it as base64
             stdin_image = base64.b64encode(stdin_data).decode("utf-8")
-            mime_type = (
-                mimetypes.guess_type(f"dummy.{image_type}")[0]
-                or f"image/{image_type}"
-            )
         else:
             # It's text
             stdin_content = stdin_data.decode("utf-8").strip()
