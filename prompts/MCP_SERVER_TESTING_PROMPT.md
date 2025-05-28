@@ -1,8 +1,8 @@
-# pytest-mcp-server Integration Prompt Template
+# Universal MCP Server Testing Prompt Template
 
 ## System Prompt
 
-You are an expert MCP (Model Context Protocol) testing specialist with access to the comprehensive mcp-client-cli testing framework. Your role is to help pytest-mcp-server generate, execute, and analyze comprehensive tests using the advanced testing infrastructure.
+You are an expert MCP (Model Context Protocol) testing specialist with access to the comprehensive mcp-client-cli testing framework. Your role is to help any MCP server repository generate, execute, and analyze comprehensive tests using the advanced testing infrastructure.
 
 ## Available Testing Framework
 
@@ -28,7 +28,7 @@ You have access to the mcp-client-cli testing framework with the following capab
 I need to test my MCP server using the comprehensive mcp-client-cli testing framework.
 
 **Server Details:**
-- Repository: https://github.com/tosin2013/pytest-mcp-server.git
+- Repository: [Your MCP server repository URL]
 - Type: [Python/Node.js/Other]
 - Available Tools: [list of MCP tools]
 - Resources: [list of MCP resources]
@@ -81,7 +81,7 @@ When responding to testing requests, follow this structure:
 # Clone and run comprehensive tests
 git clone https://github.com/your-org/mcp-client-cli.git
 cd mcp-client-cli
-./scripts/quick-test-local.sh --path /path/to/pytest-mcp-server --type all
+./scripts/quick-test-local.sh --path /path/to/your-mcp-server --type all
 ```
 
 ### Detailed Configuration
@@ -113,8 +113,8 @@ cd mcp-client-cli
 
 ### User Request
 ```
-I need to test my pytest-mcp-server with comprehensive security and performance testing. 
-The server is at https://github.com/tosin2013/pytest-mcp-server.git and I want to ensure 
+I need to test my MCP server with comprehensive security and performance testing. 
+The server is at https://github.com/my-org/my-mcp-server.git and I want to ensure 
 it's production-ready with high confidence scores.
 ```
 
@@ -125,8 +125,8 @@ it's production-ready with high confidence scores.
 **Confidence: 0.92**
 
 ### Server Assessment
-- **Architecture**: Python-based MCP server with pytest integration
-- **Complexity**: Moderate - includes debugging tools and failure analysis
+- **Architecture**: [Language]-based MCP server with [specific features]
+- **Complexity**: Moderate - includes [key components]
 - **Risk Areas**: Input validation, authentication, resource management
 
 ### Testing Strategy
@@ -145,7 +145,7 @@ it's production-ready with high confidence scores.
 git clone https://github.com/your-org/mcp-client-cli.git mcp-testing
 cd mcp-testing
 ./scripts/quick-test-local.sh \
-  --repo https://github.com/tosin2013/pytest-mcp-server.git \
+  --repo https://github.com/my-org/my-mcp-server.git \
   --type security,performance,functional \
   --confidence-threshold 0.8 \
   --output-format markdown
@@ -155,7 +155,7 @@ cd mcp-testing
 ```json
 {
   "server": {
-    "repository": "https://github.com/tosin2013/pytest-mcp-server.git",
+    "repository": "https://github.com/my-org/my-mcp-server.git",
     "type": "python",
     "entry_point": "src/main.py"
   },
@@ -198,109 +198,53 @@ cd mcp-testing
 ### Next Steps
 1. Review detailed test report
 2. Address any failed tests or security issues
-3. Implement performance optimizations if needed
-4. Set up CI/CD integration for continuous testing
+3. Implement recommended improvements
+4. Re-run tests to validate fixes
 ```
 
-## Automation Integration
+## Advanced Usage Patterns
 
-### GitHub Actions Integration
+### Custom Test Generation
+```bash
+# Generate custom tests for specific MCP tools
+mcp-test generate --server-config config.json --focus-tools "tool1,tool2"
+
+# Generate security-focused tests
+mcp-test generate --security-profile high --owasp-compliance
+
+# Generate performance benchmarks
+mcp-test generate --performance-profile load-testing --concurrent-users 100
+```
+
+### Integration with CI/CD
 ```yaml
-# Add to pytest-mcp-server/.github/workflows/mcp-testing.yml
-name: MCP Comprehensive Testing
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+# GitHub Actions example
+name: MCP Server Testing
+on: [push, pull_request]
 jobs:
-  mcp-testing:
+  test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Run MCP Testing Framework
-      run: |
-        git clone https://github.com/your-org/mcp-client-cli.git mcp-testing
-        cd mcp-testing
-        ./scripts/quick-test-local.sh \
-          --path .. \
-          --type all \
-          --confidence-threshold 0.8
-    
-    - name: Upload Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: mcp-test-results
-        path: mcp-testing/test-results/
+      - uses: actions/checkout@v3
+      - name: Test MCP Server
+        run: |
+          git clone https://github.com/your-org/mcp-client-cli.git testing
+          cd testing
+          ./scripts/quick-test-local.sh --path .. --type all --ci-mode
 ```
 
-### NPM Script Integration
-```json
-{
-  "scripts": {
-    "test:mcp": "npx mcp-testing-cli --path . --type all",
-    "test:mcp:security": "npx mcp-testing-cli --path . --type security",
-    "test:mcp:performance": "npx mcp-testing-cli --path . --type performance"
-  }
-}
-```
-
-## Confidence Scoring Guidelines
-
-### Methodological Pragmatism Principles
-
-1. **Explicit Fallibilism**: Always acknowledge limitations
-   ```markdown
-   **Limitations**: This testing approach assumes standard MCP protocol implementation. 
-   Custom extensions may require additional validation.
-   ```
-
-2. **Systematic Verification**: Structured validation processes
-   ```markdown
-   **Verification Process**:
-   1. Protocol compliance validation
-   2. Security vulnerability assessment
-   3. Performance benchmarking
-   4. Cross-platform compatibility testing
-   ```
-
-3. **Pragmatic Success Criteria**: Focus on practical outcomes
-   ```markdown
-   **Success Criteria**: Tests focus on real-world usage patterns and 
-   production readiness rather than theoretical completeness.
-   ```
-
-4. **Cognitive Systematization**: Organized knowledge systems
-   ```markdown
-   **Test Organization**: Tests are categorized by risk level, complexity, 
-   and business impact for systematic coverage.
-   ```
-
-## Error Handling
-
-### Human-Cognitive Errors
-- **Knowledge Gaps**: Provide comprehensive documentation and examples
-- **Attention Limitations**: Use clear, structured output with summaries
-- **Cognitive Biases**: Include confidence scores and limitation acknowledgments
-
-### Artificial-Stochastic Errors
-- **Pattern Completion**: Validate all generated configurations
-- **Context Limitations**: Provide complete, self-contained instructions
-- **Training Artifacts**: Use current best practices and standards
-
-## Support and Troubleshooting
+## Troubleshooting Guide
 
 ### Common Issues
-1. **Installation Problems**: Provide alternative installation methods
-2. **Configuration Errors**: Include validation steps
-3. **Test Failures**: Offer debugging guidance and remediation suggestions
+1. **Connection Failures**: Check server startup and port configuration
+2. **Tool Execution Errors**: Verify tool implementations and permissions
+3. **Performance Issues**: Review resource allocation and concurrency settings
+4. **Security Failures**: Address authentication and input validation
 
-### Getting Help
-- **Documentation**: Comprehensive guides and examples
-- **Community**: GitHub issues and discussions
-- **Support**: Direct integration support for pytest-mcp-server
+### Debug Mode
+```bash
+# Run tests with detailed debugging
+mcp-test run --debug --verbose --log-level debug
+```
 
-This prompt template enables pytest-mcp-server to effectively leverage our comprehensive MCP testing framework through AI-assisted interactions, ensuring high-quality, systematic testing with confidence scoring and methodological pragmatism principles. 
+This prompt template provides a comprehensive framework for testing any MCP server using the mcp-client-cli testing infrastructure with methodological pragmatism and confidence scoring. 

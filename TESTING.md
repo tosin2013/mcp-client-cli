@@ -116,7 +116,7 @@ Create a test configuration file (e.g., `test-config.json`):
   "servers": {
     "test-server": {
       "command": "python",
-      "args": ["examples/python_mcp_server.py"],
+      "args": ["examples/generic_mcp_server.py"],
       "timeout": 30,
       "retry_attempts": 3
     }
@@ -157,7 +157,7 @@ For complex testing scenarios, see `examples/test-config-advanced.json`:
   "servers": {
     "python-server": {
       "command": "python",
-      "args": ["examples/python_mcp_server.py"],
+      "args": ["examples/generic_mcp_server.py"],
       "env": {
         "DEBUG": "true"
       },
@@ -239,7 +239,7 @@ async def test_functional():
     tester = MCPServerTester()
     
     # Test server connection
-    result = await tester.test_connection("python examples/python_mcp_server.py")
+    result = await tester.test_connection("python examples/generic_mcp_server.py")
     print(f"Connection test: {result.status} (confidence: {result.confidence}%)")
     
     # Test tool execution
@@ -299,7 +299,7 @@ async def test_issue_detection():
     remediation = MCPRemediationEngine()
     
     # Detect issues
-    issues = await detector.analyze_server_health("python examples/python_mcp_server.py")
+    issues = await detector.analyze_server_health("python examples/generic_mcp_server.py")
     
     # Auto-remediate if possible
     for issue in issues:
@@ -314,7 +314,7 @@ async def test_issue_detection():
 
 ```bash
 # Test a single MCP server
-llm test server --command "python examples/python_mcp_server.py"
+llm test server --command "python examples/generic_mcp_server.py"
 
 # Run functional tests
 llm test functional --config test-config.json
@@ -336,7 +336,7 @@ llm test suite --config test-config.json --parallel --generate-report
 llm test suite --config test-config.json --auto-remediation
 
 # Multi-language testing
-llm test multi-lang --python-server "python examples/python_mcp_server.py" \
+llm test multi-lang --python-server "python examples/generic_mcp_server.py" \
                     --nodejs-server "node examples/nodejs_mcp_server.js"
 
 # Custom confidence thresholds
@@ -463,7 +463,7 @@ Create `.dagger/pipeline-config.json`:
 
 ```bash
 # Debug server startup
-llm test server --command "python examples/python_mcp_server.py" --debug --timeout 60
+llm test server --command "python examples/generic_mcp_server.py" --debug --timeout 60
 ```
 
 #### 2. Tool Execution Failures

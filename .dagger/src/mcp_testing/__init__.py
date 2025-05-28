@@ -216,7 +216,7 @@ async def run_functional_tests():
             mcp_servers={
                 "python-example": ServerConfig(
                     command="python",
-                    args=["examples/python_mcp_server.py"],
+                    args=["examples/generic_mcp_server.py"],
                     env={},
                     enabled=True,
                     exclude_tools=[],
@@ -391,7 +391,7 @@ async def run_performance_tests():
         mcp_servers={{
             "python-perf": ServerConfig(
                 command="python",
-                args=["examples/python_mcp_server.py"],
+                args=["examples/generic_mcp_server.py"],
                 env={{}},
                 enabled=True,
                 exclude_tools=[],
@@ -546,7 +546,7 @@ async def run_integration_test():
             mcp_servers={{
                 "integration-test": ServerConfig(
                     command="python" if "{env_type}" != "nodejs" else "node",
-                    args=["examples/python_mcp_server.py"] if "{env_type}" != "nodejs" else ["examples/nodejs_mcp_server.js"],
+                    args=["examples/generic_mcp_server.py"] if "{env_type}" != "nodejs" else ["examples/nodejs_mcp_server.js"],
                     env={{}},
                     enabled=True,
                     exclude_tools=[],

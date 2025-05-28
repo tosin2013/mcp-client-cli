@@ -239,7 +239,7 @@ All results include confidence scores based on methodological pragmatism:
 ## 📚 Documentation
 
 - **[Complete Testing Guide](TESTING.md)**: Comprehensive framework documentation
-- **[pytest-mcp-server Integration](examples/PYTEST_MCP_SERVER_INTEGRATION.md)**: Detailed integration guide
+- **[MCP Server Integration](examples/MCP_SERVER_INTEGRATION.md)**: Detailed integration guide
 - **[API Reference](examples/API_REFERENCE.md)**: Testing API documentation
 - **[Best Practices](examples/BEST_PRACTICES.md)**: Methodological pragmatism guidelines
 - **[Troubleshooting](examples/TROUBLESHOOTING.md)**: Common issues and solutions

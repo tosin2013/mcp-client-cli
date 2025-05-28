@@ -354,7 +354,7 @@ async def health_check():
     
     # Check server connectivity
     try:
-        result = await tester.test_connection("python examples/python_mcp_server.py")
+        result = await tester.test_connection("python examples/generic_mcp_server.py")
         health_status["checks"]["server_connection"] = {
             "status": "healthy" if result.status == TestStatus.PASSED else "unhealthy",
             "confidence": result.confidence

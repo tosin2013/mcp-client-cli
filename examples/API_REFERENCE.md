@@ -894,7 +894,7 @@ async def basic_test():
     tester = MCPServerTester(timeout=30, confidence_threshold=85)
     
     # Test server connection
-    result = await tester.test_connection("python examples/python_mcp_server.py")
+    result = await tester.test_connection("python examples/generic_mcp_server.py")
     print(f"Connection test: {result.status} (confidence: {result.confidence}%)")
     
     # Test tool execution

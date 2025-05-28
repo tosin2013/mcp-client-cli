@@ -39,20 +39,20 @@ dagger call multi-language-environment --python-version="3.12" --node-version="2
 
 ```bash
 # Test Python MCP server
-dagger call test-python-mcp-server --server-path="examples/python_mcp_server.py"
+dagger call test-python-mcp-server --server-path="examples/generic_mcp_server.py"
 
 # Test Node.js MCP server
 dagger call test-nodejs-mcp-server --server-path="examples/nodejs_mcp_server.js"
 
 # Test cross-language integration (Python + Node.js servers together)
 dagger call test-cross-language-integration \
-  --python-server-path="examples/python_mcp_server.py" \
+  --python-server-path="examples/generic_mcp_server.py" \
   --nodejs-server-path="examples/nodejs_mcp_server.js"
 ```
 
 ## Example Implementations
 
-### Python MCP Server (`examples/python_mcp_server.py`)
+### Python MCP Server (`examples/generic_mcp_server.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -154,7 +154,7 @@ class NodeJSMCPServer {
   "mcpServers": {
     "python-server": {
       "command": "python",
-      "args": ["examples/python_mcp_server.py"],
+      "args": ["examples/generic_mcp_server.py"],
       "env": {}
     }
   }
@@ -194,7 +194,7 @@ class NodeJSMCPServer {
   "mcpServers": {
     "python-server": {
       "command": "python",
-      "args": ["examples/python_mcp_server.py"],
+      "args": ["examples/generic_mcp_server.py"],
       "env": {}
     },
     "nodejs-server": {

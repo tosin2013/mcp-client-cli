@@ -67,13 +67,13 @@ llm servers test my-server
 
 ```bash
 # Test a server with minimal setup
-llm test server --command "python examples/python_mcp_server.py"
+llm test server --command "python examples/generic_mcp_server.py"
 
 # Test with timeout
-llm test server --command "python examples/python_mcp_server.py" --timeout 60
+llm test server --command "python examples/generic_mcp_server.py" --timeout 60
 
 # Test with environment variables
-llm test server --command "python examples/python_mcp_server.py" --env DEBUG=true --env LOG_LEVEL=info
+llm test server --command "python examples/generic_mcp_server.py" --env DEBUG=true --env LOG_LEVEL=info
 ```
 
 ### Functional Testing
@@ -331,7 +331,7 @@ dagger call validate-installation --source .
 
 ```bash
 # Test Python MCP server
-dagger call test-python-mcp-server --source . --server-path examples/python_mcp_server.py
+dagger call test-python-mcp-server --source . --server-path examples/generic_mcp_server.py
 
 # Test Node.js MCP server
 dagger call test-nodejs-mcp-server --source . --server-path examples/nodejs_mcp_server.js
@@ -377,13 +377,13 @@ dagger call run-integration-tests --source . --compare-languages true
 
 ```bash
 # Test server connectivity
-llm test server --command "python examples/python_mcp_server.py" --debug
+llm test server --command "python examples/generic_mcp_server.py" --debug
 
 # Check server logs
-llm test server --command "python examples/python_mcp_server.py" --capture-logs
+llm test server --command "python examples/generic_mcp_server.py" --capture-logs
 
 # Test with increased timeout
-llm test server --command "python examples/python_mcp_server.py" --timeout 120
+llm test server --command "python examples/generic_mcp_server.py" --timeout 120
 ```
 
 #### Configuration Issues

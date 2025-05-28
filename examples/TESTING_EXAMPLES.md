@@ -21,7 +21,7 @@ Test a simple MCP server with minimal configuration:
 
 ```bash
 # Test the example Python server
-llm test server --command "python examples/python_mcp_server.py" --timeout 30
+llm test server --command "python examples/generic_mcp_server.py" --timeout 30
 
 # Test with basic configuration
 llm test basic --config examples/test-config-basic.json
@@ -37,7 +37,7 @@ async def quick_test():
     tester = MCPServerTester()
     
     # Test server startup and basic functionality
-    result = await tester.test_connection("python examples/python_mcp_server.py")
+    result = await tester.test_connection("python examples/generic_mcp_server.py")
     print(f"Server connection: {result.status} (confidence: {result.confidence}%)")
     
     if result.status == "PASSED":
@@ -61,7 +61,7 @@ async def test_all_tools():
     tester = MCPServerTester()
     
     # Connect to server
-    await tester.connect("python examples/python_mcp_server.py")
+    await tester.connect("python examples/generic_mcp_server.py")
     
     # Test each tool individually
     tools_to_test = [
@@ -89,7 +89,7 @@ from mcp_client_cli.testing import MCPServerTester
 
 async def test_resources():
     tester = MCPServerTester()
-    await tester.connect("python examples/python_mcp_server.py")
+    await tester.connect("python examples/generic_mcp_server.py")
     
     # Test resource listing
     resources_result = await tester.test_resource_listing()
@@ -112,7 +112,7 @@ from mcp_client_cli.testing import MCPServerTester
 
 async def test_prompts():
     tester = MCPServerTester()
-    await tester.connect("python examples/python_mcp_server.py")
+    await tester.connect("python examples/generic_mcp_server.py")
     
     # Test prompt listing
     prompts_result = await tester.test_prompt_listing()
@@ -303,7 +303,7 @@ async def monitor_health():
     detector = MCPIssueDetector()
     
     # Analyze server health
-    issues = await detector.analyze_server_health("python examples/python_mcp_server.py")
+    issues = await detector.analyze_server_health("python examples/generic_mcp_server.py")
     
     print(f"Found {len(issues)} issues:")
     for issue in issues:
@@ -325,7 +325,7 @@ async def auto_remediate():
     remediation = MCPRemediationEngine()
     
     # Detect and remediate issues
-    issues = await detector.analyze_server_health("python examples/python_mcp_server.py")
+    issues = await detector.analyze_server_health("python examples/generic_mcp_server.py")
     
     for issue in issues:
         if issue.severity.value >= 3:  # High severity
@@ -354,7 +354,7 @@ async def test_cross_language():
     tester = MCPServerTester()
     
     servers = [
-        ("Python", "python examples/python_mcp_server.py"),
+        ("Python", "python examples/generic_mcp_server.py"),
         ("Node.js", "node examples/nodejs_mcp_server.js"),
     ]
     
@@ -584,7 +584,7 @@ async def robust_testing():
     tester = MCPServerTester()
     
     try:
-        await tester.connect("python examples/python_mcp_server.py")
+        await tester.connect("python examples/generic_mcp_server.py")
         
         # Test with proper error handling
         result = await tester.test_tool_execution("echo", {"message": "test"})

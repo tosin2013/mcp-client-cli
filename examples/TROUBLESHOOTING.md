@@ -112,13 +112,13 @@ tester = MCPServerTester(timeout=60)
 
 2. **Check server startup time:**
 ```bash
-time python examples/python_mcp_server.py
+time python examples/generic_mcp_server.py
 ```
 
 3. **Verify server command:**
 ```bash
 # Test server manually
-python examples/python_mcp_server.py
+python examples/generic_mcp_server.py
 # Should start without errors
 ```
 
@@ -141,7 +141,7 @@ ProcessError: Failed to start server process
 
 1. **Check executable permissions:**
 ```bash
-chmod +x examples/python_mcp_server.py
+chmod +x examples/generic_mcp_server.py
 ```
 
 2. **Verify Python path:**
@@ -152,7 +152,7 @@ python --version
 
 3. **Test server independently:**
 ```bash
-python examples/python_mcp_server.py --help
+python examples/generic_mcp_server.py --help
 ```
 
 4. **Check environment variables:**
@@ -183,7 +183,7 @@ netstat -an | grep :8080
   "servers": {
     "test-server": {
       "command": "python",
-      "args": ["examples/python_mcp_server.py"],
+      "args": ["examples/generic_mcp_server.py"],
       "timeout": 30
     }
   }
@@ -623,7 +623,7 @@ logging.getLogger('mcp').setLevel(logging.DEBUG)
 # Test components individually
 async def debug_connection():
     tester = MCPServerTester(timeout=60)
-    result = await tester.test_connection("python examples/python_mcp_server.py")
+    result = await tester.test_connection("python examples/generic_mcp_server.py")
     print(f"Connection: {result}")
     
 async def debug_tools():
@@ -640,7 +640,7 @@ async def debug_tools():
 llm test examples/test-config-basic.json
 
 # Terminal 2: Monitor resources
-top -p $(pgrep -f python_mcp_server)
+top -p $(pgrep -f generic_mcp_server)
 ```
 
 ### 4. Use Confidence Analysis
