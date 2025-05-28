@@ -285,7 +285,7 @@ async def handle_conversation(args: argparse.Namespace, query: HumanMessage,
         formatted_memories = "\n".join(f"- {memory}" for memory in memories)
         agent_executor = create_react_agent(
             model, tools, state_schema=AgentState, 
-            state_modifier=prompt, checkpointer=checkpointer, store=store
+            checkpointer=checkpointer, store=store
         )
         
         thread_id = (await conversation_manager.get_last_id() if is_conversation_continuation 
@@ -440,8 +440,8 @@ async def handle_test_mcp_servers(app_config: AppConfig, args: argparse.Namespac
             return
         
         # Initialize tester
-        tester = MCPServerTester()
-        test_cli = MCPTestCLI()
+        tester = MCPServerTester(app_config)
+        test_cli = MCPTestCLI(app_config)
         
         # Run tests for each server
         all_results = []
@@ -449,21 +449,20 @@ async def handle_test_mcp_servers(app_config: AppConfig, args: argparse.Namespac
             progress.update(task, description=f"Testing {server_config.server_name}...")
             
             try:
-                # Run basic functionality tests
-                results = await tester.test_server_functionality(server_config)
-                all_results.extend(results)
+                # Run comprehensive test suite
+                test_suites = await tester.run_comprehensive_test_suite(server_config.server_name)
                 
-                # Run connection tests
-                connection_result = await tester.test_server_connection(server_config)
-                all_results.append(connection_result)
+                # Extract all results from test suites
+                for suite in test_suites.values():
+                    all_results.extend(suite.results)
                 
             except Exception as e:
                 error_result = TestResult(
                     test_name=f"{server_config.server_name}_error",
                     status=TestStatus.ERROR,
-                    error_message=str(e),
-                    server_name=server_config.server_name,
-                    confidence_score=0.95
+                    message=str(e),
+                    confidence_score=0.95,
+                    execution_time=0.0
                 )
                 all_results.append(error_result)
     
@@ -510,9 +509,11 @@ async def handle_run_test_suite(app_config: AppConfig, args: argparse.Namespace)
             try:
                 if suite_type in ['functional', 'all']:
                     progress.update(task, description=f"Running functional tests for {server_config.server_name}...")
-                    tester = MCPServerTester()
-                    results = await tester.test_server_functionality(server_config)
-                    all_results.extend(results)
+                    tester = MCPServerTester(app_config)
+                    test_suites = await tester.run_comprehensive_test_suite(server_config.server_name)
+                    # Extract functional results from test suites
+                    for suite in test_suites.values():
+                        all_results.extend(suite.results)
                 
                 if suite_type in ['security', 'all']:
                     progress.update(task, description=f"Running security tests for {server_config.server_name}...")
@@ -528,10 +529,11 @@ async def handle_run_test_suite(app_config: AppConfig, args: argparse.Namespace)
                 
                 if suite_type in ['integration', 'all']:
                     progress.update(task, description=f"Running integration tests for {server_config.server_name}...")
-                    tester = MCPServerTester()
-                    # Run cross-tool integration tests
-                    results = await tester.test_server_functionality(server_config)
-                    all_results.extend(results)
+                    tester = MCPServerTester(app_config)
+                    test_suites = await tester.run_comprehensive_test_suite(server_config.server_name)
+                    # Extract results from test suites for integration testing
+                    for suite in test_suites.values():
+                        all_results.extend(suite.results)
                     
             except Exception as e:
                 error_result = TestResult(
@@ -602,9 +604,11 @@ async def handle_generate_test_report(app_config: AppConfig, args: argparse.Name
             try:
                 # Functional tests
                 progress.update(task, description=f"Functional tests - {server_config.server_name}...")
-                tester = MCPServerTester()
-                func_results = await tester.test_server_functionality(server_config)
-                all_results.extend(func_results)
+                tester = MCPServerTester(app_config)
+                test_suites = await tester.run_comprehensive_test_suite(server_config.server_name)
+                # Extract functional results from test suites
+                for suite in test_suites.values():
+                    all_results.extend(suite.results)
                 
                 # Security tests
                 progress.update(task, description=f"Security tests - {server_config.server_name}...")
@@ -650,11 +654,11 @@ async def _display_test_results(results: list[TestResult], output_format: str, c
             results_data.append({
                 'test_name': result.test_name,
                 'status': result.status.value,
-                'server_name': result.server_name,
                 'execution_time': result.execution_time,
-                'error_message': result.error_message,
+                'message': result.message,
                 'confidence_score': result.confidence_score,
-                'timestamp': result.timestamp.isoformat() if result.timestamp else None
+                'timestamp': result.timestamp.isoformat() if result.timestamp else None,
+                'error_info': result.error_info
             })
         
         output_file = Path("test_results.json")
@@ -673,12 +677,11 @@ async def _display_test_results(results: list[TestResult], output_format: str, c
     else:  # table format (default)
         # Display results in a table
         table = Table(title="MCP Server Test Results")
-        table.add_column("Server", style="cyan")
         table.add_column("Test", style="blue")
         table.add_column("Status", style="bold")
         table.add_column("Time (s)", justify="right")
         table.add_column("Confidence", justify="right")
-        table.add_column("Error", style="red")
+        table.add_column("Message", style="dim")
         
         for result in results:
             status_style = {
@@ -688,13 +691,17 @@ async def _display_test_results(results: list[TestResult], output_format: str, c
                 TestStatus.SKIPPED: "[yellow]SKIPPED[/yellow]"
             }.get(result.status, str(result.status.value))
             
+            # Truncate message if too long
+            message = result.message or ""
+            if len(message) > 50:
+                message = message[:50] + "..."
+            
             table.add_row(
-                result.server_name or "Unknown",
                 result.test_name,
                 status_style,
                 f"{result.execution_time:.2f}" if result.execution_time else "N/A",
                 f"{result.confidence_score:.1%}" if result.confidence_score else "N/A",
-                result.error_message[:50] + "..." if result.error_message and len(result.error_message) > 50 else result.error_message or ""
+                message
             )
         
         console.print(table)
@@ -706,14 +713,11 @@ async def _display_test_results(results: list[TestResult], output_format: str, c
         errors = len([r for r in results if r.status == TestStatus.ERROR])
         skipped = len([r for r in results if r.status == TestStatus.SKIPPED])
         
-        summary_text = Text()
-        summary_text.append(f"Total: {total_tests} | ", style="bold")
-        summary_text.append(f"Passed: {passed} | ", style="green")
-        summary_text.append(f"Failed: {failed} | ", style="red")
-        summary_text.append(f"Errors: {errors} | ", style="bold red")
-        summary_text.append(f"Skipped: {skipped}", style="yellow")
-        
-        console.print(Panel(summary_text, title="Test Summary", border_style="blue"))
+        console.print(f"\n[bold]Summary:[/bold] {total_tests} tests - "
+                     f"[green]{passed} passed[/green], "
+                     f"[red]{failed} failed[/red], "
+                     f"[bold red]{errors} errors[/bold red], "
+                     f"[yellow]{skipped} skipped[/yellow]")
 
 async def _generate_comprehensive_report(results: list[TestResult], issue_tracking: IssueTrackingManager, 
                                        output_format: str, console: Console) -> None:
@@ -765,12 +769,11 @@ def _generate_html_report(results: list[TestResult]) -> str:
         <h1>MCP Server Test Results</h1>
         <table>
             <tr>
-                <th>Server</th>
                 <th>Test</th>
                 <th>Status</th>
                 <th>Execution Time (s)</th>
                 <th>Confidence</th>
-                <th>Error Message</th>
+                <th>Message</th>
             </tr>
     """
     
@@ -778,12 +781,11 @@ def _generate_html_report(results: list[TestResult]) -> str:
         status_class = result.status.value.lower()
         html_template += f"""
             <tr>
-                <td>{result.server_name or 'Unknown'}</td>
                 <td>{result.test_name}</td>
                 <td class="{status_class}">{result.status.value}</td>
                 <td>{result.execution_time:.2f if result.execution_time else 'N/A'}</td>
                 <td>{result.confidence_score:.1% if result.confidence_score else 'N/A'}</td>
-                <td>{result.error_message or ''}</td>
+                <td>{result.message or ''}</td>
             </tr>
         """
     

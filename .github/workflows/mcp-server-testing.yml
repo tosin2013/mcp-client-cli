@@ -1,0 +1,221 @@
+name: MCP Server Testing with Dagger Cloud
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: 'Target MCP server repository URL'
+        required: true
+        default: 'https://github.com/tosin2013/pytest-mcp-server.git'
+      test_suite:
+        description: 'Test suite to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - functional
+          - security
+          - performance
+      dagger_cloud_token:
+        description: 'Use Dagger Cloud (requires token)'
+        required: false
+        default: true
+        type: boolean
+
+env:
+  DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+jobs:
+  test-mcp-server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+        node-version: ['18', '20']
+      fail-fast: false
+    
+    steps:
+      - name: Checkout mcp-client-cli
+        uses: actions/checkout@v4
+        with:
+          path: mcp-client-cli
+      
+      - name: Checkout target MCP server
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.inputs.target_repo || 'tosin2013/pytest-mcp-server' }}
+          path: target-mcp-server
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Install Dagger CLI
+        run: |
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.5 sh
+          sudo mv bin/dagger /usr/local/bin
+          dagger version
+      
+      - name: Install UV (Python package manager)
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-${{ matrix.python-version }}-${{ hashFiles('mcp-client-cli/pyproject.toml') }}
+      
+      - name: Cache Node dependencies
+        uses: actions/cache@v3
+        with:
+          path: target-mcp-server/node_modules
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('target-mcp-server/package-lock.json') }}
+      
+      - name: Run Dagger Pipeline
+        working-directory: mcp-client-cli
+        run: |
+          dagger call test-mcp-server \
+            --source=. \
+            --target-repo=../target-mcp-server \
+            --python-version=${{ matrix.python-version }} \
+            --node-version=${{ matrix.node-version }} \
+            --test-suite=${{ github.event.inputs.test_suite || 'all' }} \
+            --openai-api-key=env:OPENAI_API_KEY
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results-py${{ matrix.python-version }}-node${{ matrix.node-version }}
+          path: |
+            mcp-client-cli/test_results.json
+            mcp-client-cli/test_results.html
+            mcp-client-cli/dagger-logs/
+          retention-days: 30
+      
+      - name: Upload Dagger Cloud logs
+        uses: actions/upload-artifact@v3
+        if: always() && env.DAGGER_CLOUD_TOKEN
+        with:
+          name: dagger-cloud-logs-py${{ matrix.python-version }}-node${{ matrix.node-version }}
+          path: ~/.dagger/
+          retention-days: 7
+
+  generate-report:
+    needs: test-mcp-server
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Download all test results
+        uses: actions/download-artifact@v3
+        with:
+          path: test-results
+      
+      - name: Generate comprehensive report
+        run: |
+          python3 -c "
+          import json
+          import os
+          from pathlib import Path
+          
+          results = []
+          for result_dir in Path('test-results').glob('test-results-*'):
+              json_file = result_dir / 'test_results.json'
+              if json_file.exists():
+                  with open(json_file) as f:
+                      data = json.load(f)
+                      results.extend(data)
+          
+          # Generate summary
+          total = len(results)
+          passed = sum(1 for r in results if r.get('status') == 'PASSED')
+          failed = sum(1 for r in results if r.get('status') == 'FAILED')
+          errors = sum(1 for r in results if r.get('status') == 'ERROR')
+          
+          summary = {
+              'total_tests': total,
+              'passed': passed,
+              'failed': failed,
+              'errors': errors,
+              'success_rate': round((passed / total * 100) if total > 0 else 0, 2),
+              'results': results
+          }
+          
+          with open('comprehensive_report.json', 'w') as f:
+              json.dump(summary, f, indent=2)
+          
+          print(f'## MCP Server Test Summary')
+          print(f'- **Total Tests**: {total}')
+          print(f'- **Passed**: {passed}')
+          print(f'- **Failed**: {failed}')
+          print(f'- **Errors**: {errors}')
+          print(f'- **Success Rate**: {summary[\"success_rate\"]}%')
+          "
+      
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('comprehensive_report.json', 'utf8'));
+            
+            const comment = `## 🧪 MCP Server Test Results
+            
+            | Metric | Value |
+            |--------|-------|
+            | Total Tests | ${report.total_tests} |
+            | ✅ Passed | ${report.passed} |
+            | ❌ Failed | ${report.failed} |
+            | ⚠️ Errors | ${report.errors} |
+            | Success Rate | ${report.success_rate}% |
+            
+            ### Test Matrix Results
+            - Python versions: 3.11, 3.12
+            - Node.js versions: 18, 20
+            - Powered by Dagger Cloud ☁️
+            
+            <details>
+            <summary>View detailed results</summary>
+            
+            \`\`\`json
+            ${JSON.stringify(report.results.slice(0, 10), null, 2)}
+            \`\`\`
+            
+            </details>
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+      
+      - name: Upload comprehensive report
+        uses: actions/upload-artifact@v3
+        with:
+          name: comprehensive-test-report
+          path: comprehensive_report.json
+          retention-days: 90 
