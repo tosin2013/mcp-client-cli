@@ -1,3 +1,9 @@
+---
+layout: page
+title: Setup Summary
+description: Summary of the documentation setup and configuration
+---
+
 # 🎉 MCP-Client-CLI Documentation Setup Complete!
 
 ## ✅ What's Been Accomplished

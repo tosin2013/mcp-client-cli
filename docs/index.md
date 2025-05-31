@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: home
 title: MCP-Client-CLI Technical Documentation
 description: Comprehensive guide for testing and validating MCP servers
 ---

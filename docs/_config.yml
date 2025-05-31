@@ -6,7 +6,7 @@ baseurl: "/mcp-client-cli"
 # Build settings
 markdown: kramdown
 highlighter: rouge
-theme: minima
+remote_theme: jekyll/minima
 
 # GitHub Pages specific
 repository: tosin2013/mcp-client-cli
@@ -14,6 +14,7 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jekyll-remote-theme
 
 # Navigation structure
 navigation:

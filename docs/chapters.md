@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Chapters
 description: Complete list of all chapters in the MCP-Client-CLI Technical Documentation
 ---
