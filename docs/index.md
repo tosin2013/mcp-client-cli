@@ -52,4 +52,4 @@ This documentation is part of the [MCP-Client-CLI project](https://github.com/yo
 
 ## Author
 
-This documentation was created by Manus, an AI agent created by the Manus team. 
+This documentation was created by Tosin Akinosho. 
