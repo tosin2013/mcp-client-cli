@@ -1,0 +1,103 @@
+---
+layout: default
+---
+
+<article class="chapter">
+    <header class="chapter-header">
+        <h1 class="chapter-title">{{ page.title }}</h1>
+        {% if page.description %}
+        <p class="chapter-description">{{ page.description }}</p>
+        {% endif %}
+        
+        <div class="chapter-meta">
+            <span class="chapter-number">Chapter {{ page.chapter_number }}</span>
+        </div>
+    </header>
+
+    <nav class="chapter-nav">
+        {% assign sorted_chapters = site.chapters | sort: 'chapter_number' %}
+        {% assign current_index = 0 %}
+        {% for chapter in sorted_chapters %}
+            {% if chapter.chapter_number == page.chapter_number %}
+                {% assign current_index = forloop.index0 %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
+        
+        <div class="nav-links">
+            {% if current_index > 0 %}
+                {% assign prev_index = current_index | minus: 1 %}
+                {% for chapter in sorted_chapters %}
+                    {% if forloop.index0 == prev_index %}
+                        {% assign prev_chapter = chapter %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ prev_chapter.url | relative_url }}" class="nav-link prev">
+                    ← Previous: {{ prev_chapter.title }}
+                </a>
+            {% endif %}
+            
+            {% assign next_index = current_index | plus: 1 %}
+            {% if next_index < sorted_chapters.size %}
+                {% for chapter in sorted_chapters %}
+                    {% if forloop.index0 == next_index %}
+                        {% assign next_chapter = chapter %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ next_chapter.url | relative_url }}" class="nav-link next">
+                    Next: {{ next_chapter.title }} →
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="chapter-content">
+        {{ content }}
+    </div>
+
+    <nav class="chapter-nav bottom">
+        <div class="nav-links">
+            {% if current_index > 0 %}
+                {% assign prev_index = current_index | minus: 1 %}
+                {% for chapter in sorted_chapters %}
+                    {% if forloop.index0 == prev_index %}
+                        {% assign prev_chapter = chapter %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ prev_chapter.url | relative_url }}" class="nav-link prev">
+                    ← Previous: {{ prev_chapter.title }}
+                </a>
+            {% endif %}
+            
+            {% assign next_index = current_index | plus: 1 %}
+            {% if next_index < sorted_chapters.size %}
+                {% for chapter in sorted_chapters %}
+                    {% if forloop.index0 == next_index %}
+                        {% assign next_chapter = chapter %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ next_chapter.url | relative_url }}" class="nav-link next">
+                    Next: {{ next_chapter.title }} →
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+</article>
+
+<aside class="chapter-sidebar">
+    <h3>All Chapters</h3>
+    <ol class="chapter-list">
+        {% for chapter in sorted_chapters %}
+        <li class="{% if chapter.chapter_number == page.chapter_number %}current{% endif %}">
+            <a href="{{ chapter.url | relative_url }}">
+                <span class="chapter-number">{{ chapter.chapter_number }}.</span>
+                <span class="chapter-title">{{ chapter.title }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ol>
+</aside> 

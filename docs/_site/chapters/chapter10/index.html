@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting and Best Practices | MCP-Client-CLI Technical Documentation</title>
+    <meta name="description" content="Common issues, debugging techniques, and best practices">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/style.css">
+    
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/syntax.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/mcp-client-cli/assets/favicon.ico">
+    
+    <!-- SEO -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Troubleshooting and Best Practices | MCP-Client-CLI Technical Documentation</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Troubleshooting and Best Practices" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Common issues, debugging techniques, and best practices" />
+<meta property="og:description" content="Common issues, debugging techniques, and best practices" />
+<link rel="canonical" href="https://tosin2013.github.io/mcp-client-cli/chapters/chapter10/" />
+<meta property="og:url" content="https://tosin2013.github.io/mcp-client-cli/chapters/chapter10/" />
+<meta property="og:site_name" content="MCP-Client-CLI Technical Documentation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-05-31T10:22:14-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Troubleshooting and Best Practices" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-05-31T10:22:14-04:00","datePublished":"2025-05-31T10:22:14-04:00","description":"Common issues, debugging techniques, and best practices","headline":"Troubleshooting and Best Practices","mainEntityOfPage":{"@type":"WebPage","@id":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter10/"},"url":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter10/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="/mcp-client-cli/">MCP-Client-CLI Technical Documentation</a>
+            
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="/mcp-client-cli/">Home</a>
+                    <a class="page-link" href="/mcp-client-cli/chapters/">Chapters</a>
+                    <a class="page-link" href="https://github.com/tosin2013/mcp-client-cli">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="chapter">
+    <header class="chapter-header">
+        <h1 class="chapter-title">Troubleshooting and Best Practices</h1>
+        
+        <p class="chapter-description">Common issues, debugging techniques, and best practices</p>
+        
+        
+        <div class="chapter-meta">
+            <span class="chapter-number">Chapter 10</span>
+        </div>
+    </header>
+
+    <nav class="chapter-nav">
+        
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                
+                
+        
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter9/" class="nav-link prev">
+                    ← Previous: Multi-Language Testing
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter11/" class="nav-link next">
+                    Next: Case Studies and Real-World Examples →
+                </a>
+            
+        </div>
+    </nav>
+
+    <div class="chapter-content">
+        <h1 id="chapter-10-troubleshooting-and-best-practices">Chapter 10: Troubleshooting and Best Practices</h1>
+
+<h2 id="common-issues-and-solutions">Common Issues and Solutions</h2>
+
+<p>When testing MCP servers with the mcp-client-cli, you may encounter various issues. Understanding these common problems and their solutions can significantly streamline your testing process.</p>
+
+<h3 id="connection-issues">Connection Issues</h3>
+
+<p>One of the most frequent challenges is establishing a connection with the MCP server.</p>
+
+<h4 id="symptoms">Symptoms</h4>
+<ul>
+  <li>“Connection refused” errors</li>
+  <li>Timeout during connection attempts</li>
+  <li>Server process starts but client cannot connect</li>
+</ul>
+
+<h4 id="solutions">Solutions</h4>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, several approaches can resolve connection issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check if the server is running</span>
+ps aux | <span class="nb">grep </span>server
+
+<span class="c"># Verify the server command and arguments</span>
+mcp-test validate-config <span class="nt">--server-name</span> your-server
+
+<span class="c"># Increase connection timeout</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--connection-timeout</span> 30
+
+<span class="c"># Try alternative connection methods</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--connection-method</span> http
+</code></pre></div></div>
+
+<p>For servers that bind to specific addresses, ensure they’re configured to listen on <code class="language-plaintext highlighter-rouge">0.0.0.0</code> (all interfaces) rather than just <code class="language-plaintext highlighter-rouge">localhost</code> or <code class="language-plaintext highlighter-rouge">127.0.0.1</code>, as noted in the <a href="https://modelcontextprotocol.io/specification/2025-03-26">official MCP documentation</a>.</p>
+
+<h4 id="advanced-troubleshooting">Advanced Troubleshooting</h4>
+
+<p>For persistent connection issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Enable debug logging</span>
+<span class="nb">export </span><span class="nv">MCP_DEBUG</span><span class="o">=</span><span class="nb">true
+</span>mcp-test test-server <span class="nt">--server-name</span> your-server
+
+<span class="c"># Capture server output</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--capture-server-output</span> server-output.log
+
+<span class="c"># Test with minimal configuration</span>
+mcp-test test-server <span class="nt">--command</span> <span class="s2">"python minimal_server.py"</span> <span class="nt">--skip-discovery</span>
+</code></pre></div></div>
+
+<p>These approaches provide additional information to identify the root cause of connection problems.</p>
+
+<h3 id="tool-execution-failures">Tool Execution Failures</h3>
+
+<p>Another common issue category involves failures during tool execution.</p>
+
+<h4 id="symptoms-1">Symptoms</h4>
+<ul>
+  <li>Tool calls return errors</li>
+  <li>Unexpected tool behavior</li>
+  <li>Missing or incorrect results</li>
+</ul>
+
+<h4 id="solutions-1">Solutions</h4>
+
+<p>As described in the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, several approaches can address tool execution issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test a specific tool with simple parameters</span>
+mcp-test test-tool <span class="nt">--server-name</span> your-server <span class="nt">--tool-name</span> <span class="nb">echo</span> <span class="nt">--parameters</span> <span class="s1">'{"message": "test"}'</span>
+
+<span class="c"># Validate tool parameters</span>
+mcp-test validate-tool-schema <span class="nt">--server-name</span> your-server <span class="nt">--tool-name</span> file_read
+
+<span class="c"># Check tool implementation</span>
+mcp-test inspect-tool <span class="nt">--server-name</span> your-server <span class="nt">--tool-name</span> file_read
+</code></pre></div></div>
+
+<p>For tools that interact with external systems, verify that the necessary credentials and connections are properly configured:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test external connectivity</span>
+mcp-test test-external-connectivity <span class="nt">--server-name</span> your-server
+
+<span class="c"># Validate credentials</span>
+mcp-test validate-credentials <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<h4 id="advanced-troubleshooting-1">Advanced Troubleshooting</h4>
+
+<p>For complex tool execution issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Enable tool tracing</span>
+mcp-test test-tool <span class="nt">--server-name</span> your-server <span class="nt">--tool-name</span> complex_tool <span class="nt">--trace-execution</span>
+
+<span class="c"># Analyze tool performance</span>
+mcp-test analyze-tool <span class="nt">--server-name</span> your-server <span class="nt">--tool-name</span> complex_tool
+
+<span class="c"># Compare with reference implementation</span>
+mcp-test compare-tool <span class="nt">--server-name</span> your-server <span class="nt">--reference-server</span> reference-server <span class="nt">--tool-name</span> complex_tool
+</code></pre></div></div>
+
+<p>These approaches provide deeper insights into tool execution problems.</p>
+
+<h3 id="performance-issues">Performance Issues</h3>
+
+<p>Performance problems can significantly impact the usability of MCP servers.</p>
+
+<h4 id="symptoms-2">Symptoms</h4>
+<ul>
+  <li>Slow response times</li>
+  <li>High resource utilization</li>
+  <li>Degraded performance under load</li>
+  <li>Memory leaks</li>
+</ul>
+
+<h4 id="solutions-2">Solutions</h4>
+
+<p>According to <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp">Anthropic’s MCP documentation</a>, several approaches can address performance issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Profile server performance</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--profile</span>
+
+<span class="c"># Identify bottlenecks</span>
+mcp-test analyze-performance <span class="nt">--server-name</span> your-server <span class="nt">--output</span> performance-analysis.html
+
+<span class="c"># Test with different load levels</span>
+mcp-test load-test <span class="nt">--server-name</span> your-server <span class="nt">--concurrent-connections</span> 10,20,50,100
+</code></pre></div></div>
+
+<p>For memory-related issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Monitor memory usage</span>
+mcp-test monitor-resources <span class="nt">--server-name</span> your-server <span class="nt">--duration</span> 300
+
+<span class="c"># Check for memory leaks</span>
+mcp-test memory-leak-detection <span class="nt">--server-name</span> your-server <span class="nt">--iterations</span> 100
+
+<span class="c"># Analyze heap usage</span>
+mcp-test heap-analysis <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<h4 id="advanced-troubleshooting-2">Advanced Troubleshooting</h4>
+
+<p>For persistent performance issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Compare with baseline performance</span>
+mcp-test compare-performance <span class="nt">--server-name</span> your-server <span class="nt">--baseline-data</span> baseline-performance.json
+
+<span class="c"># Analyze performance trends</span>
+mcp-test performance-trends <span class="nt">--server-name</span> your-server <span class="nt">--days</span> 30
+
+<span class="c"># Generate optimization recommendations</span>
+mcp-test suggest-optimizations <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>These approaches help identify and address the root causes of performance problems.</p>
+
+<h3 id="security-test-failures">Security Test Failures</h3>
+
+<p>Security test failures indicate potential vulnerabilities in your MCP server.</p>
+
+<h4 id="symptoms-3">Symptoms</h4>
+<ul>
+  <li>Failed authentication tests</li>
+  <li>Input validation vulnerabilities</li>
+  <li>Authorization bypasses</li>
+  <li>Data protection issues</li>
+</ul>
+
+<h4 id="solutions-3">Solutions</h4>
+
+<p>As noted in the <a href="https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html">Spring AI Reference documentation</a>, several approaches can address security issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Identify specific security issues</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--detailed-report</span>
+
+<span class="c"># Test specific security categories</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--category</span> authentication
+
+<span class="c"># Validate security fixes</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--retest-failed</span>
+</code></pre></div></div>
+
+<p>For authentication issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test authentication mechanisms</span>
+mcp-test auth-testing <span class="nt">--server-name</span> your-server
+
+<span class="c"># Validate credential handling</span>
+mcp-test credential-validation <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<h4 id="advanced-troubleshooting-3">Advanced Troubleshooting</h4>
+
+<p>For complex security issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Perform penetration testing</span>
+mcp-test security-pentest <span class="nt">--server-name</span> your-server
+
+<span class="c"># Analyze attack surface</span>
+mcp-test attack-surface-analysis <span class="nt">--server-name</span> your-server
+
+<span class="c"># Generate security recommendations</span>
+mcp-test security-recommendations <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>These approaches help identify and address security vulnerabilities in your MCP server.</p>
+
+<h3 id="configuration-issues">Configuration Issues</h3>
+
+<p>Incorrect configuration can cause various problems in MCP server testing.</p>
+
+<h4 id="symptoms-4">Symptoms</h4>
+<ul>
+  <li>Configuration validation errors</li>
+  <li>Unexpected server behavior</li>
+  <li>Missing or incorrect environment variables</li>
+  <li>Path-related issues</li>
+</ul>
+
+<h4 id="solutions-4">Solutions</h4>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/CONFIG.md">CONFIG.md</a> documentation, several approaches can address configuration issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate configuration</span>
+mcp-test validate-config <span class="nt">--config</span> your-config.json
+
+<span class="c"># Generate a default configuration</span>
+mcp-test generate-config <span class="nt">--server-command</span> <span class="s2">"python server.py"</span> <span class="nt">--output</span> default-config.json
+
+<span class="c"># Test with minimal configuration</span>
+mcp-test test-server <span class="nt">--minimal-config</span> <span class="nt">--command</span> <span class="s2">"python server.py"</span>
+</code></pre></div></div>
+
+<p>For environment-related issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check environment variables</span>
+mcp-test check-environment <span class="nt">--server-name</span> your-server
+
+<span class="c"># Test with explicit environment</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--env-file</span> .env
+</code></pre></div></div>
+
+<h4 id="advanced-troubleshooting-4">Advanced Troubleshooting</h4>
+
+<p>For persistent configuration issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Compare with reference configuration</span>
+mcp-test compare-config <span class="nt">--config</span> your-config.json <span class="nt">--reference-config</span> reference-config.json
+
+<span class="c"># Analyze configuration history</span>
+mcp-test config-history <span class="nt">--server-name</span> your-server
+
+<span class="c"># Generate configuration recommendations</span>
+mcp-test suggest-config <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>These approaches help identify and address configuration problems.</p>
+
+<h2 id="performance-optimization">Performance Optimization</h2>
+
+<p>Optimizing the performance of your MCP server is essential for providing a good user experience. The mcp-client-cli includes several features to help identify optimization opportunities and validate their effectiveness.</p>
+
+<h3 id="performance-benchmarking">Performance Benchmarking</h3>
+
+<p>Before optimizing, establish a performance baseline:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run performance benchmarks</span>
+mcp-test benchmark <span class="nt">--server-name</span> your-server <span class="nt">--output</span> baseline-performance.json
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, this benchmarking measures:</p>
+
+<ol>
+  <li><strong>Response Time</strong>: How quickly the server responds to requests</li>
+  <li><strong>Throughput</strong>: How many requests the server can handle per second</li>
+  <li><strong>Resource Usage</strong>: CPU, memory, and I/O utilization</li>
+  <li><strong>Concurrency Handling</strong>: Performance under multiple simultaneous connections</li>
+  <li><strong>Stability</strong>: Behavior during extended operation</li>
+</ol>
+
+<p>These metrics provide a foundation for targeted optimization efforts.</p>
+
+<h3 id="identifying-bottlenecks">Identifying Bottlenecks</h3>
+
+<p>To identify performance bottlenecks:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Analyze performance bottlenecks</span>
+mcp-test analyze-bottlenecks <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>This analysis identifies:</p>
+
+<ol>
+  <li><strong>CPU Bottlenecks</strong>: Excessive processor utilization</li>
+  <li><strong>Memory Bottlenecks</strong>: Inefficient memory usage or leaks</li>
+  <li><strong>I/O Bottlenecks</strong>: Slow disk or network operations</li>
+  <li><strong>Concurrency Bottlenecks</strong>: Limitations in handling multiple connections</li>
+  <li><strong>External Bottlenecks</strong>: Delays caused by external dependencies</li>
+</ol>
+
+<p>Understanding these bottlenecks helps focus optimization efforts on the most impactful areas.</p>
+
+<h3 id="optimization-strategies">Optimization Strategies</h3>
+
+<p>Based on identified bottlenecks, several optimization strategies may apply:</p>
+
+<h4 id="cpu-optimization">CPU Optimization</h4>
+
+<p>For CPU-bound operations:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test CPU optimization opportunities</span>
+mcp-test optimize-cpu <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, this testing suggests:</p>
+
+<ol>
+  <li><strong>Algorithm Improvements</strong>: More efficient algorithms for computation</li>
+  <li><strong>Caching</strong>: Storing and reusing computation results</li>
+  <li><strong>Parallelization</strong>: Distributing work across multiple cores</li>
+  <li><strong>Language-Specific Optimizations</strong>: Using language features for better performance</li>
+  <li><strong>Native Code</strong>: Using compiled code for performance-critical sections</li>
+</ol>
+
+<p>These strategies can significantly improve performance for CPU-bound operations.</p>
+
+<h4 id="memory-optimization">Memory Optimization</h4>
+
+<p>For memory-related issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test memory optimization opportunities</span>
+mcp-test optimize-memory <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>This testing suggests:</p>
+
+<ol>
+  <li><strong>Resource Pooling</strong>: Reusing objects instead of creating new ones</li>
+  <li><strong>Memory Management</strong>: Improving allocation and deallocation patterns</li>
+  <li><strong>Data Structure Selection</strong>: Using appropriate data structures</li>
+  <li><strong>Garbage Collection Tuning</strong>: Optimizing garbage collection behavior</li>
+  <li><strong>Memory Leak Prevention</strong>: Identifying and fixing memory leaks</li>
+</ol>
+
+<p>These strategies can reduce memory usage and improve stability.</p>
+
+<h4 id="io-optimization">I/O Optimization</h4>
+
+<p>For I/O-bound operations:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test I/O optimization opportunities</span>
+mcp-test optimize-io <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>This testing suggests:</p>
+
+<ol>
+  <li><strong>Asynchronous I/O</strong>: Using non-blocking I/O operations</li>
+  <li><strong>Connection Pooling</strong>: Reusing connections to external systems</li>
+  <li><strong>Batching</strong>: Combining multiple operations</li>
+  <li><strong>Caching</strong>: Storing and reusing results of I/O operations</li>
+  <li><strong>Compression</strong>: Reducing data transfer sizes</li>
+</ol>
+
+<p>These strategies can significantly improve performance for I/O-bound operations.</p>
+
+<h4 id="concurrency-optimization">Concurrency Optimization</h4>
+
+<p>For concurrency-related issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test concurrency optimization opportunities</span>
+mcp-test optimize-concurrency <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>This testing suggests:</p>
+
+<ol>
+  <li><strong>Connection Handling</strong>: Improving connection management</li>
+  <li><strong>Thread/Process Management</strong>: Optimizing worker allocation</li>
+  <li><strong>Synchronization</strong>: Reducing contention for shared resources</li>
+  <li><strong>Load Balancing</strong>: Distributing work evenly</li>
+  <li><strong>Backpressure Mechanisms</strong>: Handling overload conditions gracefully</li>
+</ol>
+
+<p>These strategies can improve performance under concurrent load.</p>
+
+<h3 id="validating-optimizations">Validating Optimizations</h3>
+
+<p>After implementing optimizations, validate their effectiveness:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Compare performance before and after optimization</span>
+mcp-test compare-performance <span class="nt">--server-name</span> optimized-server <span class="nt">--baseline-data</span> baseline-performance.json
+</code></pre></div></div>
+
+<p>According to <a href="https://www.philschmid.de/mcp-introduction">Philipp Schmid’s MCP overview</a>, this comparison should verify:</p>
+
+<ol>
+  <li><strong>Measurable Improvement</strong>: Confirming that optimizations provide real benefits</li>
+  <li><strong>No Regressions</strong>: Ensuring that optimizations don’t negatively impact other aspects</li>
+  <li><strong>Stability</strong>: Verifying that optimizations don’t introduce instability</li>
+  <li><strong>Resource Efficiency</strong>: Confirming improved resource utilization</li>
+  <li><strong>Scalability</strong>: Validating performance under increasing load</li>
+</ol>
+
+<p>This validation ensures that optimization efforts yield meaningful improvements.</p>
+
+<h2 id="security-best-practices">Security Best Practices</h2>
+
+<p>Security is a critical aspect of MCP server implementation. The mcp-client-cli helps validate adherence to security best practices and identify potential vulnerabilities.</p>
+
+<h3 id="authentication-best-practices">Authentication Best Practices</h3>
+
+<p>For secure authentication:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate authentication best practices</span>
+mcp-test security-best-practices <span class="nt">--category</span> authentication
+</code></pre></div></div>
+
+<p>According to the <a href="https://modelcontextprotocol.io/specification/2025-03-26">official MCP specification</a>, this validation checks:</p>
+
+<ol>
+  <li><strong>Strong Authentication</strong>: Using robust authentication mechanisms</li>
+  <li><strong>Credential Management</strong>: Properly handling and storing credentials</li>
+  <li><strong>Token Security</strong>: Implementing secure token handling</li>
+  <li><strong>Session Management</strong>: Properly managing user sessions</li>
+  <li><strong>Multi-Factor Support</strong>: Supporting additional authentication factors when appropriate</li>
+</ol>
+
+<p>These practices help ensure that only authorized users can access your MCP server.</p>
+
+<h3 id="input-validation-best-practices">Input Validation Best Practices</h3>
+
+<p>For secure input handling:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate input validation best practices</span>
+mcp-test security-best-practices <span class="nt">--category</span> input-validation
+</code></pre></div></div>
+
+<p>This validation checks:</p>
+
+<ol>
+  <li><strong>Schema Validation</strong>: Properly validating input against schemas</li>
+  <li><strong>Type Checking</strong>: Ensuring inputs have the correct types</li>
+  <li><strong>Sanitization</strong>: Cleaning potentially dangerous inputs</li>
+  <li><strong>Boundary Checking</strong>: Validating that inputs are within acceptable ranges</li>
+  <li><strong>Rejection Handling</strong>: Properly handling invalid inputs</li>
+</ol>
+
+<p>These practices help protect against injection attacks and other input-based vulnerabilities.</p>
+
+<h3 id="authorization-best-practices">Authorization Best Practices</h3>
+
+<p>For secure authorization:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate authorization best practices</span>
+mcp-test security-best-practices <span class="nt">--category</span> authorization
+</code></pre></div></div>
+
+<p>This validation checks:</p>
+
+<ol>
+  <li><strong>Access Control</strong>: Properly restricting access to resources</li>
+  <li><strong>Principle of Least Privilege</strong>: Granting minimal necessary permissions</li>
+  <li><strong>Permission Checking</strong>: Validating permissions before operations</li>
+  <li><strong>Separation of Duties</strong>: Requiring multiple approvals for sensitive operations</li>
+  <li><strong>Audit Logging</strong>: Recording access and authorization decisions</li>
+</ol>
+
+<p>These practices help ensure that users can only access appropriate resources.</p>
+
+<h3 id="data-protection-best-practices">Data Protection Best Practices</h3>
+
+<p>For secure data handling:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate data protection best practices</span>
+mcp-test security-best-practices <span class="nt">--category</span> data-protection
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, this validation checks:</p>
+
+<ol>
+  <li><strong>Encryption</strong>: Properly encrypting sensitive data</li>
+  <li><strong>Data Minimization</strong>: Collecting and storing only necessary data</li>
+  <li><strong>Secure Transmission</strong>: Protecting data during transmission</li>
+  <li><strong>Secure Storage</strong>: Safely storing sensitive information</li>
+  <li><strong>Data Lifecycle Management</strong>: Properly handling data throughout its lifecycle</li>
+</ol>
+
+<p>These practices help protect sensitive information from unauthorized access.</p>
+
+<h3 id="error-handling-best-practices">Error Handling Best Practices</h3>
+
+<p>For secure error handling:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate error handling best practices</span>
+mcp-test security-best-practices <span class="nt">--category</span> error-handling
+</code></pre></div></div>
+
+<p>This validation checks:</p>
+
+<ol>
+  <li><strong>Information Leakage Prevention</strong>: Avoiding disclosure of sensitive information in errors</li>
+  <li><strong>Consistent Error Responses</strong>: Providing uniform error formats</li>
+  <li><strong>Appropriate Detail Level</strong>: Including necessary information without oversharing</li>
+  <li><strong>Error Logging</strong>: Properly recording errors for analysis</li>
+  <li><strong>Graceful Degradation</strong>: Maintaining functionality during partial failures</li>
+</ol>
+
+<p>These practices help prevent security issues related to error handling.</p>
+
+<h3 id="security-testing-integration">Security Testing Integration</h3>
+
+<p>To maintain security over time, integrate security testing into your development workflow:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate security testing workflow</span>
+mcp-test generate-security-workflow <span class="nt">--output</span> security-workflow.yml
+</code></pre></div></div>
+
+<p>According to <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp">Anthropic’s MCP documentation</a>, this integration should include:</p>
+
+<ol>
+  <li><strong>Regular Testing</strong>: Scheduled security tests</li>
+  <li><strong>Pre-Deployment Validation</strong>: Security testing before deployment</li>
+  <li><strong>Dependency Scanning</strong>: Checking for vulnerabilities in dependencies</li>
+  <li><strong>Code Analysis</strong>: Static analysis for security issues</li>
+  <li><strong>Penetration Testing</strong>: Simulated attacks to identify vulnerabilities</li>
+</ol>
+
+<p>This integration helps maintain security as your MCP server evolves.</p>
+
+<h2 id="testing-strategies">Testing Strategies</h2>
+
+<p>Effective testing requires a strategic approach that balances thoroughness with efficiency. The mcp-client-cli supports several testing strategies to meet different needs.</p>
+
+<h3 id="comprehensive-testing">Comprehensive Testing</h3>
+
+<p>For thorough validation before major releases:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run comprehensive testing</span>
+mcp-test run-suite <span class="nt">--suite-name</span> comprehensive <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, comprehensive testing includes:</p>
+
+<ol>
+  <li><strong>Complete Functional Testing</strong>: Validating all tools and features</li>
+  <li><strong>Security Testing</strong>: Checking for vulnerabilities</li>
+  <li><strong>Performance Testing</strong>: Evaluating efficiency and scalability</li>
+  <li><strong>Compatibility Testing</strong>: Verifying interoperability</li>
+  <li><strong>Edge Case Testing</strong>: Validating behavior in unusual scenarios</li>
+</ol>
+
+<p>This approach provides thorough validation but may require significant time and resources.</p>
+
+<h3 id="risk-based-testing">Risk-Based Testing</h3>
+
+<p>For focused testing based on risk assessment:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run risk-based testing</span>
+mcp-test risk-based <span class="nt">--server-name</span> your-server <span class="nt">--risk-assessment</span> risk-assessment.json
+</code></pre></div></div>
+
+<p>The risk assessment file defines testing priorities:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"high_risk_areas"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"area"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authentication"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Security-critical functionality"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_depth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comprehensive"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"area"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file_operations"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Access to sensitive data"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_depth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"comprehensive"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"medium_risk_areas"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"area"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_processing"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Complex business logic"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_depth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"standard"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"low_risk_areas"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"area"</span><span class="p">:</span><span class="w"> </span><span class="s2">"utility_functions"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Simple, well-tested functionality"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_depth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"basic"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This approach focuses testing efforts on the highest-risk areas, optimizing resource utilization.</p>
+
+<h3 id="regression-testing">Regression Testing</h3>
+
+<p>To ensure that previously fixed issues don’t recur:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run regression testing</span>
+mcp-test regression <span class="nt">--server-name</span> your-server <span class="nt">--fixed-issues</span> fixed-issues.json
+</code></pre></div></div>
+
+<p>The fixed issues file defines tests for previously identified issues:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"fixed_issues"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"issue-123"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Authentication bypass in token validation"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_case"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authenticate"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"expired_token"</span><span class="p">},</span><span class="w">
+        </span><span class="nl">"expected_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"expected_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid_token"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"issue-456"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Memory leak in file processing"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_case"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"process_file"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"large_file.txt"</span><span class="p">},</span><span class="w">
+        </span><span class="nl">"memory_check"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"max_memory_increase_mb"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This approach ensures that fixed issues remain fixed, preventing regressions.</p>
+
+<h3 id="continuous-testing">Continuous Testing</h3>
+
+<p>For ongoing validation during development:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set up continuous testing</span>
+mcp-test setup-continuous <span class="nt">--server-name</span> your-server <span class="nt">--watch-dirs</span> src,tests
+</code></pre></div></div>
+
+<p>According to the <a href="https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html">Spring AI Reference documentation</a>, continuous testing:</p>
+
+<ol>
+  <li><strong>Monitors Changes</strong>: Detecting modifications to source code</li>
+  <li><strong>Runs Relevant Tests</strong>: Executing tests affected by changes</li>
+  <li><strong>Provides Quick Feedback</strong>: Notifying developers of issues</li>
+  <li><strong>Maintains History</strong>: Tracking test results over time</li>
+  <li><strong>Identifies Trends</strong>: Highlighting patterns in test outcomes</li>
+</ol>
+
+<p>This approach provides rapid feedback during development, helping identify issues early.</p>
+
+<h3 id="ab-testing">A/B Testing</h3>
+
+<p>To compare different implementations or configurations:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run A/B testing</span>
+mcp-test compare-implementations <span class="nt">--implementation-a</span> server-a <span class="nt">--implementation-b</span> server-b
+</code></pre></div></div>
+
+<p>This testing compares:</p>
+
+<ol>
+  <li><strong>Functionality</strong>: Ensuring consistent behavior</li>
+  <li><strong>Performance</strong>: Comparing efficiency</li>
+  <li><strong>Resource Usage</strong>: Evaluating resource requirements</li>
+  <li><strong>Error Handling</strong>: Comparing error responses</li>
+  <li><strong>Compatibility</strong>: Assessing interoperability</li>
+</ol>
+
+<p>This approach helps identify the optimal implementation or configuration for your needs.</p>
+
+<h2 id="community-resources-and-support">Community Resources and Support</h2>
+
+<p>The MCP ecosystem includes a vibrant community that provides resources and support for MCP server testing. The mcp-client-cli helps you connect with and leverage these community resources.</p>
+
+<h3 id="documentation-resources">Documentation Resources</h3>
+
+<p>To access documentation resources:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List documentation resources</span>
+mcp-test list-resources <span class="nt">--category</span> documentation
+
+<span class="c"># Open specific documentation</span>
+mcp-test open-resource <span class="nt">--resource</span> mcp-specification
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/DOCUMENTATION_INDEX.md">DOCUMENTATION_INDEX.md</a>, key documentation resources include:</p>
+
+<ol>
+  <li><strong>MCP Specification</strong>: The official protocol specification</li>
+  <li><strong>Implementation Guides</strong>: Language-specific implementation guidance</li>
+  <li><strong>Testing Documentation</strong>: Comprehensive testing guidance</li>
+  <li><strong>Best Practices</strong>: Recommended approaches for MCP servers</li>
+  <li><strong>Troubleshooting Guides</strong>: Solutions for common issues</li>
+</ol>
+
+<p>These resources provide valuable information for MCP server development and testing.</p>
+
+<h3 id="community-forums">Community Forums</h3>
+
+<p>To connect with the MCP community:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List community forums</span>
+mcp-test list-resources <span class="nt">--category</span> community
+
+<span class="c"># Open specific forum</span>
+mcp-test open-resource <span class="nt">--resource</span> mcp-github-discussions
+</code></pre></div></div>
+
+<p>Key community forums include:</p>
+
+<ol>
+  <li><strong>GitHub Discussions</strong>: Discussion forums on GitHub repositories</li>
+  <li><strong>Discord Channels</strong>: Real-time chat for MCP developers</li>
+  <li><strong>Reddit Communities</strong>: Subreddits focused on MCP and related technologies</li>
+  <li><strong>Stack Overflow</strong>: Questions and answers tagged with MCP-related tags</li>
+  <li><strong>Twitter Communities</strong>: Social media discussions about MCP</li>
+</ol>
+
+<p>These forums provide opportunities to ask questions, share experiences, and learn from others.</p>
+
+<h3 id="example-repositories">Example Repositories</h3>
+
+<p>To explore example MCP server implementations:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List example repositories</span>
+mcp-test list-resources <span class="nt">--category</span> examples
+
+<span class="c"># Clone specific example</span>
+mcp-test clone-example <span class="nt">--example</span> python-mcp-server
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, example repositories include:</p>
+
+<ol>
+  <li><strong>Reference Implementations</strong>: Official reference implementations</li>
+  <li><strong>Language-Specific Examples</strong>: Examples in various programming languages</li>
+  <li><strong>Feature Demonstrations</strong>: Examples showcasing specific features</li>
+  <li><strong>Testing Examples</strong>: Repositories demonstrating testing approaches</li>
+  <li><strong>Integration Examples</strong>: Examples of MCP integration with other systems</li>
+</ol>
+
+<p>These examples provide valuable reference implementations and patterns.</p>
+
+<h3 id="tool-ecosystem">Tool Ecosystem</h3>
+
+<p>To explore the broader MCP tool ecosystem:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List related tools</span>
+mcp-test list-resources <span class="nt">--category</span> tools
+
+<span class="c"># Install specific tool</span>
+mcp-test install-tool <span class="nt">--tool</span> mcp-server-generator
+</code></pre></div></div>
+
+<p>Related tools include:</p>
+
+<ol>
+  <li><strong>MCP Server Generators</strong>: Tools for generating server scaffolding</li>
+  <li><strong>Client Libraries</strong>: Libraries for implementing MCP clients</li>
+  <li><strong>Testing Tools</strong>: Additional testing utilities</li>
+  <li><strong>Monitoring Tools</strong>: Tools for monitoring MCP servers</li>
+  <li><strong>Integration Adapters</strong>: Tools for integrating MCP with other systems</li>
+</ol>
+
+<p>These tools can enhance your MCP development and testing workflow.</p>
+
+<h3 id="contributing-to-the-community">Contributing to the Community</h3>
+
+<p>To contribute to the MCP community:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List contribution opportunities</span>
+mcp-test list-resources <span class="nt">--category</span> contributing
+
+<span class="c"># Open contribution guide</span>
+mcp-test open-resource <span class="nt">--resource</span> contribution-guide
+</code></pre></div></div>
+
+<p>According to the <a href="https://modelcontextprotocol.io/introduction">official MCP documentation</a>, contribution opportunities include:</p>
+
+<ol>
+  <li><strong>Protocol Development</strong>: Contributing to the MCP specification</li>
+  <li><strong>Tool Development</strong>: Enhancing testing and development tools</li>
+  <li><strong>Documentation</strong>: Improving guides and references</li>
+  <li><strong>Example Creation</strong>: Developing reference implementations</li>
+  <li><strong>Community Support</strong>: Helping others in forums and discussions</li>
+</ol>
+
+<p>These contributions help strengthen the MCP ecosystem for everyone.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This chapter has explored troubleshooting approaches, performance optimization strategies, security best practices, testing strategies, and community resources for MCP server testing. By applying these techniques and leveraging the mcp-client-cli’s capabilities, you can effectively address common issues, optimize performance, enhance security, implement effective testing strategies, and connect with the broader MCP community.</p>
+
+<p>Remember that effective testing is an ongoing process that evolves with your MCP server implementation. Regularly revisiting these practices and staying connected with the community will help ensure that your MCP servers remain functional, secure, and performant over time.</p>
+
+<p>In the next chapter, we’ll explore case studies and real-world examples that demonstrate these principles in action, providing concrete illustrations of effective MCP server testing in various scenarios.</p>
+
+    </div>
+
+    <nav class="chapter-nav bottom">
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter9/" class="nav-link prev">
+                    ← Previous: Multi-Language Testing
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter11/" class="nav-link next">
+                    Next: Case Studies and Real-World Examples →
+                </a>
+            
+        </div>
+    </nav>
+</article>
+
+<aside class="chapter-sidebar">
+    <h3>All Chapters</h3>
+    <ol class="chapter-list">
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter1/">
+                <span class="chapter-number">1.</span>
+                <span class="chapter-title">Introduction to MCP and the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter2/">
+                <span class="chapter-number">2.</span>
+                <span class="chapter-title">Understanding the Model Context Protocol</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter3/">
+                <span class="chapter-number">3.</span>
+                <span class="chapter-title">Setting Up the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter4/">
+                <span class="chapter-number">4.</span>
+                <span class="chapter-title">Basic Usage and Commands</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter5/">
+                <span class="chapter-number">5.</span>
+                <span class="chapter-title">Testing MCP Servers</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter6/">
+                <span class="chapter-number">6.</span>
+                <span class="chapter-title">Advanced Testing Capabilities</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter7/">
+                <span class="chapter-number">7.</span>
+                <span class="chapter-title">AI-Driven Configuration System</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter8/">
+                <span class="chapter-number">8.</span>
+                <span class="chapter-title">CI/CD Integration</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter9/">
+                <span class="chapter-number">9.</span>
+                <span class="chapter-title">Multi-Language Testing</span>
+            </a>
+        </li>
+        
+        <li class="current">
+            <a href="/mcp-client-cli/chapters/chapter10/">
+                <span class="chapter-number">10.</span>
+                <span class="chapter-title">Troubleshooting and Best Practices</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter11/">
+                <span class="chapter-number">11.</span>
+                <span class="chapter-title">Case Studies and Real-World Examples</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter12/">
+                <span class="chapter-number">12.</span>
+                <span class="chapter-title">Future Directions and Emerging Trends</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside> 
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col footer-col-1">
+                    <ul class="contact-list">
+                        <li>MCP-Client-CLI Technical Documentation</li>
+                        <li>Comprehensive guide for testing and validating MCP servers</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-2">
+                    <ul class="social-media-list">
+                        
+                        <li>
+                            <a href="https://github.com/tosin2013/mcp-client-cli">
+                                <span class="icon icon--github">GitHub</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-3">
+                    <p>Created by Manus, an AI agent created by the Manus team.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/mcp-client-cli/assets/js/main.js"></script>
+</body>
+</html> 

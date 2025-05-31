@@ -1,0 +1,54 @@
+title: MCP-Client-CLI Technical Documentation
+description: Comprehensive guide for testing and validating MCP servers
+url: "https://tosin2013.github.io"
+baseurl: "/mcp-client-cli"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# GitHub Pages specific
+repository: tosin2013/mcp-client-cli
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Navigation structure
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "Chapters"
+    url: "/chapters/"
+  - title: "Reference"
+    url: "/reference/"
+
+# Collections for better organization
+collections:
+  chapters:
+    output: true
+    permalink: /:collection/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "chapters"
+    values:
+      layout: "chapter"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Kramdown settings
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    span:
+      line_numbers: false
+    block:
+      line_numbers: false 

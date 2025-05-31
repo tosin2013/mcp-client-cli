@@ -1,0 +1,200 @@
+@import "minima";
+
+// Custom variables
+$primary-color: #2563eb;
+$secondary-color: #64748b;
+$accent-color: #0ea5e9;
+$text-color: #1e293b;
+$background-color: #ffffff;
+$border-color: #e2e8f0;
+
+// Chapter-specific styles
+.chapter {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.chapter-header {
+  border-bottom: 2px solid $border-color;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  
+  .chapter-title {
+    color: $primary-color;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .chapter-description {
+    color: $secondary-color;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .chapter-meta {
+    .chapter-number {
+      background: $primary-color;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.chapter-nav {
+  margin: 2rem 0;
+  
+  .nav-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    
+    .nav-link {
+      flex: 1;
+      padding: 1rem;
+      border: 1px solid $border-color;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      color: $text-color;
+      transition: all 0.2s;
+      
+      &:hover {
+        border-color: $primary-color;
+        background-color: #f8fafc;
+      }
+      
+      &.prev {
+        text-align: left;
+      }
+      
+      &.next {
+        text-align: right;
+      }
+    }
+  }
+  
+  &.bottom {
+    border-top: 1px solid $border-color;
+    padding-top: 2rem;
+  }
+}
+
+.chapter-content {
+  line-height: 1.7;
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: $primary-color;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  h2 {
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 0.5rem;
+  }
+  
+  code {
+    background: #f1f5f9;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    
+    code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+  }
+  
+  blockquote {
+    border-left: 4px solid $accent-color;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: $secondary-color;
+    font-style: italic;
+  }
+}
+
+// Chapters grid
+.chapters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.chapter-card {
+  border: 1px solid $border-color;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: $primary-color;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .chapter-description {
+    color: $secondary-color;
+    margin-bottom: 1rem;
+  }
+  
+  .read-more {
+    color: $accent-color;
+    text-decoration: none;
+    font-weight: 600;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .chapter {
+    padding: 1rem 0.5rem;
+  }
+  
+  .chapter-header .chapter-title {
+    font-size: 2rem;
+  }
+  
+  .chapter-nav .nav-links {
+    flex-direction: column;
+    
+    .nav-link {
+      text-align: center !important;
+    }
+  }
+  
+  .chapters-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+} 

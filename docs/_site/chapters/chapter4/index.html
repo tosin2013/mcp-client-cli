@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Usage and Commands | MCP-Client-CLI Technical Documentation</title>
+    <meta name="description" content="Essential commands and basic usage patterns for MCP-Client-CLI">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/style.css">
+    
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/syntax.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/mcp-client-cli/assets/favicon.ico">
+    
+    <!-- SEO -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Basic Usage and Commands | MCP-Client-CLI Technical Documentation</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Basic Usage and Commands" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Essential commands and basic usage patterns for MCP-Client-CLI" />
+<meta property="og:description" content="Essential commands and basic usage patterns for MCP-Client-CLI" />
+<link rel="canonical" href="https://tosin2013.github.io/mcp-client-cli/chapters/chapter4/" />
+<meta property="og:url" content="https://tosin2013.github.io/mcp-client-cli/chapters/chapter4/" />
+<meta property="og:site_name" content="MCP-Client-CLI Technical Documentation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-05-31T10:22:14-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Basic Usage and Commands" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-05-31T10:22:14-04:00","datePublished":"2025-05-31T10:22:14-04:00","description":"Essential commands and basic usage patterns for MCP-Client-CLI","headline":"Basic Usage and Commands","mainEntityOfPage":{"@type":"WebPage","@id":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter4/"},"url":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter4/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="/mcp-client-cli/">MCP-Client-CLI Technical Documentation</a>
+            
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="/mcp-client-cli/">Home</a>
+                    <a class="page-link" href="/mcp-client-cli/chapters/">Chapters</a>
+                    <a class="page-link" href="https://github.com/tosin2013/mcp-client-cli">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="chapter">
+    <header class="chapter-header">
+        <h1 class="chapter-title">Basic Usage and Commands</h1>
+        
+        <p class="chapter-description">Essential commands and basic usage patterns for MCP-Client-CLI</p>
+        
+        
+        <div class="chapter-meta">
+            <span class="chapter-number">Chapter 4</span>
+        </div>
+    </header>
+
+    <nav class="chapter-nav">
+        
+        
+        
+            
+        
+            
+        
+            
+        
+            
+                
+                
+        
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter3/" class="nav-link prev">
+                    ← Previous: Setting Up the MCP-Client-CLI
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter5/" class="nav-link next">
+                    Next: Testing MCP Servers →
+                </a>
+            
+        </div>
+    </nav>
+
+    <div class="chapter-content">
+        <h1 id="chapter-4-basic-usage-and-commands">Chapter 4: Basic Usage and Commands</h1>
+
+<h2 id="command-line-interface-overview">Command Line Interface Overview</h2>
+
+<p>The mcp-client-cli provides a powerful and flexible command-line interface for testing and validating MCP servers. Understanding this interface is essential for effective testing workflows. As documented in the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/QUICK_REFERENCE.md">Quick Reference guide</a>, the tool offers multiple entry points and a rich set of commands.</p>
+
+<h3 id="multiple-entry-points">Multiple Entry Points</h3>
+
+<p>The mcp-client-cli provides several command-line entry points to accommodate different workflows and preferences:</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">mcp-test</code></strong>: The primary testing interface, focused on comprehensive MCP server validation</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">mcp-testing</code></strong>: An alternative testing command with similar functionality</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">mcp-client</code></strong>: Client interaction mode for direct communication with MCP servers</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">llm</code></strong>: Legacy compatibility mode supporting older command structures</li>
+</ul>
+
+<p>These entry points share core functionality but may offer slightly different command structures or default behaviors. For consistency, this chapter will focus on the <code class="language-plaintext highlighter-rouge">mcp-test</code> command, which is the recommended entry point for most testing scenarios.</p>
+
+<h3 id="command-structure">Command Structure</h3>
+
+<p>The general structure of mcp-client-cli commands follows a consistent pattern:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test [global-options] command [command-options]
+</code></pre></div></div>
+
+<p>Where:</p>
+<ul>
+  <li><strong>global-options</strong>: Apply to all commands (e.g., <code class="language-plaintext highlighter-rouge">--verbose</code>, <code class="language-plaintext highlighter-rouge">--config</code>)</li>
+  <li><strong>command</strong>: Specifies the action to perform (e.g., <code class="language-plaintext highlighter-rouge">test-server</code>, <code class="language-plaintext highlighter-rouge">run-suite</code>)</li>
+  <li><strong>command-options</strong>: Specific to the selected command</li>
+</ul>
+
+<p>This hierarchical structure allows for intuitive and flexible command composition, making it easy to express complex testing requirements.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<p>The mcp-client-cli includes comprehensive built-in help documentation. To access this information:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Display general help</span>
+mcp-test <span class="nt">--help</span>
+
+<span class="c"># Get help for a specific command</span>
+mcp-test test-server <span class="nt">--help</span>
+
+<span class="c"># Show version information</span>
+mcp-test <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>These help commands provide detailed information about available options, arguments, and usage examples, making them valuable references during testing.</p>
+
+<h2 id="core-commands-and-syntax">Core Commands and Syntax</h2>
+
+<p>The mcp-client-cli offers a wide range of commands for different testing scenarios. Let’s explore the most important ones:</p>
+
+<h3 id="server-testing-commands">Server Testing Commands</h3>
+
+<p>The primary purpose of the mcp-client-cli is to test MCP servers. Several commands facilitate this:</p>
+
+<h4 id="basic-server-testing">Basic Server Testing</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test a specific MCP server</span>
+mcp-test test-server <span class="nt">--command</span> <span class="s2">"python examples/generic_mcp_server.py"</span>
+
+<span class="c"># Test a server defined in the configuration file</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server
+
+<span class="c"># Test with specific test types</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--test-types</span> functional,security
+</code></pre></div></div>
+
+<p>These commands initiate testing against the specified MCP server, running the default or specified test types.</p>
+
+<h4 id="comprehensive-test-suites">Comprehensive Test Suites</h4>
+
+<p>For more thorough testing, you can run complete test suites:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run the default test suite</span>
+mcp-test run-suite <span class="nt">--server-name</span> your-server
+
+<span class="c"># Run a specific test suite</span>
+mcp-test run-suite <span class="nt">--suite-name</span> comprehensive <span class="nt">--server-name</span> your-server
+
+<span class="c"># Run a suite with custom parameters</span>
+mcp-test run-suite <span class="nt">--suite-name</span> security <span class="nt">--server-name</span> your-server <span class="nt">--parameters</span> <span class="s1">'{"depth": "high"}'</span>
+</code></pre></div></div>
+
+<p>Test suites combine multiple test types and scenarios, providing comprehensive validation of MCP server functionality.</p>
+
+<h3 id="specific-test-type-commands">Specific Test Type Commands</h3>
+
+<p>The tool also offers commands for running specific types of tests:</p>
+
+<h4 id="functional-testing">Functional Testing</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run functional tests</span>
+mcp-test functional <span class="nt">--server-name</span> your-server
+
+<span class="c"># Test specific tools</span>
+mcp-test functional <span class="nt">--server-name</span> your-server <span class="nt">--tools</span> <span class="nb">echo</span>,file_read
+
+<span class="c"># Test with custom parameters</span>
+mcp-test functional <span class="nt">--server-name</span> your-server <span class="nt">--parameters</span> <span class="s1">'{"timeout": 30}'</span>
+</code></pre></div></div>
+
+<p>Functional tests verify that the MCP server correctly implements the protocol and that its tools perform as expected.</p>
+
+<h4 id="security-testing">Security Testing</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run security tests</span>
+mcp-test security <span class="nt">--server-name</span> your-server
+
+<span class="c"># Run specific security test categories</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--categories</span> authentication,input-validation
+
+<span class="c"># Include malicious payload testing</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--include-malicious-payloads</span>
+</code></pre></div></div>
+
+<p>Security tests evaluate the server’s resistance to various attacks and its adherence to security best practices.</p>
+
+<h4 id="performance-testing">Performance Testing</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run performance tests</span>
+mcp-test performance <span class="nt">--server-name</span> your-server
+
+<span class="c"># Specify test duration and concurrency</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--duration</span> 60 <span class="nt">--concurrent-connections</span> 10
+
+<span class="c"># Enable resource monitoring</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--monitor-resources</span>
+</code></pre></div></div>
+
+<p>Performance tests assess the server’s efficiency, responsiveness, and resource utilization under various conditions.</p>
+
+<h3 id="utility-commands">Utility Commands</h3>
+
+<p>Beyond testing, the mcp-client-cli includes several utility commands:</p>
+
+<h4 id="configuration-management">Configuration Management</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate configuration</span>
+mcp-test validate-config
+
+<span class="c"># Generate a sample configuration</span>
+mcp-test generate-config <span class="nt">--output</span> sample-config.json
+
+<span class="c"># Update existing configuration</span>
+mcp-test update-config <span class="nt">--set</span> <span class="s2">"testing.timeout=60"</span>
+</code></pre></div></div>
+
+<p>These commands help manage your testing configuration, ensuring it’s valid and up-to-date.</p>
+
+<h4 id="reporting-commands">Reporting Commands</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate a test report</span>
+mcp-test generate-report <span class="nt">--format</span> html <span class="nt">--output</span> report.html
+
+<span class="c"># View test history</span>
+mcp-test <span class="nb">history</span> <span class="nt">--days</span> 7
+
+<span class="c"># Export test results</span>
+mcp-test export-results <span class="nt">--format</span> json <span class="nt">--output</span> results.json
+</code></pre></div></div>
+
+<p>Reporting commands provide insights into test results and history, facilitating analysis and documentation.</p>
+
+<h4 id="tool-management">Tool Management</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List available tools</span>
+mcp-test list-tools
+
+<span class="c"># Describe a specific tool</span>
+mcp-test describe-tool <span class="nt">--tool-name</span> <span class="nb">echo</span>
+
+<span class="c"># Test a specific tool</span>
+mcp-test test-tool <span class="nt">--server-name</span> your-server <span class="nt">--tool-name</span> <span class="nb">echo</span> <span class="nt">--parameters</span> <span class="s1">'{"message": "test"}'</span>
+</code></pre></div></div>
+
+<p>These commands help you work with the tools provided by MCP servers, understanding their capabilities and testing their functionality.</p>
+
+<h2 id="configuration-files">Configuration Files</h2>
+
+<p>While the mcp-client-cli can be used with command-line arguments alone, configuration files provide a more convenient and reproducible way to define testing parameters.</p>
+
+<h3 id="configuration-file-formats">Configuration File Formats</h3>
+
+<p>The tool supports configuration in multiple formats:</p>
+
+<ul>
+  <li><strong>JSON</strong>: The default and most common format</li>
+  <li><strong>YAML</strong>: An alternative format with more readable syntax</li>
+  <li><strong>TOML</strong>: Another alternative with a different structure</li>
+</ul>
+
+<p>For consistency, this chapter focuses on JSON configuration, which is the format used in the official documentation.</p>
+
+<h3 id="basic-configuration-structure">Basic Configuration Structure</h3>
+
+<p>As described in the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/CONFIG.md">CONFIG.md</a> file, a typical configuration includes several sections:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"llm"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openai"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-api-key"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"your-server"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"examples/generic_mcp_server.py"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"testing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"timeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"retries"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"parallel"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This structure defines the LLM provider, MCP servers to test, and general testing parameters.</p>
+
+<h3 id="configuration-file-location">Configuration File Location</h3>
+
+<p>By default, the mcp-client-cli looks for configuration in specific locations:</p>
+
+<ul>
+  <li><strong>Primary location</strong>: <code class="language-plaintext highlighter-rouge">~/.llm/config.json</code> (or equivalent for YAML/TOML)</li>
+  <li><strong>Secondary location</strong>: <code class="language-plaintext highlighter-rouge">./.llm/config.json</code> in the current directory</li>
+</ul>
+
+<p>You can also specify a custom configuration file with the <code class="language-plaintext highlighter-rouge">--config</code> option:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test test-server <span class="nt">--config</span> custom-config.json
+</code></pre></div></div>
+
+<h3 id="environment-variable-expansion">Environment Variable Expansion</h3>
+
+<p>The configuration file supports environment variable expansion, allowing you to reference sensitive information without hardcoding it:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"llm"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${OPENAI_API_KEY}"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In this example, the tool will replace <code class="language-plaintext highlighter-rouge">${OPENAI_API_KEY}</code> with the value of the corresponding environment variable.</p>
+
+<h3 id="configuration-inheritance-and-overrides">Configuration Inheritance and Overrides</h3>
+
+<p>The mcp-client-cli implements a hierarchical configuration system:</p>
+
+<ol>
+  <li><strong>Default values</strong>: Built-in defaults for all settings</li>
+  <li><strong>Configuration file</strong>: Values from your configuration file</li>
+  <li><strong>Environment variables</strong>: Settings defined in environment variables</li>
+  <li><strong>Command-line arguments</strong>: Options specified on the command line</li>
+</ol>
+
+<p>Each level overrides the previous ones, with command-line arguments taking the highest precedence. This allows for flexible configuration management across different environments and use cases.</p>
+
+<h2 id="basic-testing-workflows">Basic Testing Workflows</h2>
+
+<p>Now that we understand the commands and configuration options, let’s explore some common testing workflows.</p>
+
+<h3 id="quick-server-validation">Quick Server Validation</h3>
+
+<p>For a quick check of an MCP server’s basic functionality:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define the server in your configuration file</span>
+<span class="c"># Then run:</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--test-types</span> basic
+
+<span class="c"># Or test directly without configuration:</span>
+mcp-test test-server <span class="nt">--command</span> <span class="s2">"python examples/generic_mcp_server.py"</span> <span class="nt">--test-types</span> basic
+</code></pre></div></div>
+
+<p>This workflow runs a minimal set of tests to verify that the server starts correctly, responds to basic requests, and implements the core protocol features.</p>
+
+<h3 id="comprehensive-server-testing">Comprehensive Server Testing</h3>
+
+<p>For thorough validation before deployment:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define the server and testing parameters in your configuration file</span>
+<span class="c"># Then run:</span>
+mcp-test run-suite <span class="nt">--suite-name</span> comprehensive <span class="nt">--server-name</span> your-server
+
+<span class="c"># Generate a detailed report:</span>
+mcp-test generate-report <span class="nt">--format</span> html <span class="nt">--output</span> comprehensive-report.html
+</code></pre></div></div>
+
+<p>This workflow runs a complete test suite covering functional, security, and performance aspects, followed by report generation for documentation and analysis.</p>
+
+<h3 id="focused-testing">Focused Testing</h3>
+
+<p>When addressing specific concerns or validating particular features:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test specific functionality:</span>
+mcp-test functional <span class="nt">--server-name</span> your-server <span class="nt">--tools</span> <span class="nb">echo</span>,file_read
+
+<span class="c"># Focus on security aspects:</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--categories</span> authentication,input-validation
+
+<span class="c"># Evaluate performance under load:</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--duration</span> 60 <span class="nt">--concurrent-connections</span> 20
+</code></pre></div></div>
+
+<p>These focused workflows allow you to concentrate on specific aspects of your MCP server, streamlining the testing process when you don’t need comprehensive validation.</p>
+
+<h3 id="continuous-integration">Continuous Integration</h3>
+
+<p>For automated testing in CI/CD pipelines:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Typically run from a CI script:</span>
+mcp-test run-suite <span class="nt">--suite-name</span> ci <span class="nt">--server-name</span> your-server <span class="nt">--format</span> json <span class="nt">--output</span> results.json
+
+<span class="c"># Check the exit code for pass/fail status:</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> <span class="nt">-eq</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+  </span><span class="nb">echo</span> <span class="s2">"Tests passed"</span>
+<span class="k">else
+  </span><span class="nb">echo</span> <span class="s2">"Tests failed"</span>
+  <span class="nb">exit </span>1
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<p>This workflow is designed for automation, using a CI-specific test suite and producing machine-readable output that can be easily integrated with CI/CD systems.</p>
+
+<h2 id="output-formats-and-interpretation">Output Formats and Interpretation</h2>
+
+<p>The mcp-client-cli provides test results in various formats, each suited to different use cases.</p>
+
+<h3 id="console-output">Console Output</h3>
+
+<p>By default, test results are displayed in the console with color-coding and formatting for readability:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✅ Connection test: PASSED
+✅ Tool discovery: PASSED
+✅ Echo tool test: PASSED
+⚠️ File read tool test: WARNING (slow response time)
+❌ Security test: FAILED (input validation issue)
+</code></pre></div></div>
+
+<p>This format is ideal for interactive use, providing immediate feedback during testing.</p>
+
+<h3 id="structured-output-formats">Structured Output Formats</h3>
+
+<p>For programmatic processing or integration with other tools, structured output formats are available:</p>
+
+<h4 id="json-format">JSON Format</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--output-format</span> json
+</code></pre></div></div>
+
+<p>Produces output like:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"partial_success"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"connection_test"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"passed"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"duration_ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">127</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tool_discovery"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"passed"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"duration_ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">215</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"echo_tool_test"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"passed"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"duration_ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">189</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="mi">95</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file_read_tool_test"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warning"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"duration_ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">1250</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Slow response time detected"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"security_test"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"failed"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"duration_ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">312</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Input validation issue detected"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"vulnerability"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sql_injection"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"severity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"high"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"query parameter"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"summary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"passed"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"warning"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"failed"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"overall_confidence"</span><span class="p">:</span><span class="w"> </span><span class="mi">93</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This format is ideal for programmatic processing and integration with other tools.</p>
+
+<h4 id="xml-format">XML Format</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--output-format</span> xml
+</code></pre></div></div>
+
+<p>Produces structured XML output suitable for integration with tools that expect XML data.</p>
+
+<h4 id="csv-format">CSV Format</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--output-format</span> csv
+</code></pre></div></div>
+
+<p>Generates comma-separated values, useful for importing into spreadsheets or data analysis tools.</p>
+
+<h3 id="report-formats">Report Formats</h3>
+
+<p>For documentation and presentation, the tool can generate formatted reports:</p>
+
+<h4 id="html-reports">HTML Reports</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test generate-report <span class="nt">--format</span> html <span class="nt">--output</span> report.html
+</code></pre></div></div>
+
+<p>Creates a comprehensive HTML report with test results, charts, and detailed information. This format is ideal for sharing with team members or stakeholders who need a clear overview of test results.</p>
+
+<h4 id="markdown-reports">Markdown Reports</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test generate-report <span class="nt">--format</span> markdown <span class="nt">--output</span> report.md
+</code></pre></div></div>
+
+<p>Produces a Markdown document that can be easily included in project documentation or converted to other formats.</p>
+
+<h4 id="pdf-reports">PDF Reports</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mcp-test generate-report <span class="nt">--format</span> pdf <span class="nt">--output</span> report.pdf
+</code></pre></div></div>
+
+<p>Generates a professional PDF report suitable for formal documentation or presentation.</p>
+
+<h3 id="interpreting-test-results">Interpreting Test Results</h3>
+
+<p>Test results include several key components that help you understand the state of your MCP server:</p>
+
+<h4 id="status-indicators">Status Indicators</h4>
+
+<ul>
+  <li><strong>PASSED</strong>: The test completed successfully with no issues</li>
+  <li><strong>WARNING</strong>: The test completed but identified potential concerns</li>
+  <li><strong>FAILED</strong>: The test identified critical issues that need to be addressed</li>
+  <li><strong>ERROR</strong>: The test could not be completed due to an error in the testing process</li>
+</ul>
+
+<h4 id="confidence-scores">Confidence Scores</h4>
+
+<p>Many tests include confidence scores (0-100%) indicating the reliability of the test results. As explained in the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, these scores help you assess the certainty of the findings:</p>
+
+<ul>
+  <li><strong>90-100%</strong>: High confidence, very reliable results</li>
+  <li><strong>70-89%</strong>: Good confidence, generally reliable results</li>
+  <li><strong>50-69%</strong>: Moderate confidence, results should be verified</li>
+  <li><strong>Below 50%</strong>: Low confidence, results require manual verification</li>
+</ul>
+
+<h4 id="performance-metrics">Performance Metrics</h4>
+
+<p>Performance tests include metrics such as:</p>
+
+<ul>
+  <li><strong>Response Time</strong>: How quickly the server responds to requests</li>
+  <li><strong>Throughput</strong>: How many requests the server can handle per second</li>
+  <li><strong>Resource Usage</strong>: CPU, memory, and other resource utilization</li>
+  <li><strong>Scalability</strong>: How performance changes under increasing load</li>
+</ul>
+
+<p>These metrics help you assess the efficiency and capacity of your MCP server.</p>
+
+<h4 id="security-findings">Security Findings</h4>
+
+<p>Security tests report findings with severity levels:</p>
+
+<ul>
+  <li><strong>Critical</strong>: Severe vulnerabilities requiring immediate attention</li>
+  <li><strong>High</strong>: Significant issues that should be addressed promptly</li>
+  <li><strong>Medium</strong>: Moderate concerns that should be addressed</li>
+  <li><strong>Low</strong>: Minor issues that pose limited risk</li>
+  <li><strong>Info</strong>: Informational findings with no direct security impact</li>
+</ul>
+
+<p>Each finding includes details about the vulnerability, its location, and potential impact.</p>
+
+<h2 id="advanced-command-features">Advanced Command Features</h2>
+
+<p>Beyond the basic commands, the mcp-client-cli offers several advanced features for more sophisticated testing scenarios.</p>
+
+<h3 id="parallel-testing">Parallel Testing</h3>
+
+<p>For testing multiple servers or running multiple test types simultaneously:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test multiple servers in parallel</span>
+mcp-test test-servers <span class="nt">--server-names</span> server1,server2,server3 <span class="nt">--parallel</span>
+
+<span class="c"># Run multiple test types in parallel</span>
+mcp-test run-suite <span class="nt">--suite-name</span> comprehensive <span class="nt">--server-name</span> your-server <span class="nt">--parallel-tests</span>
+</code></pre></div></div>
+
+<p>Parallel testing can significantly reduce overall testing time, especially for comprehensive test suites.</p>
+
+<h3 id="filtering-and-selection">Filtering and Selection</h3>
+
+<p>To focus on specific aspects of your testing:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test specific tools</span>
+mcp-test functional <span class="nt">--server-name</span> your-server <span class="nt">--include-tools</span> <span class="nb">echo</span>,file_read
+
+<span class="c"># Exclude certain tests</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--exclude-categories</span> dos,csrf
+
+<span class="c"># Filter by tags</span>
+mcp-test run-suite <span class="nt">--suite-name</span> comprehensive <span class="nt">--server-name</span> your-server <span class="nt">--tags</span> critical,regression
+</code></pre></div></div>
+
+<p>These filtering options allow you to customize your testing to focus on the most relevant aspects for your current needs.</p>
+
+<h3 id="custom-test-parameters">Custom Test Parameters</h3>
+
+<p>For fine-tuning test behavior:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set custom timeout</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--timeout</span> 60
+
+<span class="c"># Configure retry behavior</span>
+mcp-test test-server <span class="nt">--server-name</span> your-server <span class="nt">--retries</span> 5 <span class="nt">--retry-delay</span> 2
+
+<span class="c"># Set custom thresholds</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--max-response-time</span> 500 <span class="nt">--max-memory-usage</span> 256
+</code></pre></div></div>
+
+<p>These parameters allow you to adapt the testing process to your specific requirements and constraints.</p>
+
+<h3 id="interactive-mode">Interactive Mode</h3>
+
+<p>For exploratory testing and debugging:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Start interactive testing session</span>
+mcp-test interactive <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>Interactive mode provides a REPL (Read-Eval-Print Loop) interface for directly interacting with the MCP server, sending custom requests, and examining responses in real-time.</p>
+
+<h2 id="practical-examples">Practical Examples</h2>
+
+<p>Let’s explore some practical examples that demonstrate how to use the mcp-client-cli in real-world scenarios.</p>
+
+<h3 id="example-1-basic-server-validation">Example 1: Basic Server Validation</h3>
+
+<p>Scenario: You’ve developed a simple MCP server and want to verify its basic functionality.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a minimal configuration file</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> ~/.llm/config.json <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "python",
+      "args": ["my_mcp_server.py"],
+      "enabled": true
+    }
+  }
+}
+</span><span class="no">EOF
+
+</span><span class="c"># Run basic validation</span>
+mcp-test test-server <span class="nt">--server-name</span> my-server <span class="nt">--test-types</span> basic
+
+<span class="c"># Check specific tools</span>
+mcp-test test-tool <span class="nt">--server-name</span> my-server <span class="nt">--tool-name</span> <span class="nb">echo</span> <span class="nt">--parameters</span> <span class="s1">'{"message": "Hello, world!"}'</span>
+</code></pre></div></div>
+
+<p>This example demonstrates a simple workflow for validating a new MCP server, focusing on basic functionality and specific tool testing.</p>
+
+<h3 id="example-2-comprehensive-testing-for-production">Example 2: Comprehensive Testing for Production</h3>
+
+<p>Scenario: You’re preparing to deploy an MCP server to production and need thorough validation.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a comprehensive configuration</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> production-test-config.json <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+{
+  "mcpServers": {
+    "production-server": {
+      "command": "node",
+      "args": ["dist/server.js"],
+      "env": {
+        "NODE_ENV": "production",
+        "LOG_LEVEL": "error"
+      },
+      "enabled": true
+    }
+  },
+  "testing": {
+    "timeout": 60,
+    "retries": 3,
+    "parallel": true,
+    "confidence_threshold": 90
+  },
+  "security": {
+    "enable_advanced_tests": true
+  },
+  "performance": {
+    "duration": 300,
+    "concurrent_connections": 50,
+    "monitor_resources": true
+  }
+}
+</span><span class="no">EOF
+
+</span><span class="c"># Run comprehensive testing</span>
+mcp-test run-suite <span class="nt">--suite-name</span> production <span class="nt">--config</span> production-test-config.json
+
+<span class="c"># Generate detailed report</span>
+mcp-test generate-report <span class="nt">--format</span> html <span class="nt">--output</span> production-readiness-report.html
+</code></pre></div></div>
+
+<p>This example shows a more comprehensive testing approach suitable for production deployment, including advanced security and performance testing.</p>
+
+<h3 id="example-3-cicd-integration">Example 3: CI/CD Integration</h3>
+
+<p>Scenario: You want to integrate MCP server testing into your CI/CD pipeline.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c"># ci-test-script.sh</span>
+
+<span class="c"># Install the testing framework</span>
+pip <span class="nb">install </span>mcp-testing-framework
+
+<span class="c"># Create configuration from environment variables</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> ci-config.json <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+{
+  "mcpServers": {
+    "ci-server": {
+      "command": "</span><span class="k">${</span><span class="nv">SERVER_COMMAND</span><span class="k">}</span><span class="sh">",
+      "args": </span><span class="k">${</span><span class="nv">SERVER_ARGS</span><span class="k">}</span><span class="sh">,
+      "env": {
+        "CI": "true"
+      },
+      "enabled": true
+    }
+  }
+}
+</span><span class="no">EOF
+
+</span><span class="c"># Run CI test suite</span>
+mcp-test run-suite <span class="nt">--suite-name</span> ci <span class="nt">--config</span> ci-config.json <span class="nt">--output-format</span> json <span class="nt">--output</span> results.json
+
+<span class="c"># Check exit code</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> <span class="nt">-eq</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+  </span><span class="nb">echo</span> <span class="s2">"Tests passed"</span>
+  <span class="nb">exit </span>0
+<span class="k">else
+  </span><span class="nb">echo</span> <span class="s2">"Tests failed"</span>
+  <span class="nb">exit </span>1
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<p>This example demonstrates how to integrate the mcp-client-cli into a CI/CD pipeline, using environment variables for configuration and producing machine-readable output.</p>
+
+<h3 id="example-4-security-audit">Example 4: Security Audit</h3>
+
+<p>Scenario: You need to perform a security audit of an existing MCP server.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create security-focused configuration</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> security-audit-config.json <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+{
+  "mcpServers": {
+    "audit-target": {
+      "command": "python",
+      "args": ["target_server.py"],
+      "enabled": true
+    }
+  },
+  "security": {
+    "enable_advanced_tests": true,
+    "include_malicious_payloads": true,
+    "authentication_tests": true,
+    "authorization_tests": true,
+    "input_validation_tests": true,
+    "data_protection_tests": true
+  }
+}
+</span><span class="no">EOF
+
+</span><span class="c"># Run security audit</span>
+mcp-test security <span class="nt">--config</span> security-audit-config.json <span class="nt">--comprehensive</span>
+
+<span class="c"># Generate security report</span>
+mcp-test generate-report <span class="nt">--format</span> pdf <span class="nt">--output</span> security-audit-report.pdf
+</code></pre></div></div>
+
+<p>This example shows how to configure and run a comprehensive security audit, focusing exclusively on security aspects of the MCP server.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This chapter has provided a comprehensive overview of the mcp-client-cli’s command-line interface, covering core commands, configuration options, output formats, and practical examples. With this knowledge, you’re well-equipped to begin testing your MCP servers using the tool’s powerful capabilities.</p>
+
+<p>In the next chapter, we’ll delve deeper into the fundamentals of MCP server testing, exploring the principles and methodologies that underpin effective validation strategies.</p>
+
+    </div>
+
+    <nav class="chapter-nav bottom">
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter3/" class="nav-link prev">
+                    ← Previous: Setting Up the MCP-Client-CLI
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter5/" class="nav-link next">
+                    Next: Testing MCP Servers →
+                </a>
+            
+        </div>
+    </nav>
+</article>
+
+<aside class="chapter-sidebar">
+    <h3>All Chapters</h3>
+    <ol class="chapter-list">
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter1/">
+                <span class="chapter-number">1.</span>
+                <span class="chapter-title">Introduction to MCP and the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter2/">
+                <span class="chapter-number">2.</span>
+                <span class="chapter-title">Understanding the Model Context Protocol</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter3/">
+                <span class="chapter-number">3.</span>
+                <span class="chapter-title">Setting Up the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="current">
+            <a href="/mcp-client-cli/chapters/chapter4/">
+                <span class="chapter-number">4.</span>
+                <span class="chapter-title">Basic Usage and Commands</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter5/">
+                <span class="chapter-number">5.</span>
+                <span class="chapter-title">Testing MCP Servers</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter6/">
+                <span class="chapter-number">6.</span>
+                <span class="chapter-title">Advanced Testing Capabilities</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter7/">
+                <span class="chapter-number">7.</span>
+                <span class="chapter-title">AI-Driven Configuration System</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter8/">
+                <span class="chapter-number">8.</span>
+                <span class="chapter-title">CI/CD Integration</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter9/">
+                <span class="chapter-number">9.</span>
+                <span class="chapter-title">Multi-Language Testing</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter10/">
+                <span class="chapter-number">10.</span>
+                <span class="chapter-title">Troubleshooting and Best Practices</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter11/">
+                <span class="chapter-number">11.</span>
+                <span class="chapter-title">Case Studies and Real-World Examples</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter12/">
+                <span class="chapter-number">12.</span>
+                <span class="chapter-title">Future Directions and Emerging Trends</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside> 
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col footer-col-1">
+                    <ul class="contact-list">
+                        <li>MCP-Client-CLI Technical Documentation</li>
+                        <li>Comprehensive guide for testing and validating MCP servers</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-2">
+                    <ul class="social-media-list">
+                        
+                        <li>
+                            <a href="https://github.com/tosin2013/mcp-client-cli">
+                                <span class="icon icon--github">GitHub</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-3">
+                    <p>Created by Manus, an AI agent created by the Manus team.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/mcp-client-cli/assets/js/main.js"></script>
+</body>
+</html> 

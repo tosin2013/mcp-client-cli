@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting Up the MCP-Client-CLI | MCP-Client-CLI Technical Documentation</title>
+    <meta name="description" content="Installation, configuration, and initial setup of the MCP-Client-CLI tool">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/style.css">
+    
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/syntax.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/mcp-client-cli/assets/favicon.ico">
+    
+    <!-- SEO -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Setting Up the MCP-Client-CLI | MCP-Client-CLI Technical Documentation</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Setting Up the MCP-Client-CLI" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Installation, configuration, and initial setup of the MCP-Client-CLI tool" />
+<meta property="og:description" content="Installation, configuration, and initial setup of the MCP-Client-CLI tool" />
+<link rel="canonical" href="https://tosin2013.github.io/mcp-client-cli/chapters/chapter3/" />
+<meta property="og:url" content="https://tosin2013.github.io/mcp-client-cli/chapters/chapter3/" />
+<meta property="og:site_name" content="MCP-Client-CLI Technical Documentation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-05-31T10:22:14-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Setting Up the MCP-Client-CLI" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-05-31T10:22:14-04:00","datePublished":"2025-05-31T10:22:14-04:00","description":"Installation, configuration, and initial setup of the MCP-Client-CLI tool","headline":"Setting Up the MCP-Client-CLI","mainEntityOfPage":{"@type":"WebPage","@id":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter3/"},"url":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter3/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="/mcp-client-cli/">MCP-Client-CLI Technical Documentation</a>
+            
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="/mcp-client-cli/">Home</a>
+                    <a class="page-link" href="/mcp-client-cli/chapters/">Chapters</a>
+                    <a class="page-link" href="https://github.com/tosin2013/mcp-client-cli">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="chapter">
+    <header class="chapter-header">
+        <h1 class="chapter-title">Setting Up the MCP-Client-CLI</h1>
+        
+        <p class="chapter-description">Installation, configuration, and initial setup of the MCP-Client-CLI tool</p>
+        
+        
+        <div class="chapter-meta">
+            <span class="chapter-number">Chapter 3</span>
+        </div>
+    </header>
+
+    <nav class="chapter-nav">
+        
+        
+        
+            
+        
+            
+        
+            
+                
+                
+        
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter2/" class="nav-link prev">
+                    ← Previous: Understanding the Model Context Protocol
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter4/" class="nav-link next">
+                    Next: Basic Usage and Commands →
+                </a>
+            
+        </div>
+    </nav>
+
+    <div class="chapter-content">
+        <h1 id="chapter-3-setting-up-the-mcp-client-cli">Chapter 3: Setting Up the MCP-Client-CLI</h1>
+
+<h2 id="installation-requirements-and-dependencies">Installation Requirements and Dependencies</h2>
+
+<p>Before diving into MCP server testing, you’ll need to properly set up the mcp-client-cli tool. This chapter walks through the installation process, requirements, and initial configuration steps to ensure you have a functional testing environment.</p>
+
+<h3 id="system-requirements">System Requirements</h3>
+
+<p>The mcp-client-cli tool is designed to run on multiple platforms with minimal system requirements. According to the <a href="https://github.com/tosin2013/mcp-client-cli">repository documentation</a>, the tool supports:</p>
+
+<ul>
+  <li><strong>Operating Systems</strong>:
+    <ul>
+      <li>Linux (Ubuntu, Debian, CentOS, etc.)</li>
+      <li>macOS (10.15 Catalina or newer)</li>
+      <li>Windows 10/11 with WSL (Windows Subsystem for Linux)</li>
+    </ul>
+  </li>
+  <li><strong>Python Requirements</strong>:
+    <ul>
+      <li>Python 3.9 or newer</li>
+      <li>pip package manager</li>
+    </ul>
+  </li>
+  <li><strong>Additional Dependencies</strong>:
+    <ul>
+      <li>Git (for repository cloning and version control)</li>
+      <li>A working internet connection (for package installation and external API access)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>For optimal performance, especially when running comprehensive test suites or performance testing, the following specifications are recommended:</p>
+
+<ul>
+  <li>4GB RAM or more</li>
+  <li>2 CPU cores or more</li>
+  <li>1GB free disk space</li>
+</ul>
+
+<h3 id="python-environment-setup">Python Environment Setup</h3>
+
+<p>The mcp-client-cli tool relies on Python, so ensuring you have a proper Python environment is the first step. If you don’t already have Python installed, you can download it from the <a href="https://www.python.org/downloads/">official Python website</a>.</p>
+
+<p>To verify your Python installation, open a terminal or command prompt and run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">--version</span>
+<span class="c"># or</span>
+python3 <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>You should see output indicating Python 3.9 or newer. If you receive an error or have an older version, you’ll need to install or update Python before proceeding.</p>
+
+<h3 id="virtual-environment-recommended">Virtual Environment (Recommended)</h3>
+
+<p>While not strictly required, using a virtual environment is highly recommended to avoid dependency conflicts with other Python projects. As noted in the <a href="https://docs.python.org/3/library/venv.html">Python documentation</a>, virtual environments provide isolated spaces for Python projects, ensuring clean and reproducible installations.</p>
+
+<p>To create and activate a virtual environment:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a virtual environment</span>
+python <span class="nt">-m</span> venv mcp-testing-env
+
+<span class="c"># Activate the environment (Linux/macOS)</span>
+<span class="nb">source </span>mcp-testing-env/bin/activate
+
+<span class="c"># Activate the environment (Windows)</span>
+mcp-testing-env<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+</code></pre></div></div>
+
+<p>Once activated, your command prompt should show the environment name, indicating that any Python packages you install will be contained within this environment.</p>
+
+<h2 id="installation-methods">Installation Methods</h2>
+
+<p>The mcp-client-cli tool can be installed through several methods, depending on your specific needs and preferences.</p>
+
+<h3 id="installation-via-pip-recommended">Installation via pip (Recommended)</h3>
+
+<p>The simplest and most straightforward installation method is using pip, Python’s package manager. As documented in the <a href="https://github.com/tosin2013/mcp-client-cli">README.md</a>, you can install the package with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>mcp-testing-framework
+</code></pre></div></div>
+
+<p>This command installs the latest stable release from the Python Package Index (PyPI). For those who need specific versions, you can specify the version number:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>mcp-testing-framework<span class="o">==</span>1.0.0
+</code></pre></div></div>
+
+<h3 id="installation-from-source">Installation from Source</h3>
+
+<p>For users who need the latest features or want to contribute to the project, installing from source is the preferred method:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone the repository</span>
+git clone https://github.com/tosin2013/mcp-client-cli.git
+
+<span class="c"># Navigate to the project directory</span>
+<span class="nb">cd </span>mcp-client-cli
+
+<span class="c"># Install in development mode</span>
+pip <span class="nb">install</span> <span class="nt">-e</span> <span class="s2">".[dev]"</span>
+</code></pre></div></div>
+
+<p>Installing in development mode (<code class="language-plaintext highlighter-rouge">-e</code>) creates a link to the source code, allowing you to modify the code and immediately see the effects without reinstalling.</p>
+
+<h3 id="installation-with-additional-features">Installation with Additional Features</h3>
+
+<p>The mcp-client-cli supports optional feature sets for different testing scenarios. These can be installed using pip’s extras syntax:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install with testing extras</span>
+pip <span class="nb">install </span>mcp-testing-framework[testing]
+
+<span class="c"># Install with development extras</span>
+pip <span class="nb">install </span>mcp-testing-framework[dev]
+
+<span class="c"># Install with all extras</span>
+pip <span class="nb">install </span>mcp-testing-framework[all]
+</code></pre></div></div>
+
+<p>Each feature set includes additional dependencies tailored to specific use cases:</p>
+
+<ul>
+  <li><strong>testing</strong>: Includes pytest, coverage tools, and other testing utilities</li>
+  <li><strong>dev</strong>: Adds development tools like black, isort, and mypy</li>
+  <li><strong>all</strong>: Installs all available extras</li>
+</ul>
+
+<h3 id="docker-installation-alternative">Docker Installation (Alternative)</h3>
+
+<p>For users who prefer containerized environments, the mcp-client-cli can also be run using Docker. While not explicitly documented in the repository, this approach offers several advantages, including isolation from the host system and consistent environments across different machines.</p>
+
+<p>To use Docker:</p>
+
+<ol>
+  <li>Create a Dockerfile:
+    <div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> python:3.11-slim</span>
+   
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+   
+<span class="k">RUN </span>pip <span class="nb">install </span>mcp-testing-framework
+   
+<span class="k">ENTRYPOINT</span><span class="s"> ["mcp-test"]</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Build the Docker image:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> mcp-testing <span class="nb">.</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Run the container:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">--rm</span> mcp-testing <span class="nt">--help</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>This containerized approach is particularly useful for CI/CD environments or when testing across multiple systems.</p>
+
+<h2 id="basic-configuration">Basic Configuration</h2>
+
+<p>After installation, you’ll need to configure the mcp-client-cli to work with your specific environment and testing needs.</p>
+
+<h3 id="configuration-file-location">Configuration File Location</h3>
+
+<p>The mcp-client-cli uses a configuration file to store settings and preferences. By default, this file is located at:</p>
+
+<ul>
+  <li><strong>Linux/macOS</strong>: <code class="language-plaintext highlighter-rouge">~/.llm/config.json</code></li>
+  <li><strong>Windows</strong>: <code class="language-plaintext highlighter-rouge">%USERPROFILE%\.llm\config.json</code></li>
+</ul>
+
+<p>If the directory doesn’t exist, you’ll need to create it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Linux/macOS</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.llm
+
+<span class="c"># Windows (Command Prompt)</span>
+<span class="nb">mkdir</span> %USERPROFILE%<span class="se">\.</span>llm
+</code></pre></div></div>
+
+<h3 id="creating-a-basic-configuration">Creating a Basic Configuration</h3>
+
+<p>As detailed in the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/CONFIG.md">CONFIG.md</a> documentation, the configuration file uses JSON format and supports various settings. A minimal configuration might look like:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"systemPrompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"You are an AI assistant helping with MCP server testing."</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"llm"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openai"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-api-key"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"temperature"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"your-server"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"path/to/your/server.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--stdio"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"DEBUG"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration includes:</p>
+
+<ol>
+  <li><strong>System Prompt</strong>: Instructions for the LLM when interacting with MCP servers</li>
+  <li><strong>LLM Settings</strong>: Configuration for the language model provider</li>
+  <li><strong>MCP Server Definitions</strong>: Specifications for the servers you want to test</li>
+</ol>
+
+<p>You can create this file manually or use the tool’s interactive configuration feature (if available in your version).</p>
+
+<h3 id="configuration-sections-explained">Configuration Sections Explained</h3>
+
+<p>Let’s examine each section of the configuration file in more detail:</p>
+
+<h4 id="llm-configuration">LLM Configuration</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">llm</code> section configures the language model that will be used for testing:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"llm"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openai"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-4o-mini"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"api_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-api-key"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"temperature"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Key parameters include:</p>
+
+<ul>
+  <li><strong>provider</strong>: The LLM service provider (e.g., “openai”, “anthropic”, “local”)</li>
+  <li><strong>model</strong>: The specific model to use</li>
+  <li><strong>api_key</strong>: Your authentication key for the provider</li>
+  <li><strong>temperature</strong>: Controls randomness in model outputs (0.0-1.0)</li>
+</ul>
+
+<p>You’ll need to obtain an API key from your chosen provider. For OpenAI, you can get a key from the <a href="https://platform.openai.com/">OpenAI platform</a>, while Anthropic keys are available from the <a href="https://console.anthropic.com/">Anthropic console</a>.</p>
+
+<h4 id="mcp-server-configuration">MCP Server Configuration</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">mcpServers</code> section defines the servers you want to test:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"your-server"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"path/to/your/server.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--stdio"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"DEBUG"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Each server entry includes:</p>
+
+<ul>
+  <li><strong>command</strong>: The executable to run (e.g., “node”, “python”)</li>
+  <li><strong>args</strong>: Command-line arguments for the server</li>
+  <li><strong>env</strong>: Environment variables to set</li>
+  <li><strong>enabled</strong>: Whether this server should be included in testing</li>
+</ul>
+
+<p>You can define multiple servers in this section, allowing you to test different implementations or configurations simultaneously.</p>
+
+<h4 id="advanced-configuration-options">Advanced Configuration Options</h4>
+
+<p>For more complex testing scenarios, the configuration file supports additional options:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"testing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"parallel"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"retries"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"reportFormat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"html"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"security"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"enableAdvancedTests"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"maliciousPayloads"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"sql_injection"</span><span class="p">,</span><span class="w"> </span><span class="s2">"xss"</span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"performance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"concurrentConnections"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"monitorResources"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>These advanced options allow you to customize the testing process to match your specific requirements and constraints.</p>
+
+<h2 id="environment-setup">Environment Setup</h2>
+
+<p>Beyond the basic configuration file, you may need to set up additional environment components for effective MCP server testing.</p>
+
+<h3 id="api-keys-and-authentication">API Keys and Authentication</h3>
+
+<p>Many MCP servers interact with external services that require authentication. To test these servers properly, you’ll need to configure the appropriate API keys and credentials.</p>
+
+<p>For security reasons, it’s recommended to use environment variables for sensitive information rather than hardcoding them in configuration files. The mcp-client-cli supports reading environment variables through the configuration:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"github-server"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"github-mcp-server.js"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"GITHUB_TOKEN"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${GITHUB_TOKEN}"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In this example, the <code class="language-plaintext highlighter-rouge">${GITHUB_TOKEN}</code> syntax tells the tool to use the value of the <code class="language-plaintext highlighter-rouge">GITHUB_TOKEN</code> environment variable.</p>
+
+<h3 id="setting-up-test-data">Setting Up Test Data</h3>
+
+<p>Some MCP server tests require specific data or resources. The mcp-client-cli documentation recommends creating a dedicated directory for test data:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> ~/mcp-test-data
+</code></pre></div></div>
+
+<p>You can then reference this location in your tests or configuration files.</p>
+
+<h3 id="network-configuration">Network Configuration</h3>
+
+<p>If your MCP servers communicate with external services, you may need to configure network settings such as proxies or firewall rules. The specific requirements will depend on your environment and the servers you’re testing.</p>
+
+<p>For corporate environments with proxies, you can configure the tool to use them through environment variables:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">HTTP_PROXY</span><span class="o">=</span>http://proxy.example.com:8080
+<span class="nb">export </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.example.com:8080
+</code></pre></div></div>
+
+<h3 id="git-configuration-for-repository-based-testing">Git Configuration (for Repository-Based Testing)</h3>
+
+<p>When testing MCP servers that interact with Git repositories, you’ll need proper Git configuration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Configure Git user information</span>
+git config <span class="nt">--global</span> user.name <span class="s2">"Your Name"</span>
+git config <span class="nt">--global</span> user.email <span class="s2">"your.email@example.com"</span>
+
+<span class="c"># Set up SSH keys if needed</span>
+ssh-keygen <span class="nt">-t</span> ed25519 <span class="nt">-C</span> <span class="s2">"your.email@example.com"</span>
+</code></pre></div></div>
+
+<p>For GitHub integration, you may also need to configure a personal access token as described in the <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">GitHub documentation</a>.</p>
+
+<h2 id="verifying-installation">Verifying Installation</h2>
+
+<p>After completing the installation and configuration steps, it’s important to verify that everything is working correctly before proceeding with actual testing.</p>
+
+<h3 id="basic-verification-commands">Basic Verification Commands</h3>
+
+<p>The mcp-client-cli provides several commands for verifying your installation:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check the installed version</span>
+mcp-test <span class="nt">--version</span>
+
+<span class="c"># List available tools</span>
+mcp-test <span class="nt">--list-tools</span>
+
+<span class="c"># Display help information</span>
+mcp-test <span class="nt">--help</span>
+</code></pre></div></div>
+
+<p>These commands should run without errors and provide the expected output. If you encounter any issues, check the troubleshooting section later in this book.</p>
+
+<h3 id="testing-a-simple-mcp-server">Testing a Simple MCP Server</h3>
+
+<p>To verify that the tool can properly interact with MCP servers, you can test with a simple example server:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run a basic test against the example server</span>
+mcp-test <span class="nt">--test-server</span> examples/generic_mcp_server.py
+</code></pre></div></div>
+
+<p>This command should start the example server, run basic tests, and report the results. A successful output indicates that your installation is working correctly.</p>
+
+<h3 id="validating-configuration">Validating Configuration</h3>
+
+<p>To ensure your configuration file is correctly formatted and contains all required information:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate configuration</span>
+mcp-test <span class="nt">--validate-config</span>
+</code></pre></div></div>
+
+<p>This command checks your configuration file for syntax errors and missing required fields, helping you identify and fix issues before they affect your testing.</p>
+
+<h2 id="troubleshooting-common-installation-issues">Troubleshooting Common Installation Issues</h2>
+
+<p>Despite careful installation, you might encounter some common issues. Here are solutions to frequently reported problems:</p>
+
+<h3 id="python-version-conflicts">Python Version Conflicts</h3>
+
+<p><strong>Issue</strong>: Error messages about incompatible Python versions.</p>
+
+<p><strong>Solution</strong>: Verify your Python version and upgrade if necessary:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">--version</span>
+<span class="c"># If below 3.9, upgrade Python or use a version manager like pyenv</span>
+</code></pre></div></div>
+
+<h3 id="dependency-conflicts">Dependency Conflicts</h3>
+
+<p><strong>Issue</strong>: Errors about conflicting dependencies or missing packages.</p>
+
+<p><strong>Solution</strong>: Use a virtual environment and reinstall:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> venv fresh-env
+<span class="nb">source </span>fresh-env/bin/activate
+pip <span class="nb">install </span>mcp-testing-framework
+</code></pre></div></div>
+
+<h3 id="permission-issues">Permission Issues</h3>
+
+<p><strong>Issue</strong>: Permission denied errors during installation or execution.</p>
+
+<p><strong>Solution</strong>: For Linux/macOS, you may need to use sudo or fix permissions:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Option 1: Use sudo (not recommended for pip)</span>
+<span class="nb">sudo </span>pip <span class="nb">install </span>mcp-testing-framework
+
+<span class="c"># Option 2: Fix permissions (preferred)</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.local/bin
+pip <span class="nb">install</span> <span class="nt">--user</span> mcp-testing-framework
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.local/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<h3 id="configuration-file-not-found">Configuration File Not Found</h3>
+
+<p><strong>Issue</strong>: Errors about missing configuration files.</p>
+
+<p><strong>Solution</strong>: Create the configuration directory and file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> ~/.llm
+<span class="nb">touch</span> ~/.llm/config.json
+<span class="c"># Edit the file with your preferred text editor</span>
+</code></pre></div></div>
+
+<h3 id="api-key-issues">API Key Issues</h3>
+
+<p><strong>Issue</strong>: Authentication failures with LLM providers.</p>
+
+<p><strong>Solution</strong>: Verify your API keys and provider settings:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test API key validity (for OpenAI)</span>
+curl <span class="nt">-X</span> POST https://api.openai.com/v1/chat/completions <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"Authorization: Bearer YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'{
+    "model": "gpt-3.5-turbo",
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'</span>
+</code></pre></div></div>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>With the mcp-client-cli successfully installed and configured, you’re now ready to begin testing MCP servers. The following chapters will guide you through:</p>
+
+<ol>
+  <li>Basic usage and commands for everyday testing</li>
+  <li>Fundamental testing principles and workflows</li>
+  <li>Advanced testing capabilities for comprehensive validation</li>
+  <li>Integration with CI/CD systems for automated testing</li>
+  <li>Troubleshooting and best practices for effective testing</li>
+</ol>
+
+<p>By following these steps, you’ll be well-equipped to validate your MCP server implementations and ensure they meet the protocol’s requirements for functionality, security, and performance.</p>
+
+<p>Remember that the mcp-client-cli is actively developed, so it’s a good practice to periodically check for updates:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">--upgrade</span> mcp-testing-framework
+</code></pre></div></div>
+
+<p>This ensures you have access to the latest features, bug fixes, and security improvements as the tool and the MCP ecosystem continue to evolve.</p>
+
+    </div>
+
+    <nav class="chapter-nav bottom">
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter2/" class="nav-link prev">
+                    ← Previous: Understanding the Model Context Protocol
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter4/" class="nav-link next">
+                    Next: Basic Usage and Commands →
+                </a>
+            
+        </div>
+    </nav>
+</article>
+
+<aside class="chapter-sidebar">
+    <h3>All Chapters</h3>
+    <ol class="chapter-list">
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter1/">
+                <span class="chapter-number">1.</span>
+                <span class="chapter-title">Introduction to MCP and the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter2/">
+                <span class="chapter-number">2.</span>
+                <span class="chapter-title">Understanding the Model Context Protocol</span>
+            </a>
+        </li>
+        
+        <li class="current">
+            <a href="/mcp-client-cli/chapters/chapter3/">
+                <span class="chapter-number">3.</span>
+                <span class="chapter-title">Setting Up the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter4/">
+                <span class="chapter-number">4.</span>
+                <span class="chapter-title">Basic Usage and Commands</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter5/">
+                <span class="chapter-number">5.</span>
+                <span class="chapter-title">Testing MCP Servers</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter6/">
+                <span class="chapter-number">6.</span>
+                <span class="chapter-title">Advanced Testing Capabilities</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter7/">
+                <span class="chapter-number">7.</span>
+                <span class="chapter-title">AI-Driven Configuration System</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter8/">
+                <span class="chapter-number">8.</span>
+                <span class="chapter-title">CI/CD Integration</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter9/">
+                <span class="chapter-number">9.</span>
+                <span class="chapter-title">Multi-Language Testing</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter10/">
+                <span class="chapter-number">10.</span>
+                <span class="chapter-title">Troubleshooting and Best Practices</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter11/">
+                <span class="chapter-number">11.</span>
+                <span class="chapter-title">Case Studies and Real-World Examples</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter12/">
+                <span class="chapter-number">12.</span>
+                <span class="chapter-title">Future Directions and Emerging Trends</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside> 
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col footer-col-1">
+                    <ul class="contact-list">
+                        <li>MCP-Client-CLI Technical Documentation</li>
+                        <li>Comprehensive guide for testing and validating MCP servers</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-2">
+                    <ul class="social-media-list">
+                        
+                        <li>
+                            <a href="https://github.com/tosin2013/mcp-client-cli">
+                                <span class="icon icon--github">GitHub</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-3">
+                    <p>Created by Manus, an AI agent created by the Manus team.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/mcp-client-cli/assets/js/main.js"></script>
+</body>
+</html> 

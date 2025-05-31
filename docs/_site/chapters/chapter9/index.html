@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Language Testing | MCP-Client-CLI Technical Documentation</title>
+    <meta name="description" content="Testing MCP servers across different programming languages and environments">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/style.css">
+    
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/syntax.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/mcp-client-cli/assets/favicon.ico">
+    
+    <!-- SEO -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Multi-Language Testing | MCP-Client-CLI Technical Documentation</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Multi-Language Testing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Testing MCP servers across different programming languages and environments" />
+<meta property="og:description" content="Testing MCP servers across different programming languages and environments" />
+<link rel="canonical" href="https://tosin2013.github.io/mcp-client-cli/chapters/chapter9/" />
+<meta property="og:url" content="https://tosin2013.github.io/mcp-client-cli/chapters/chapter9/" />
+<meta property="og:site_name" content="MCP-Client-CLI Technical Documentation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-05-31T10:22:14-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Multi-Language Testing" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-05-31T10:22:14-04:00","datePublished":"2025-05-31T10:22:14-04:00","description":"Testing MCP servers across different programming languages and environments","headline":"Multi-Language Testing","mainEntityOfPage":{"@type":"WebPage","@id":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter9/"},"url":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter9/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="/mcp-client-cli/">MCP-Client-CLI Technical Documentation</a>
+            
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="/mcp-client-cli/">Home</a>
+                    <a class="page-link" href="/mcp-client-cli/chapters/">Chapters</a>
+                    <a class="page-link" href="https://github.com/tosin2013/mcp-client-cli">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="chapter">
+    <header class="chapter-header">
+        <h1 class="chapter-title">Multi-Language Testing</h1>
+        
+        <p class="chapter-description">Testing MCP servers across different programming languages and environments</p>
+        
+        
+        <div class="chapter-meta">
+            <span class="chapter-number">Chapter 9</span>
+        </div>
+    </header>
+
+    <nav class="chapter-nav">
+        
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                
+                
+        
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter8/" class="nav-link prev">
+                    ← Previous: CI/CD Integration
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter10/" class="nav-link next">
+                    Next: Troubleshooting and Best Practices →
+                </a>
+            
+        </div>
+    </nav>
+
+    <div class="chapter-content">
+        <h1 id="chapter-9-multi-language-testing">Chapter 9: Multi-Language Testing</h1>
+
+<h2 id="testing-python-mcp-servers">Testing Python MCP Servers</h2>
+
+<p>Python is one of the most popular languages for implementing MCP servers due to its simplicity, extensive libraries, and strong support for asynchronous operations. The mcp-client-cli provides specialized capabilities for testing Python-based MCP servers.</p>
+
+<h3 id="python-server-characteristics">Python Server Characteristics</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md">MULTI_LANGUAGE_TESTING.md</a> documentation, Python MCP servers typically have several distinctive characteristics:</p>
+
+<ol>
+  <li><strong>Asynchronous Implementation</strong>: Often using <code class="language-plaintext highlighter-rouge">asyncio</code> for non-blocking operations</li>
+  <li><strong>Framework Integration</strong>: Frequently built on frameworks like FastAPI, Flask, or Django</li>
+  <li><strong>Type Annotations</strong>: Using Python’s type hints for parameter validation</li>
+  <li><strong>JSON Schema</strong>: Leveraging libraries like Pydantic for schema validation</li>
+  <li><strong>Process-Based Execution</strong>: Running as separate processes with stdio or HTTP communication</li>
+</ol>
+
+<p>Understanding these characteristics is essential for effective testing of Python MCP servers.</p>
+
+<h3 id="python-specific-testing-configuration">Python-Specific Testing Configuration</h3>
+
+<p>To optimize testing for Python MCP servers, you can use specialized configuration:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"python-server"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"src/server.py"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"PYTHONPATH"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${repo_root}"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"PYTHONUNBUFFERED"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"DEBUG"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"server_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"startup_timeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"shutdown_grace_period"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"testing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"python_specific"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"check_type_annotations"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"validate_async_patterns"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_exception_handling"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"memory_profiling"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As noted in the <a href="https://modelcontextprotocol.io/specification/2025-03-26">official MCP documentation</a>, this configuration includes Python-specific environment variables, startup parameters, and testing options that address the unique characteristics of Python implementations.</p>
+
+<h3 id="python-server-testing-commands">Python Server Testing Commands</h3>
+
+<p>The mcp-client-cli provides several commands specifically optimized for Python server testing:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test Python-specific functionality</span>
+mcp-test python-specific <span class="nt">--server-name</span> python-server
+
+<span class="c"># Test asyncio patterns</span>
+mcp-test python-async <span class="nt">--server-name</span> python-server
+
+<span class="c"># Test type annotation compliance</span>
+mcp-test python-types <span class="nt">--server-name</span> python-server
+
+<span class="c"># Profile Python memory usage</span>
+mcp-test python-profile <span class="nt">--server-name</span> python-server <span class="nt">--profile-type</span> memory
+</code></pre></div></div>
+
+<p>These commands provide targeted testing for Python-specific aspects of MCP server implementations.</p>
+
+<h3 id="python-framework-integration">Python Framework Integration</h3>
+
+<p>Many Python MCP servers are built on web frameworks. The mcp-client-cli supports testing framework-specific aspects:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test FastAPI integration</span>
+mcp-test python-framework <span class="nt">--server-name</span> python-server <span class="nt">--framework</span> fastapi
+
+<span class="c"># Test Flask integration</span>
+mcp-test python-framework <span class="nt">--server-name</span> python-server <span class="nt">--framework</span> flask
+
+<span class="c"># Test Django integration</span>
+mcp-test python-framework <span class="nt">--server-name</span> python-server <span class="nt">--framework</span> django
+</code></pre></div></div>
+
+<p>According to <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp">Anthropic’s MCP documentation</a>, framework integration testing is crucial for ensuring that the MCP server correctly leverages framework capabilities while maintaining protocol compliance.</p>
+
+<h3 id="python-best-practices-validation">Python Best Practices Validation</h3>
+
+<p>The mcp-client-cli can validate adherence to Python best practices:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate Python best practices</span>
+mcp-test python-best-practices <span class="nt">--server-name</span> python-server
+
+<span class="c"># Check code quality</span>
+mcp-test python-quality <span class="nt">--server-name</span> python-server
+
+<span class="c"># Validate documentation</span>
+mcp-test python-docs <span class="nt">--server-name</span> python-server
+</code></pre></div></div>
+
+<p>These commands help ensure that Python MCP servers follow established best practices, maintain high code quality, and provide adequate documentation.</p>
+
+<h2 id="testing-nodejs-mcp-servers">Testing Node.js MCP Servers</h2>
+
+<p>Node.js is another popular choice for MCP server implementation, offering excellent performance for I/O-bound operations and a rich ecosystem of packages. The mcp-client-cli includes specialized capabilities for testing Node.js MCP servers.</p>
+
+<h3 id="nodejs-server-characteristics">Node.js Server Characteristics</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md">MULTI_LANGUAGE_TESTING.md</a> documentation, Node.js MCP servers typically have several distinctive characteristics:</p>
+
+<ol>
+  <li><strong>Event-Driven Architecture</strong>: Leveraging Node.js’s non-blocking I/O model</li>
+  <li><strong>Promise-Based APIs</strong>: Using Promises and async/await for asynchronous operations</li>
+  <li><strong>Express or Similar Frameworks</strong>: Building on established web frameworks</li>
+  <li><strong>NPM Ecosystem</strong>: Utilizing the extensive Node.js package ecosystem</li>
+  <li><strong>JSON Native Handling</strong>: Leveraging JavaScript’s native JSON capabilities</li>
+</ol>
+
+<p>Understanding these characteristics is essential for effective testing of Node.js MCP servers.</p>
+
+<h3 id="nodejs-specific-testing-configuration">Node.js-Specific Testing Configuration</h3>
+
+<p>To optimize testing for Node.js MCP servers, you can use specialized configuration:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"nodejs-server"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"dist/server.js"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"NODE_ENV"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"DEBUG"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"NODE_OPTIONS"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--unhandled-rejections=strict"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"server_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nodejs"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"startup_timeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"shutdown_signal"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SIGINT"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"testing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"nodejs_specific"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"check_promise_patterns"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"validate_error_handling"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"test_event_emitters"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"memory_leak_detection"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As explained in the <a href="https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html">Spring AI Reference documentation</a>, this configuration includes Node.js-specific environment variables, startup parameters, and testing options that address the unique characteristics of Node.js implementations.</p>
+
+<h3 id="nodejs-server-testing-commands">Node.js Server Testing Commands</h3>
+
+<p>The mcp-client-cli provides several commands specifically optimized for Node.js server testing:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test Node.js-specific functionality</span>
+mcp-test nodejs-specific <span class="nt">--server-name</span> nodejs-server
+
+<span class="c"># Test Promise patterns</span>
+mcp-test nodejs-promises <span class="nt">--server-name</span> nodejs-server
+
+<span class="c"># Test event handling</span>
+mcp-test nodejs-events <span class="nt">--server-name</span> nodejs-server
+
+<span class="c"># Check for memory leaks</span>
+mcp-test nodejs-leaks <span class="nt">--server-name</span> nodejs-server
+</code></pre></div></div>
+
+<p>These commands provide targeted testing for Node.js-specific aspects of MCP server implementations.</p>
+
+<h3 id="nodejs-framework-integration">Node.js Framework Integration</h3>
+
+<p>Many Node.js MCP servers are built on web frameworks. The mcp-client-cli supports testing framework-specific aspects:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test Express integration</span>
+mcp-test nodejs-framework <span class="nt">--server-name</span> nodejs-server <span class="nt">--framework</span> express
+
+<span class="c"># Test Koa integration</span>
+mcp-test nodejs-framework <span class="nt">--server-name</span> nodejs-server <span class="nt">--framework</span> koa
+
+<span class="c"># Test Fastify integration</span>
+mcp-test nodejs-framework <span class="nt">--server-name</span> nodejs-server <span class="nt">--framework</span> fastify
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, framework integration testing ensures that the MCP server correctly leverages framework capabilities while maintaining protocol compliance.</p>
+
+<h3 id="nodejs-best-practices-validation">Node.js Best Practices Validation</h3>
+
+<p>The mcp-client-cli can validate adherence to Node.js best practices:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate Node.js best practices</span>
+mcp-test nodejs-best-practices <span class="nt">--server-name</span> nodejs-server
+
+<span class="c"># Check code quality</span>
+mcp-test nodejs-quality <span class="nt">--server-name</span> nodejs-server
+
+<span class="c"># Validate package structure</span>
+mcp-test nodejs-package <span class="nt">--server-name</span> nodejs-server
+</code></pre></div></div>
+
+<p>These commands help ensure that Node.js MCP servers follow established best practices, maintain high code quality, and provide well-structured packages.</p>
+
+<h2 id="cross-language-compatibility">Cross-Language Compatibility</h2>
+
+<p>One of the key benefits of the MCP protocol is enabling interoperability between different implementations. The mcp-client-cli provides robust capabilities for testing cross-language compatibility.</p>
+
+<h3 id="cross-language-testing-principles">Cross-Language Testing Principles</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md">MULTI_LANGUAGE_TESTING.md</a> documentation, effective cross-language testing is guided by several principles:</p>
+
+<ol>
+  <li><strong>Protocol Compliance</strong>: Ensuring all implementations adhere to the MCP specification</li>
+  <li><strong>Data Format Consistency</strong>: Validating consistent handling of data formats across languages</li>
+  <li><strong>Error Handling Compatibility</strong>: Verifying consistent error responses</li>
+  <li><strong>Performance Parity</strong>: Comparing performance characteristics across implementations</li>
+  <li><strong>Feature Equivalence</strong>: Ensuring comparable functionality across languages</li>
+</ol>
+
+<p>These principles help ensure that MCP servers can interoperate regardless of their implementation language.</p>
+
+<h3 id="client-server-pair-testing">Client-Server Pair Testing</h3>
+
+<p>The mcp-client-cli supports testing interactions between clients and servers implemented in different languages:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test Python client with Node.js server</span>
+mcp-test cross-language <span class="nt">--client</span> python <span class="nt">--server</span> nodejs <span class="nt">--config</span> cross-language-config.json
+
+<span class="c"># Test Node.js client with Python server</span>
+mcp-test cross-language <span class="nt">--client</span> nodejs <span class="nt">--server</span> python <span class="nt">--config</span> cross-language-config.json
+
+<span class="c"># Test Go client with Python server</span>
+mcp-test cross-language <span class="nt">--client</span> go <span class="nt">--server</span> python <span class="nt">--config</span> cross-language-config.json
+</code></pre></div></div>
+
+<p>As noted in <a href="https://www.philschmid.de/mcp-introduction">Philipp Schmid’s MCP overview</a>, this testing ensures that clients and servers can communicate effectively regardless of their implementation language.</p>
+
+<h3 id="cross-language-configuration">Cross-Language Configuration</h3>
+
+<p>Cross-language testing can be configured to focus on specific aspects:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cross_language"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"pairs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"client"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python-client"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"server"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nodejs-server"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"test_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"functional"</span><span class="p">,</span><span class="w"> </span><span class="s2">"error_handling"</span><span class="p">,</span><span class="w"> </span><span class="s2">"performance"</span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"client"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nodejs-client"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"server"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python-server"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"test_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"functional"</span><span class="p">,</span><span class="w"> </span><span class="s2">"error_handling"</span><span class="p">,</span><span class="w"> </span><span class="s2">"performance"</span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"focus_areas"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"data_types"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"error_formats"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"timeout_handling"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"large_payloads"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"comparison_reporting"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration defines which client-server pairs to test, which aspects to focus on, and whether to generate comparison reports.</p>
+
+<h3 id="data-type-compatibility-testing">Data Type Compatibility Testing</h3>
+
+<p>One critical aspect of cross-language compatibility is consistent handling of data types:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test data type compatibility</span>
+mcp-test data-types <span class="nt">--client</span> python <span class="nt">--server</span> nodejs <span class="nt">--data-types-file</span> data-types.json
+</code></pre></div></div>
+
+<p>The data types file defines test cases for various data types:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"test_cases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integers"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">2147483647</span><span class="p">,</span><span class="w"> </span><span class="mi">-2147483648</span><span class="p">,</span><span class="w"> </span><span class="mi">9007199254740991</span><span class="p">,</span><span class="w"> </span><span class="mi">-9007199254740991</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"floats"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">,</span><span class="w"> </span><span class="mf">-3.14159</span><span class="p">,</span><span class="w"> </span><span class="mi">1e100</span><span class="p">,</span><span class="w"> </span><span class="mi">-1e100</span><span class="p">,</span><span class="w"> </span><span class="mi">1e-100</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"strings"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="s2">"hello"</span><span class="p">,</span><span class="w"> </span><span class="s2">"special chars: !@#$%^&amp;*()"</span><span class="p">,</span><span class="w"> </span><span class="s2">"unicode: 你好, こんにちは, مرحبا"</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"booleans"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"null"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="kc">null</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arrays"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[[],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span><span class="w"> </span><span class="s2">"b"</span><span class="p">,</span><span class="w"> </span><span class="s2">"c"</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s2">"a"</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">]]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"objects"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[{},</span><span class="w"> </span><span class="p">{</span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nl">"b"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w"> </span><span class="nl">"c"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"d"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nested"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nl">"b"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">]}]}]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>According to the <a href="https://modelcontextprotocol.io/specification/2025-03-26">official MCP specification</a>, this testing ensures that different language implementations handle data types consistently, which is essential for interoperability.</p>
+
+<h3 id="error-handling-compatibility">Error Handling Compatibility</h3>
+
+<p>Another critical aspect is consistent error handling across languages:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test error handling compatibility</span>
+mcp-test error-compatibility <span class="nt">--client</span> python <span class="nt">--server</span> nodejs <span class="nt">--error-cases-file</span> error-cases.json
+</code></pre></div></div>
+
+<p>The error cases file defines test scenarios for various error conditions:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"error_cases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid_request"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"request"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"invalid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"format"</span><span class="p">},</span><span class="w">
+      </span><span class="nl">"expected_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"expected_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid_request"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown_tool"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"request"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"non_existent_tool"</span><span class="p">,</span><span class="w"> </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{}},</span><span class="w">
+      </span><span class="nl">"expected_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"expected_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown_tool"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid_parameters"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"request"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"echo"</span><span class="p">,</span><span class="w"> </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"invalid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"parameter"</span><span class="p">}},</span><span class="w">
+      </span><span class="nl">"expected_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"expected_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid_parameters"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"execution_error"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"request"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file_read"</span><span class="p">,</span><span class="w"> </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/nonexistent/file.txt"</span><span class="p">}},</span><span class="w">
+      </span><span class="nl">"expected_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"expected_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"execution_error"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This testing ensures that different language implementations handle errors consistently, providing predictable behavior regardless of the implementation language.</p>
+
+<h2 id="language-specific-optimizations">Language-Specific Optimizations</h2>
+
+<p>While cross-language compatibility is essential, each language has unique strengths that can be leveraged for optimal MCP server implementation. The mcp-client-cli helps identify and validate language-specific optimizations.</p>
+
+<h3 id="python-optimizations">Python Optimizations</h3>
+
+<p>For Python MCP servers, several optimizations can enhance performance and reliability:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test Python optimization opportunities</span>
+mcp-test python-optimize <span class="nt">--server-name</span> python-server
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md">MULTI_LANGUAGE_TESTING.md</a> documentation, this testing identifies opportunities for:</p>
+
+<ol>
+  <li><strong>Asyncio Optimization</strong>: Ensuring efficient use of Python’s asyncio</li>
+  <li><strong>C Extension Usage</strong>: Identifying opportunities to use C extensions for performance-critical code</li>
+  <li><strong>Memory Management</strong>: Optimizing memory usage patterns</li>
+  <li><strong>GIL Mitigation</strong>: Reducing the impact of Python’s Global Interpreter Lock</li>
+  <li><strong>JIT Compilation</strong>: Leveraging just-in-time compilation where appropriate</li>
+</ol>
+
+<p>These optimizations help Python MCP servers achieve better performance while maintaining protocol compliance.</p>
+
+<h3 id="nodejs-optimizations">Node.js Optimizations</h3>
+
+<p>For Node.js MCP servers, different optimizations apply:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test Node.js optimization opportunities</span>
+mcp-test nodejs-optimize <span class="nt">--server-name</span> nodejs-server
+</code></pre></div></div>
+
+<p>This testing identifies opportunities for:</p>
+
+<ol>
+  <li><strong>Event Loop Optimization</strong>: Ensuring efficient use of Node.js’s event loop</li>
+  <li><strong>Stream Processing</strong>: Leveraging Node.js streams for efficient data handling</li>
+  <li><strong>Native Modules</strong>: Identifying opportunities to use native modules for performance</li>
+  <li><strong>Memory Management</strong>: Optimizing memory usage and garbage collection</li>
+  <li><strong>Worker Threads</strong>: Utilizing worker threads for CPU-intensive operations</li>
+</ol>
+
+<p>These optimizations help Node.js MCP servers achieve optimal performance while maintaining protocol compliance.</p>
+
+<h3 id="optimization-validation">Optimization Validation</h3>
+
+<p>After implementing language-specific optimizations, you can validate their effectiveness:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Validate optimization effectiveness</span>
+mcp-test validate-optimizations <span class="nt">--server-name</span> optimized-server <span class="nt">--baseline-server</span> original-server
+</code></pre></div></div>
+
+<p>This command compares the optimized server against a baseline, measuring improvements in:</p>
+
+<ol>
+  <li><strong>Response Time</strong>: How quickly the server responds to requests</li>
+  <li><strong>Throughput</strong>: How many requests the server can handle per second</li>
+  <li><strong>Resource Usage</strong>: How efficiently the server uses CPU and memory</li>
+  <li><strong>Scalability</strong>: How performance changes under increasing load</li>
+  <li><strong>Reliability</strong>: Whether optimization affects error rates or stability</li>
+</ol>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, this validation ensures that optimizations provide real benefits without compromising protocol compliance or reliability.</p>
+
+<h2 id="universal-testing-patterns">Universal Testing Patterns</h2>
+
+<p>Despite the differences between language implementations, certain testing patterns apply universally to all MCP servers. The mcp-client-cli supports these universal patterns to ensure consistent validation across languages.</p>
+
+<h3 id="protocol-compliance-testing">Protocol Compliance Testing</h3>
+
+<p>Regardless of implementation language, all MCP servers must comply with the protocol specification:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test protocol compliance</span>
+mcp-test protocol-compliance <span class="nt">--server-name</span> any-server
+</code></pre></div></div>
+
+<p>According to the <a href="https://modelcontextprotocol.io/specification/2025-03-26">official MCP specification</a>, this testing verifies:</p>
+
+<ol>
+  <li><strong>Message Format</strong>: Adherence to specified message formats</li>
+  <li><strong>Tool Discovery</strong>: Proper implementation of tool discovery</li>
+  <li><strong>Parameter Validation</strong>: Correct validation of tool parameters</li>
+  <li><strong>Response Formatting</strong>: Proper formatting of tool responses</li>
+  <li><strong>Error Handling</strong>: Correct implementation of error responses</li>
+</ol>
+
+<p>Protocol compliance testing applies to all MCP servers regardless of their implementation language.</p>
+
+<h3 id="functional-testing">Functional Testing</h3>
+
+<p>Basic functional testing also applies universally:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test basic functionality</span>
+mcp-test functional <span class="nt">--server-name</span> any-server
+</code></pre></div></div>
+
+<p>This testing verifies:</p>
+
+<ol>
+  <li><strong>Tool Execution</strong>: Correct execution of tools</li>
+  <li><strong>Parameter Handling</strong>: Proper handling of different parameter types</li>
+  <li><strong>Result Generation</strong>: Accurate generation of results</li>
+  <li><strong>Error Conditions</strong>: Appropriate handling of error conditions</li>
+  <li><strong>Basic Performance</strong>: Acceptable response times and resource usage</li>
+</ol>
+
+<p>Functional testing ensures that the server performs its intended functions correctly, regardless of implementation language.</p>
+
+<h3 id="security-testing">Security Testing</h3>
+
+<p>Security testing is essential for all MCP servers:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Test security aspects</span>
+mcp-test security <span class="nt">--server-name</span> any-server
+</code></pre></div></div>
+
+<p>As noted in the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md">MULTI_LANGUAGE_TESTING.md</a> documentation, this testing verifies:</p>
+
+<ol>
+  <li><strong>Input Validation</strong>: Protection against injection attacks</li>
+  <li><strong>Authentication</strong>: Proper implementation of authentication mechanisms</li>
+  <li><strong>Authorization</strong>: Correct enforcement of access controls</li>
+  <li><strong>Data Protection</strong>: Appropriate safeguarding of sensitive data</li>
+  <li><strong>Error Leakage</strong>: Prevention of sensitive information disclosure in errors</li>
+</ol>
+
+<p>Security testing helps ensure that MCP servers are protected against common vulnerabilities, regardless of their implementation language.</p>
+
+<h3 id="performance-benchmarking">Performance Benchmarking</h3>
+
+<p>Performance benchmarking provides a basis for comparison across languages:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run performance benchmarks</span>
+mcp-test benchmark <span class="nt">--server-name</span> any-server
+</code></pre></div></div>
+
+<p>This testing measures:</p>
+
+<ol>
+  <li><strong>Response Time</strong>: How quickly the server responds to requests</li>
+  <li><strong>Throughput</strong>: How many requests the server can handle per second</li>
+  <li><strong>Resource Usage</strong>: How efficiently the server uses CPU and memory</li>
+  <li><strong>Scalability</strong>: How performance changes under increasing load</li>
+  <li><strong>Stability</strong>: How the server behaves during extended operation</li>
+</ol>
+
+<p>Performance benchmarking helps identify the strengths and limitations of different language implementations, informing language selection and optimization strategies.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Multi-language testing is essential for ensuring that MCP servers work correctly and efficiently regardless of their implementation language. The mcp-client-cli provides comprehensive support for testing Python and Node.js MCP servers, validating cross-language compatibility, identifying language-specific optimizations, and applying universal testing patterns.</p>
+
+<p>By leveraging these capabilities, you can ensure that your MCP servers provide consistent functionality, maintain protocol compliance, and achieve optimal performance regardless of the implementation language. This comprehensive testing approach helps create a robust MCP ecosystem where different implementations can interoperate seamlessly.</p>
+
+<p>In the next chapter, we’ll explore troubleshooting and best practices for MCP server testing, building on the foundation of multi-language testing to address common challenges and optimize testing workflows.</p>
+
+    </div>
+
+    <nav class="chapter-nav bottom">
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter8/" class="nav-link prev">
+                    ← Previous: CI/CD Integration
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter10/" class="nav-link next">
+                    Next: Troubleshooting and Best Practices →
+                </a>
+            
+        </div>
+    </nav>
+</article>
+
+<aside class="chapter-sidebar">
+    <h3>All Chapters</h3>
+    <ol class="chapter-list">
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter1/">
+                <span class="chapter-number">1.</span>
+                <span class="chapter-title">Introduction to MCP and the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter2/">
+                <span class="chapter-number">2.</span>
+                <span class="chapter-title">Understanding the Model Context Protocol</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter3/">
+                <span class="chapter-number">3.</span>
+                <span class="chapter-title">Setting Up the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter4/">
+                <span class="chapter-number">4.</span>
+                <span class="chapter-title">Basic Usage and Commands</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter5/">
+                <span class="chapter-number">5.</span>
+                <span class="chapter-title">Testing MCP Servers</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter6/">
+                <span class="chapter-number">6.</span>
+                <span class="chapter-title">Advanced Testing Capabilities</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter7/">
+                <span class="chapter-number">7.</span>
+                <span class="chapter-title">AI-Driven Configuration System</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter8/">
+                <span class="chapter-number">8.</span>
+                <span class="chapter-title">CI/CD Integration</span>
+            </a>
+        </li>
+        
+        <li class="current">
+            <a href="/mcp-client-cli/chapters/chapter9/">
+                <span class="chapter-number">9.</span>
+                <span class="chapter-title">Multi-Language Testing</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter10/">
+                <span class="chapter-number">10.</span>
+                <span class="chapter-title">Troubleshooting and Best Practices</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter11/">
+                <span class="chapter-number">11.</span>
+                <span class="chapter-title">Case Studies and Real-World Examples</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter12/">
+                <span class="chapter-number">12.</span>
+                <span class="chapter-title">Future Directions and Emerging Trends</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside> 
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col footer-col-1">
+                    <ul class="contact-list">
+                        <li>MCP-Client-CLI Technical Documentation</li>
+                        <li>Comprehensive guide for testing and validating MCP servers</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-2">
+                    <ul class="social-media-list">
+                        
+                        <li>
+                            <a href="https://github.com/tosin2013/mcp-client-cli">
+                                <span class="icon icon--github">GitHub</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-3">
+                    <p>Created by Manus, an AI agent created by the Manus team.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/mcp-client-cli/assets/js/main.js"></script>
+</body>
+</html> 

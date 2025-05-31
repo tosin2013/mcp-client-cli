@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Integration | MCP-Client-CLI Technical Documentation</title>
+    <meta name="description" content="Continuous integration and deployment pipeline integration">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/style.css">
+    
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/syntax.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/mcp-client-cli/assets/favicon.ico">
+    
+    <!-- SEO -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>CI/CD Integration | MCP-Client-CLI Technical Documentation</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="CI/CD Integration" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Continuous integration and deployment pipeline integration" />
+<meta property="og:description" content="Continuous integration and deployment pipeline integration" />
+<link rel="canonical" href="https://tosin2013.github.io/mcp-client-cli/chapters/chapter8/" />
+<meta property="og:url" content="https://tosin2013.github.io/mcp-client-cli/chapters/chapter8/" />
+<meta property="og:site_name" content="MCP-Client-CLI Technical Documentation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-05-31T10:22:14-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="CI/CD Integration" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-05-31T10:22:14-04:00","datePublished":"2025-05-31T10:22:14-04:00","description":"Continuous integration and deployment pipeline integration","headline":"CI/CD Integration","mainEntityOfPage":{"@type":"WebPage","@id":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter8/"},"url":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter8/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="/mcp-client-cli/">MCP-Client-CLI Technical Documentation</a>
+            
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="/mcp-client-cli/">Home</a>
+                    <a class="page-link" href="/mcp-client-cli/chapters/">Chapters</a>
+                    <a class="page-link" href="https://github.com/tosin2013/mcp-client-cli">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="chapter">
+    <header class="chapter-header">
+        <h1 class="chapter-title">CI/CD Integration</h1>
+        
+        <p class="chapter-description">Continuous integration and deployment pipeline integration</p>
+        
+        
+        <div class="chapter-meta">
+            <span class="chapter-number">Chapter 8</span>
+        </div>
+    </header>
+
+    <nav class="chapter-nav">
+        
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                
+                
+        
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter7/" class="nav-link prev">
+                    ← Previous: AI-Driven Configuration System
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter9/" class="nav-link next">
+                    Next: Multi-Language Testing →
+                </a>
+            
+        </div>
+    </nav>
+
+    <div class="chapter-content">
+        <h1 id="chapter-8-cicd-integration">Chapter 8: CI/CD Integration</h1>
+
+<h2 id="github-actions-integration">GitHub Actions Integration</h2>
+
+<p>Continuous Integration and Continuous Deployment (CI/CD) are essential practices for modern software development. Integrating MCP server testing into CI/CD pipelines ensures that your servers are automatically validated with every code change. The mcp-client-cli provides robust support for CI/CD integration, with particular emphasis on GitHub Actions.</p>
+
+<h3 id="basic-github-actions-workflow">Basic GitHub Actions Workflow</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, a basic GitHub Actions workflow for MCP server testing looks like this:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .github/workflows/mcp-testing.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">MCP Server Testing</span>
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">,</span> <span class="nv">pull_request</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">python-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.11'</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">pip install mcp-testing-framework</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">mcp-test --test-mcp-servers</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">OPENAI_API_KEY</span><span class="pi">:</span> <span class="s">$</span>
+</code></pre></div></div>
+
+<p>This simple workflow:</p>
+<ol>
+  <li>Triggers on push and pull request events</li>
+  <li>Sets up a Python environment</li>
+  <li>Installs the mcp-testing-framework</li>
+  <li>Runs the basic MCP server tests</li>
+</ol>
+
+<p>As noted in the <a href="https://modelcontextprotocol.io/introduction">official MCP documentation</a>, this integration ensures that your MCP server is tested with every code change, maintaining consistent quality and compliance with the protocol specification.</p>
+
+<h3 id="advanced-github-actions-configuration">Advanced GitHub Actions Configuration</h3>
+
+<p>For more comprehensive testing, you can create a more sophisticated workflow:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .github/workflows/comprehensive-mcp-testing.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">Comprehensive MCP Server Testing</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span> <span class="nv">main</span><span class="pi">,</span> <span class="nv">develop</span> <span class="pi">]</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span> <span class="nv">main</span><span class="pi">,</span> <span class="nv">develop</span> <span class="pi">]</span>
+  <span class="na">schedule</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">cron</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*'</span>  <span class="c1"># Daily at midnight</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">strategy</span><span class="pi">:</span>
+      <span class="na">matrix</span><span class="pi">:</span>
+        <span class="na">os</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">ubuntu-latest</span><span class="pi">,</span> <span class="nv">macos-latest</span><span class="pi">,</span> <span class="nv">windows-latest</span><span class="pi">]</span>
+        <span class="na">python-version</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">3.9'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">3.10'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">3.11'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">3.12'</span><span class="pi">]</span>
+        <span class="na">exclude</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">os</span><span class="pi">:</span> <span class="s">macos-latest</span>
+            <span class="na">python-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.9'</span>
+          <span class="pi">-</span> <span class="na">os</span><span class="pi">:</span> <span class="s">windows-latest</span>
+            <span class="na">python-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.9'</span>
+    
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">$</span>
+    
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Python $</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">python-version</span><span class="pi">:</span> <span class="s">$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install dependencies</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">python -m pip install --upgrade pip</span>
+          <span class="s">pip install -r requirements.txt</span>
+          <span class="s">pip install mcp-testing-framework[all]</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Cache test results</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/cache@v3</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">~/.mcp-test-cache</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">$-python-$-$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run functional tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">mcp-test functional --server-name mcp-server --config test-config.json</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">OPENAI_API_KEY</span><span class="pi">:</span> <span class="s">$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run security tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">mcp-test security --server-name mcp-server --config test-config.json</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">OPENAI_API_KEY</span><span class="pi">:</span> <span class="s">$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run performance tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">mcp-test performance --server-name mcp-server --config test-config.json</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">OPENAI_API_KEY</span><span class="pi">:</span> <span class="s">$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Generate test report</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">mcp-test generate-report --format html --output test-report.html</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload test report</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v3</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">test-report-$-python-$</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">test-report.html</span>
+</code></pre></div></div>
+
+<p>This advanced workflow provides:</p>
+<ol>
+  <li><strong>Matrix Testing</strong>: Across multiple operating systems and Python versions</li>
+  <li><strong>Scheduled Testing</strong>: Daily runs in addition to push/PR triggers</li>
+  <li><strong>Dependency Caching</strong>: For faster workflow execution</li>
+  <li><strong>Comprehensive Testing</strong>: Separate steps for functional, security, and performance tests</li>
+  <li><strong>Report Generation</strong>: Creating and uploading HTML test reports</li>
+</ol>
+
+<p>According to the <a href="https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html">Spring AI Reference documentation</a>, this kind of comprehensive testing is essential for ensuring MCP server compatibility across different environments.</p>
+
+<h3 id="github-actions-workflow-templates">GitHub Actions Workflow Templates</h3>
+
+<p>The mcp-client-cli provides several pre-configured workflow templates for different testing scenarios:</p>
+
+<h4 id="basic-testing-template">Basic Testing Template</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate a basic testing workflow</span>
+mcp-test generate-workflow <span class="nt">--type</span> github-actions <span class="nt">--template</span> basic <span class="nt">--output</span> .github/workflows/basic-testing.yml
+</code></pre></div></div>
+
+<p>This command generates a simple workflow for basic MCP server testing.</p>
+
+<h4 id="comprehensive-testing-template">Comprehensive Testing Template</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate a comprehensive testing workflow</span>
+mcp-test generate-workflow <span class="nt">--type</span> github-actions <span class="nt">--template</span> comprehensive <span class="nt">--output</span> .github/workflows/comprehensive-testing.yml
+</code></pre></div></div>
+
+<p>This command generates a more sophisticated workflow with matrix testing and multiple test types.</p>
+
+<h4 id="security-focused-template">Security-Focused Template</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate a security-focused workflow</span>
+mcp-test generate-workflow <span class="nt">--type</span> github-actions <span class="nt">--template</span> security <span class="nt">--output</span> .github/workflows/security-testing.yml
+</code></pre></div></div>
+
+<p>This command generates a workflow focused specifically on security testing.</p>
+
+<h4 id="performance-focused-template">Performance-Focused Template</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate a performance-focused workflow</span>
+mcp-test generate-workflow <span class="nt">--type</span> github-actions <span class="nt">--template</span> performance <span class="nt">--output</span> .github/workflows/performance-testing.yml
+</code></pre></div></div>
+
+<p>This command generates a workflow focused on performance testing and benchmarking.</p>
+
+<h3 id="github-actions-best-practices">GitHub Actions Best Practices</h3>
+
+<p>When integrating MCP server testing with GitHub Actions, several best practices enhance effectiveness:</p>
+
+<ol>
+  <li><strong>Secret Management</strong>: Store API keys and sensitive configuration in GitHub Secrets
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">env</span><span class="pi">:</span>
+  <span class="na">OPENAI_API_KEY</span><span class="pi">:</span> <span class="s">$</span>
+  <span class="na">MCP_SERVER_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Artifact Management</strong>: Save test reports and logs as artifacts
+```yaml
+    <ul>
+      <li>name: Upload test artifacts
+uses: actions/upload-artifact@v3
+with:
+  name: test-results
+  path: |
+    test-report.html
+    test-logs/
+    performance-data/
+```</li>
+    </ul>
+  </li>
+  <li><strong>Conditional Testing</strong>: Run different tests based on context
+```yaml
+    <ul>
+      <li>
+        <p>name: Run comprehensive tests
+if: github.event_name == ‘schedule’ || github.ref == ‘refs/heads/main’
+run: mcp-test run-suite –suite-name comprehensive</p>
+      </li>
+      <li>
+        <p>name: Run basic tests
+if: github.event_name == ‘pull_request’
+run: mcp-test run-suite –suite-name basic
+```</p>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Workflow Optimization</strong>: Use caching and selective testing
+```yaml
+    <ul>
+      <li>name: Cache dependencies
+uses: actions/cache@v3
+with:
+  path: ~/.cache/pip
+  key: $-pip-$
+```</li>
+    </ul>
+  </li>
+  <li><strong>Status Checks</strong>: Configure required status checks for protected branches
+```yaml
+    <ul>
+      <li>name: Report status
+run: |
+  if [ $TEST_EXIT_CODE -ne 0 ]; then
+    echo “Tests failed with exit code $TEST_EXIT_CODE”
+    exit 1
+  fi
+env:
+  TEST_EXIT_CODE: $
+```</li>
+    </ul>
+  </li>
+</ol>
+
+<p>These practices help ensure reliable, efficient, and secure CI/CD integration for your MCP server testing.</p>
+
+<h2 id="automated-testing-pipelines">Automated Testing Pipelines</h2>
+
+<p>Beyond GitHub Actions, the mcp-client-cli supports integration with various CI/CD systems through automated testing pipelines.</p>
+
+<h3 id="jenkins-integration">Jenkins Integration</h3>
+
+<p>For organizations using Jenkins, the mcp-client-cli can be integrated into Jenkins pipelines:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Jenkinsfile</span>
+<span class="n">pipeline</span> <span class="o">{</span>
+    <span class="n">agent</span> <span class="o">{</span>
+        <span class="n">docker</span> <span class="o">{</span>
+            <span class="n">image</span> <span class="s1">'python:3.11'</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="n">stages</span> <span class="o">{</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Setup'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">sh</span> <span class="s1">'pip install mcp-testing-framework[all]'</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Functional Testing'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">sh</span> <span class="s1">'mcp-test functional --server-name mcp-server --config test-config.json'</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Security Testing'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">sh</span> <span class="s1">'mcp-test security --server-name mcp-server --config test-config.json'</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Performance Testing'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">sh</span> <span class="s1">'mcp-test performance --server-name mcp-server --config test-config.json'</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Report Generation'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">sh</span> <span class="s1">'mcp-test generate-report --format html --output test-report.html'</span>
+                <span class="n">archiveArtifacts</span> <span class="nl">artifacts:</span> <span class="s1">'test-report.html'</span><span class="o">,</span> <span class="nl">fingerprint:</span> <span class="kc">true</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="n">post</span> <span class="o">{</span>
+        <span class="n">always</span> <span class="o">{</span>
+            <span class="n">junit</span> <span class="s1">'test-results/*.xml'</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, this pipeline provides comprehensive testing with result reporting and artifact archiving.</p>
+
+<h3 id="gitlab-ci-integration">GitLab CI Integration</h3>
+
+<p>For GitLab users, the mcp-client-cli can be integrated with GitLab CI:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .gitlab-ci.yml</span>
+<span class="na">image</span><span class="pi">:</span> <span class="s">python:3.11</span>
+
+<span class="na">stages</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">setup</span>
+  <span class="pi">-</span> <span class="s">test</span>
+  <span class="pi">-</span> <span class="s">report</span>
+
+<span class="na">variables</span><span class="pi">:</span>
+  <span class="na">PIP_CACHE_DIR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">$CI_PROJECT_DIR/.pip-cache"</span>
+
+<span class="na">cache</span><span class="pi">:</span>
+  <span class="na">paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">.pip-cache/</span>
+
+<span class="na">setup</span><span class="pi">:</span>
+  <span class="na">stage</span><span class="pi">:</span> <span class="s">setup</span>
+  <span class="na">script</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">pip install mcp-testing-framework[all]</span>
+  <span class="na">artifacts</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.pip-cache/</span>
+
+<span class="na">functional_testing</span><span class="pi">:</span>
+  <span class="na">stage</span><span class="pi">:</span> <span class="s">test</span>
+  <span class="na">script</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">mcp-test functional --server-name mcp-server --config test-config.json</span>
+  <span class="na">artifacts</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test-results/functional/</span>
+
+<span class="na">security_testing</span><span class="pi">:</span>
+  <span class="na">stage</span><span class="pi">:</span> <span class="s">test</span>
+  <span class="na">script</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">mcp-test security --server-name mcp-server --config test-config.json</span>
+  <span class="na">artifacts</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test-results/security/</span>
+
+<span class="na">performance_testing</span><span class="pi">:</span>
+  <span class="na">stage</span><span class="pi">:</span> <span class="s">test</span>
+  <span class="na">script</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">mcp-test performance --server-name mcp-server --config test-config.json</span>
+  <span class="na">artifacts</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test-results/performance/</span>
+
+<span class="na">generate_report</span><span class="pi">:</span>
+  <span class="na">stage</span><span class="pi">:</span> <span class="s">report</span>
+  <span class="na">script</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">mcp-test generate-report --format html --output test-report.html</span>
+  <span class="na">artifacts</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test-report.html</span>
+</code></pre></div></div>
+
+<p>This configuration provides a multi-stage pipeline with dependency caching and artifact management.</p>
+
+<h3 id="azure-devops-integration">Azure DevOps Integration</h3>
+
+<p>For Azure DevOps users, the mcp-client-cli can be integrated with Azure Pipelines:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># azure-pipelines.yml</span>
+<span class="na">trigger</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">main</span>
+  <span class="pi">-</span> <span class="s">develop</span>
+
+<span class="na">pool</span><span class="pi">:</span>
+  <span class="na">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ubuntu-latest'</span>
+
+<span class="na">strategy</span><span class="pi">:</span>
+  <span class="na">matrix</span><span class="pi">:</span>
+    <span class="na">Python39</span><span class="pi">:</span>
+      <span class="na">pythonVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.9'</span>
+    <span class="na">Python310</span><span class="pi">:</span>
+      <span class="na">pythonVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.10'</span>
+    <span class="na">Python311</span><span class="pi">:</span>
+      <span class="na">pythonVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.11'</span>
+
+<span class="na">steps</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">UsePythonVersion@0</span>
+  <span class="na">inputs</span><span class="pi">:</span>
+    <span class="na">versionSpec</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$(pythonVersion)'</span>
+    <span class="na">addToPath</span><span class="pi">:</span> <span class="no">true</span>
+
+<span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">python -m pip install --upgrade pip</span>
+    <span class="s">pip install mcp-testing-framework[all]</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Install</span><span class="nv"> </span><span class="s">dependencies'</span>
+
+<span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">mcp-test functional --server-name mcp-server --config test-config.json</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">functional</span><span class="nv"> </span><span class="s">tests'</span>
+
+<span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">mcp-test security --server-name mcp-server --config test-config.json</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">security</span><span class="nv"> </span><span class="s">tests'</span>
+
+<span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">mcp-test performance --server-name mcp-server --config test-config.json</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">performance</span><span class="nv"> </span><span class="s">tests'</span>
+
+<span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">mcp-test generate-report --format html --output $(Build.ArtifactStagingDirectory)/test-report.html</span>
+  <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Generate</span><span class="nv"> </span><span class="s">test</span><span class="nv"> </span><span class="s">report'</span>
+
+<span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">PublishBuildArtifacts@1</span>
+  <span class="na">inputs</span><span class="pi">:</span>
+    <span class="na">pathtoPublish</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$(Build.ArtifactStagingDirectory)'</span>
+    <span class="na">artifactName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">test-results'</span>
+</code></pre></div></div>
+
+<p>This configuration provides matrix testing across Python versions with artifact publishing.</p>
+
+<h3 id="circleci-integration">CircleCI Integration</h3>
+
+<p>For CircleCI users, the mcp-client-cli can be integrated with CircleCI workflows:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .circleci/config.yml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="m">2.1</span>
+
+<span class="na">orbs</span><span class="pi">:</span>
+  <span class="na">python</span><span class="pi">:</span> <span class="s">circleci/python@1.5</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">docker</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">cimg/python:3.11</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">checkout</span>
+      <span class="pi">-</span> <span class="s">python/install-packages</span><span class="pi">:</span>
+          <span class="na">pkg-manager</span><span class="pi">:</span> <span class="s">pip</span>
+          <span class="na">packages</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">mcp-testing-framework[all]</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">Run functional tests</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="s">mcp-test functional --server-name mcp-server --config test-config.json</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">Run security tests</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="s">mcp-test security --server-name mcp-server --config test-config.json</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">Run performance tests</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="s">mcp-test performance --server-name mcp-server --config test-config.json</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">Generate test report</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="s">mcp-test generate-report --format html --output test-report.html</span>
+      <span class="pi">-</span> <span class="na">store_artifacts</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">test-report.html</span>
+          <span class="na">destination</span><span class="pi">:</span> <span class="s">test-report.html</span>
+
+<span class="na">workflows</span><span class="pi">:</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">jobs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test</span>
+</code></pre></div></div>
+
+<p>This configuration provides a complete testing workflow with artifact storage.</p>
+
+<h2 id="daggerio-pipelines">Dagger.io Pipelines</h2>
+
+<p>The mcp-client-cli includes special integration with <a href="https://dagger.io/">Dagger.io</a>, a powerful tool for creating portable CI/CD pipelines. This integration provides enhanced capabilities for MCP server testing.</p>
+
+<h3 id="daggerio-overview">Dagger.io Overview</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, Dagger.io offers several advantages for MCP server testing:</p>
+
+<ol>
+  <li><strong>Portability</strong>: Pipelines run consistently across different environments</li>
+  <li><strong>Containerization</strong>: Tests run in isolated containers</li>
+  <li><strong>Caching</strong>: Intelligent caching improves performance</li>
+  <li><strong>Parallelism</strong>: Efficient parallel execution</li>
+  <li><strong>Reproducibility</strong>: Consistent results across runs</li>
+</ol>
+
+<p>These advantages make Dagger.io an excellent choice for MCP server testing pipelines.</p>
+
+<h3 id="basic-daggerio-pipeline">Basic Dagger.io Pipeline</h3>
+
+<p>A basic Dagger.io pipeline for MCP server testing looks like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run functional tests via Dagger</span>
+dagger call run-functional-tests <span class="nt">--source</span> <span class="nb">.</span>
+
+<span class="c"># Run full test suite with reporting</span>
+dagger call run-full-test-suite <span class="nt">--source</span> <span class="nb">.</span> <span class="nt">--generate-report</span> <span class="nb">true</span>
+
+<span class="c"># Run performance benchmarks</span>
+dagger call run-performance-tests <span class="nt">--source</span> <span class="nb">.</span> <span class="nt">--benchmark-mode</span> <span class="nb">true</span>
+</code></pre></div></div>
+
+<p>These commands leverage pre-defined Dagger.io functions in the mcp-client-cli to execute different types of tests.</p>
+
+<h3 id="daggerio-pipeline-configuration">Dagger.io Pipeline Configuration</h3>
+
+<p>Dagger.io pipelines can be configured through a <code class="language-plaintext highlighter-rouge">.dagger/pipeline-config.json</code> file:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"python"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.12"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"mcp"</span><span class="p">,</span><span class="w"> </span><span class="s2">"langchain"</span><span class="p">,</span><span class="w"> </span><span class="s2">"rich"</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"nodejs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"@modelcontextprotocol/sdk"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"testing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"parallel_execution"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timeout_seconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"retry_attempts"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"reporting"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"generate_html"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"include_performance_charts"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"confidence_analysis"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration defines testing environments, execution parameters, and reporting options.</p>
+
+<h3 id="custom-daggerio-functions">Custom Dagger.io Functions</h3>
+
+<p>You can define custom Dagger.io functions for specialized testing needs:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// .dagger/main.go</span>
+<span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"context"</span>
+	<span class="s">"fmt"</span>
+<span class="p">)</span>
+
+<span class="k">type</span> <span class="n">MCP</span> <span class="k">struct</span><span class="p">{}</span>
+
+<span class="c">// RunCustomTests runs specialized MCP server tests</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span><span class="n">MCP</span><span class="p">)</span> <span class="n">RunCustomTests</span><span class="p">(</span>
+	<span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span>
+	<span class="n">source</span> <span class="o">*</span><span class="n">Directory</span><span class="p">,</span>
+	<span class="n">testType</span> <span class="kt">string</span><span class="p">,</span>
+	<span class="n">parameters</span> <span class="o">*</span><span class="n">Optional</span><span class="p">[</span><span class="kt">string</span><span class="p">],</span>
+<span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">Container</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">container</span> <span class="o">:=</span> <span class="n">dag</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span><span class="o">.</span>
+		<span class="n">From</span><span class="p">(</span><span class="s">"python:3.11"</span><span class="p">)</span><span class="o">.</span>
+		<span class="n">WithDirectory</span><span class="p">(</span><span class="s">"/src"</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span><span class="o">.</span>
+		<span class="n">WithWorkdir</span><span class="p">(</span><span class="s">"/src"</span><span class="p">)</span><span class="o">.</span>
+		<span class="n">WithExec</span><span class="p">([]</span><span class="kt">string</span><span class="p">{</span><span class="s">"pip"</span><span class="p">,</span> <span class="s">"install"</span><span class="p">,</span> <span class="s">"mcp-testing-framework[all]"</span><span class="p">})</span>
+
+	<span class="n">paramStr</span> <span class="o">:=</span> <span class="s">""</span>
+	<span class="k">if</span> <span class="n">parameters</span> <span class="o">!=</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">parameters</span><span class="o">.</span><span class="n">Value</span> <span class="o">!=</span> <span class="s">""</span> <span class="p">{</span>
+		<span class="n">paramStr</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"--parameters '%s'"</span><span class="p">,</span> <span class="n">parameters</span><span class="o">.</span><span class="n">Value</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="n">container</span><span class="o">.</span><span class="n">WithExec</span><span class="p">([]</span><span class="kt">string</span><span class="p">{</span>
+		<span class="s">"sh"</span><span class="p">,</span> <span class="s">"-c"</span><span class="p">,</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"mcp-test custom --test-type %s %s"</span><span class="p">,</span> <span class="n">testType</span><span class="p">,</span> <span class="n">paramStr</span><span class="p">),</span>
+	<span class="p">}),</span> <span class="no">nil</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This custom function allows you to run specialized tests with configurable parameters.</p>
+
+<h3 id="daggerio-ci-integration">Dagger.io CI Integration</h3>
+
+<p>Dagger.io pipelines can be integrated with CI systems:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .github/workflows/dagger-mcp-testing.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">Dagger MCP Testing</span>
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">,</span> <span class="nv">pull_request</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install Dagger</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">dagger/dagger-for-github@v5</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run MCP tests with Dagger</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">dagger call run-full-test-suite --source . --generate-report true</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload test report</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v3</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">test-report</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">test-report.html</span>
+</code></pre></div></div>
+
+<p>This workflow uses Dagger.io to run MCP server tests, providing consistent results across different environments.</p>
+
+<h2 id="multi-environment-testing">Multi-Environment Testing</h2>
+
+<p>Comprehensive MCP server testing requires validation across multiple environments. The mcp-client-cli provides robust support for multi-environment testing.</p>
+
+<h3 id="environment-matrix-definition">Environment Matrix Definition</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, you can define an environment matrix for testing:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"python-3.9"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python:3.9"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"setup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pip install -r requirements.txt"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"python-3.10"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python:3.10"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"setup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pip install -r requirements.txt"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"python-3.11"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python:3.11"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"setup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pip install -r requirements.txt"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"nodejs-16"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node:16"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"setup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm ci"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"nodejs-18"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node:18"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"setup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm ci"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This matrix defines different environments for testing, each with its own configuration.</p>
+
+<h3 id="matrix-testing-command">Matrix Testing Command</h3>
+
+<p>To run tests across the environment matrix:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run matrix testing</span>
+mcp-test matrix <span class="nt">--config</span> matrix-config.json <span class="nt">--test-type</span> functional
+</code></pre></div></div>
+
+<p>This command executes the specified tests across all defined environments, providing comprehensive validation.</p>
+
+<h3 id="environment-specific-configuration">Environment-Specific Configuration</h3>
+
+<p>You can provide environment-specific test configurations:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"python-3.11"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python:3.11"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"setup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pip install -r requirements.txt"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"timeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"retries"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"nodejs-18"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node:18"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"setup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm ci"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"timeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"retries"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This approach allows you to customize testing parameters for each environment.</p>
+
+<h3 id="cross-environment-compatibility-testing">Cross-Environment Compatibility Testing</h3>
+
+<p>To validate compatibility across different environments:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run cross-environment compatibility tests</span>
+mcp-test cross-compatibility <span class="nt">--environments</span> python-3.11,nodejs-18 <span class="nt">--config</span> matrix-config.json
+</code></pre></div></div>
+
+<p>This command tests interactions between different environments, ensuring that MCP servers and clients can communicate effectively regardless of their implementation language.</p>
+
+<h3 id="environment-reporting">Environment Reporting</h3>
+
+<p>To generate reports that compare results across environments:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate environment comparison report</span>
+mcp-test generate-environment-report <span class="nt">--environments</span> all <span class="nt">--format</span> html <span class="nt">--output</span> environment-report.html
+</code></pre></div></div>
+
+<p>This command creates a report that highlights differences in test results across environments, helping identify environment-specific issues.</p>
+
+<h2 id="continuous-validation-strategies">Continuous Validation Strategies</h2>
+
+<p>Beyond basic CI/CD integration, the mcp-client-cli supports sophisticated continuous validation strategies that ensure ongoing quality and compliance.</p>
+
+<h3 id="scheduled-testing">Scheduled Testing</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, scheduled testing helps identify issues that might not appear in regular CI runs:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .github/workflows/scheduled-testing.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">Scheduled MCP Testing</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">schedule</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">cron</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*'</span>  <span class="c1"># Daily at midnight</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">comprehensive-test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">python-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.11'</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">pip install mcp-testing-framework[all]</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">mcp-test run-suite --suite-name comprehensive --extended-duration</span>
+</code></pre></div></div>
+
+<p>Scheduled testing can include extended test durations, more comprehensive test suites, and additional validation that might be too time-consuming for regular CI runs.</p>
+
+<h3 id="regression-testing">Regression Testing</h3>
+
+<p>To ensure that previously fixed issues don’t reappear:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run regression tests</span>
+mcp-test regression <span class="nt">--issue-ids</span> issue-123,issue-456 <span class="nt">--config</span> test-config.json
+</code></pre></div></div>
+
+<p>This command runs tests specifically designed to verify that previously identified issues remain fixed, providing an additional layer of quality assurance.</p>
+
+<h3 id="canary-testing">Canary Testing</h3>
+
+<p>For early detection of issues in new code:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run canary tests</span>
+mcp-test canary <span class="nt">--branch</span> feature/new-functionality <span class="nt">--config</span> test-config.json
+</code></pre></div></div>
+
+<p>Canary testing runs a subset of tests against new code branches, providing early feedback before full testing in the main CI pipeline.</p>
+
+<h3 id="ab-testing">A/B Testing</h3>
+
+<p>To compare different implementations or configurations:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run A/B testing</span>
+mcp-test compare <span class="nt">--config-a</span> config-a.json <span class="nt">--config-b</span> config-b.json <span class="nt">--output</span> comparison-report.html
+</code></pre></div></div>
+
+<p>This command runs the same tests against different configurations or implementations, generating a comparison report that highlights differences in functionality, performance, or other aspects.</p>
+
+<h3 id="continuous-benchmarking">Continuous Benchmarking</h3>
+
+<p>To track performance over time:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run continuous benchmarking</span>
+mcp-test benchmark <span class="nt">--historical</span> <span class="nt">--days</span> 30 <span class="nt">--output</span> benchmark-trends.html
+</code></pre></div></div>
+
+<p>Continuous benchmarking tracks performance metrics over time, helping identify performance regressions or improvements as the code evolves.</p>
+
+<h3 id="notification-and-alerting">Notification and Alerting</h3>
+
+<p>To ensure timely response to issues:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .github/workflows/mcp-testing-with-alerts.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">MCP Testing with Alerts</span>
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">,</span> <span class="nv">pull_request</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">python-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.11'</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">pip install mcp-testing-framework[all]</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">mcp-test run-suite --suite-name comprehensive</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Send notification on failure</span>
+        <span class="na">if</span><span class="pi">:</span> <span class="s">failure()</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">rtCamp/action-slack-notify@v2</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">SLACK_WEBHOOK</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">SLACK_CHANNEL</span><span class="pi">:</span> <span class="s">mcp-testing-alerts</span>
+          <span class="na">SLACK_TITLE</span><span class="pi">:</span> <span class="s">MCP Testing Failed</span>
+          <span class="na">SLACK_MESSAGE</span><span class="pi">:</span> <span class="s1">'</span><span class="s">MCP</span><span class="nv"> </span><span class="s">tests</span><span class="nv"> </span><span class="s">failed</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">$</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">branch</span><span class="nv"> </span><span class="s">$'</span>
+          <span class="na">SLACK_COLOR</span><span class="pi">:</span> <span class="s">danger</span>
+</code></pre></div></div>
+
+<p>This workflow sends notifications when tests fail, ensuring that issues are promptly addressed.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Integrating MCP server testing into CI/CD pipelines is essential for maintaining quality and compliance with the MCP specification. The mcp-client-cli provides robust support for various CI/CD systems, including GitHub Actions, Jenkins, GitLab CI, Azure DevOps, CircleCI, and Dagger.io.</p>
+
+<p>By implementing automated testing pipelines, multi-environment testing, and continuous validation strategies, you can ensure that your MCP server implementations remain functional, secure, and performant as they evolve. These practices help identify issues early in the development process, reducing the cost and impact of fixes.</p>
+
+<p>Whether you’re using simple GitHub Actions workflows or sophisticated Dagger.io pipelines, the mcp-client-cli provides the tools and capabilities you need to implement effective CI/CD integration for your MCP server testing.</p>
+
+<p>In the next chapter, we’ll explore multi-language testing, which is particularly important for organizations that implement MCP servers in multiple programming languages.</p>
+
+    </div>
+
+    <nav class="chapter-nav bottom">
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter7/" class="nav-link prev">
+                    ← Previous: AI-Driven Configuration System
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter9/" class="nav-link next">
+                    Next: Multi-Language Testing →
+                </a>
+            
+        </div>
+    </nav>
+</article>
+
+<aside class="chapter-sidebar">
+    <h3>All Chapters</h3>
+    <ol class="chapter-list">
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter1/">
+                <span class="chapter-number">1.</span>
+                <span class="chapter-title">Introduction to MCP and the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter2/">
+                <span class="chapter-number">2.</span>
+                <span class="chapter-title">Understanding the Model Context Protocol</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter3/">
+                <span class="chapter-number">3.</span>
+                <span class="chapter-title">Setting Up the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter4/">
+                <span class="chapter-number">4.</span>
+                <span class="chapter-title">Basic Usage and Commands</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter5/">
+                <span class="chapter-number">5.</span>
+                <span class="chapter-title">Testing MCP Servers</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter6/">
+                <span class="chapter-number">6.</span>
+                <span class="chapter-title">Advanced Testing Capabilities</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter7/">
+                <span class="chapter-number">7.</span>
+                <span class="chapter-title">AI-Driven Configuration System</span>
+            </a>
+        </li>
+        
+        <li class="current">
+            <a href="/mcp-client-cli/chapters/chapter8/">
+                <span class="chapter-number">8.</span>
+                <span class="chapter-title">CI/CD Integration</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter9/">
+                <span class="chapter-number">9.</span>
+                <span class="chapter-title">Multi-Language Testing</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter10/">
+                <span class="chapter-number">10.</span>
+                <span class="chapter-title">Troubleshooting and Best Practices</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter11/">
+                <span class="chapter-number">11.</span>
+                <span class="chapter-title">Case Studies and Real-World Examples</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter12/">
+                <span class="chapter-number">12.</span>
+                <span class="chapter-title">Future Directions and Emerging Trends</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside> 
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col footer-col-1">
+                    <ul class="contact-list">
+                        <li>MCP-Client-CLI Technical Documentation</li>
+                        <li>Comprehensive guide for testing and validating MCP servers</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-2">
+                    <ul class="social-media-list">
+                        
+                        <li>
+                            <a href="https://github.com/tosin2013/mcp-client-cli">
+                                <span class="icon icon--github">GitHub</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-3">
+                    <p>Created by Manus, an AI agent created by the Manus team.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/mcp-client-cli/assets/js/main.js"></script>
+</body>
+</html> 

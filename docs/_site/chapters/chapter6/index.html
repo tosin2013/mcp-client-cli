@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Testing Capabilities | MCP-Client-CLI Technical Documentation</title>
+    <meta name="description" content="Advanced testing features, performance testing, and security validation">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/style.css">
+    
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="/mcp-client-cli/assets/css/syntax.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/mcp-client-cli/assets/favicon.ico">
+    
+    <!-- SEO -->
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Advanced Testing Capabilities | MCP-Client-CLI Technical Documentation</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Advanced Testing Capabilities" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Advanced testing features, performance testing, and security validation" />
+<meta property="og:description" content="Advanced testing features, performance testing, and security validation" />
+<link rel="canonical" href="https://tosin2013.github.io/mcp-client-cli/chapters/chapter6/" />
+<meta property="og:url" content="https://tosin2013.github.io/mcp-client-cli/chapters/chapter6/" />
+<meta property="og:site_name" content="MCP-Client-CLI Technical Documentation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-05-31T10:22:14-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Advanced Testing Capabilities" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-05-31T10:22:14-04:00","datePublished":"2025-05-31T10:22:14-04:00","description":"Advanced testing features, performance testing, and security validation","headline":"Advanced Testing Capabilities","mainEntityOfPage":{"@type":"WebPage","@id":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter6/"},"url":"https://tosin2013.github.io/mcp-client-cli/chapters/chapter6/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="/mcp-client-cli/">MCP-Client-CLI Technical Documentation</a>
+            
+            <nav class="site-nav">
+                <div class="trigger">
+                    <a class="page-link" href="/mcp-client-cli/">Home</a>
+                    <a class="page-link" href="/mcp-client-cli/chapters/">Chapters</a>
+                    <a class="page-link" href="https://github.com/tosin2013/mcp-client-cli">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="chapter">
+    <header class="chapter-header">
+        <h1 class="chapter-title">Advanced Testing Capabilities</h1>
+        
+        <p class="chapter-description">Advanced testing features, performance testing, and security validation</p>
+        
+        
+        <div class="chapter-meta">
+            <span class="chapter-number">Chapter 6</span>
+        </div>
+    </header>
+
+    <nav class="chapter-nav">
+        
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                
+                
+        
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter5/" class="nav-link prev">
+                    ← Previous: Testing MCP Servers
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter7/" class="nav-link next">
+                    Next: AI-Driven Configuration System →
+                </a>
+            
+        </div>
+    </nav>
+
+    <div class="chapter-content">
+        <h1 id="chapter-6-advanced-testing-capabilities">Chapter 6: Advanced Testing Capabilities</h1>
+
+<h2 id="comprehensive-test-suites">Comprehensive Test Suites</h2>
+
+<p>While the basic testing capabilities covered in the previous chapter provide a solid foundation, the mcp-client-cli offers advanced testing features for more thorough validation of MCP servers. Comprehensive test suites combine multiple test types into cohesive validation strategies.</p>
+
+<h3 id="suite-structure-and-organization">Suite Structure and Organization</h3>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, comprehensive test suites are organized into a hierarchical structure:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test-suites/
+├── basic/
+│   ├── connectivity.json
+│   ├── discovery.json
+│   └── simple-tools.json
+├── functional/
+│   ├── all-tools.json
+│   ├── workflows.json
+│   └── error-handling.json
+├── security/
+│   ├── authentication.json
+│   ├── authorization.json
+│   └── input-validation.json
+└── performance/
+    ├── response-time.json
+    ├── concurrency.json
+    └── resource-usage.json
+</code></pre></div></div>
+
+<p>This organization allows for modular test composition, where suites can be combined and customized to match specific testing needs.</p>
+
+<h3 id="predefined-test-suites">Predefined Test Suites</h3>
+
+<p>The mcp-client-cli includes several predefined test suites for common testing scenarios:</p>
+
+<h4 id="basic-suite">Basic Suite</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run the basic test suite</span>
+mcp-test run-suite <span class="nt">--suite-name</span> basic <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>The basic suite focuses on fundamental functionality:</p>
+<ul>
+  <li>Server connectivity and protocol compliance</li>
+  <li>Tool discovery and basic tool execution</li>
+  <li>Simple error handling</li>
+</ul>
+
+<p>This suite is ideal for quick validation during development or as a smoke test before more comprehensive testing.</p>
+
+<h4 id="comprehensive-suite">Comprehensive Suite</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run the comprehensive test suite</span>
+mcp-test run-suite <span class="nt">--suite-name</span> comprehensive <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>The comprehensive suite provides thorough validation across all aspects:</p>
+<ul>
+  <li>Complete functional testing of all tools</li>
+  <li>Security testing for common vulnerabilities</li>
+  <li>Basic performance testing</li>
+  <li>End-to-end workflow validation</li>
+</ul>
+
+<p>This suite is recommended for pre-release validation or periodic health checks of production servers.</p>
+
+<h4 id="ci-suite">CI Suite</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run the CI test suite</span>
+mcp-test run-suite <span class="nt">--suite-name</span> ci <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>The CI suite is optimized for continuous integration environments:</p>
+<ul>
+  <li>Focused on critical functionality</li>
+  <li>Optimized for execution speed</li>
+  <li>Designed for clear pass/fail results</li>
+  <li>Includes regression tests for previously identified issues</li>
+</ul>
+
+<p>This suite is ideal for automated testing in CI/CD pipelines.</p>
+
+<h3 id="custom-suite-definition">Custom Suite Definition</h3>
+
+<p>For specialized testing needs, you can define custom test suites:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">//</span><span class="w"> </span><span class="err">custom-suite.json</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Custom Validation Suite"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Specialized testing for data processing MCP server"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"functional"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"include_tools"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"data_read"</span><span class="p">,</span><span class="w"> </span><span class="s2">"data_process"</span><span class="p">,</span><span class="w"> </span><span class="s2">"data_write"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"timeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"validation_level"</span><span class="p">:</span><span class="w"> </span><span class="s2">"strict"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"security"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"include_categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"input_validation"</span><span class="p">,</span><span class="w"> </span><span class="s2">"data_protection"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"malicious_payloads"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"performance"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"include_scenarios"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"data_throughput"</span><span class="p">,</span><span class="w"> </span><span class="s2">"concurrent_processing"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"concurrent_connections"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"workflow"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"workflow_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"workflows/data-pipeline.json"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"execution"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"parallel"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"stop_on_failure"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"retry_attempts"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"reporting"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"include_details"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"generate_charts"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"export_format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"html"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>To run a custom suite:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run a custom test suite</span>
+mcp-test run-suite <span class="nt">--suite-file</span> custom-suite.json <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>Custom suites allow you to tailor testing to your specific requirements, focusing on the aspects most relevant to your MCP server implementation.</p>
+
+<h2 id="security-testing">Security Testing</h2>
+
+<p>Security testing is critical for MCP servers, especially those that provide access to sensitive data or systems. The mcp-client-cli includes comprehensive security testing capabilities based on industry best practices.</p>
+
+<h3 id="authentication-testing">Authentication Testing</h3>
+
+<p>Authentication testing verifies that the server properly validates client identity:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run authentication tests</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--category</span> authentication
+</code></pre></div></div>
+
+<p>According to the <a href="https://docs.spring.io/spring-ai/reference/api/mcp/mcp-overview.html">Spring AI Reference documentation</a>, authentication testing includes:</p>
+
+<ol>
+  <li><strong>Missing Credentials</strong>: Attempting access without authentication</li>
+  <li><strong>Invalid Credentials</strong>: Using incorrect authentication information</li>
+  <li><strong>Expired Credentials</strong>: Using outdated authentication tokens</li>
+  <li><strong>Malformed Headers</strong>: Sending improperly formatted authentication headers</li>
+  <li><strong>Brute Force Resistance</strong>: Testing protection against repeated authentication attempts</li>
+</ol>
+
+<p>These tests help ensure that your MCP server properly enforces authentication requirements.</p>
+
+<h3 id="authorization-testing">Authorization Testing</h3>
+
+<p>Authorization testing verifies that authenticated clients can only access appropriate resources:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run authorization tests</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--category</span> authorization
+</code></pre></div></div>
+
+<p>Authorization testing includes:</p>
+<ol>
+  <li><strong>Access Control</strong>: Verifying that clients can only access authorized tools</li>
+  <li><strong>Privilege Escalation</strong>: Attempting to access higher-privilege functionality</li>
+  <li><strong>Horizontal Access</strong>: Attempting to access resources belonging to other users</li>
+  <li><strong>Parameter Restrictions</strong>: Verifying that parameter values are properly restricted</li>
+  <li><strong>Resource Limitations</strong>: Testing enforcement of resource usage limits</li>
+</ol>
+
+<p>These tests help identify potential authorization bypasses or privilege escalation vulnerabilities.</p>
+
+<h3 id="input-validation-testing">Input Validation Testing</h3>
+
+<p>Input validation testing verifies that the server properly validates and sanitizes inputs:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run input validation tests</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--category</span> input-validation
+</code></pre></div></div>
+
+<p>As noted in the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, input validation testing includes:</p>
+
+<ol>
+  <li><strong>SQL Injection</strong>: Attempting to inject SQL commands</li>
+  <li><strong>Command Injection</strong>: Attempting to execute system commands</li>
+  <li><strong>Cross-Site Scripting (XSS)</strong>: Testing for script injection vulnerabilities</li>
+  <li><strong>Path Traversal</strong>: Attempting to access files outside allowed directories</li>
+  <li><strong>Format String Attacks</strong>: Testing for format string vulnerabilities</li>
+  <li><strong>Integer Overflow/Underflow</strong>: Testing numeric boundary conditions</li>
+  <li><strong>JSON/XML Injection</strong>: Attempting to manipulate structured data formats</li>
+</ol>
+
+<p>These tests help identify input validation weaknesses that could lead to security vulnerabilities.</p>
+
+<h3 id="data-protection-testing">Data Protection Testing</h3>
+
+<p>Data protection testing verifies that sensitive information is properly safeguarded:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run data protection tests</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--category</span> data-protection
+</code></pre></div></div>
+
+<p>Data protection testing includes:</p>
+<ol>
+  <li><strong>Sensitive Data Exposure</strong>: Checking for unintended disclosure of sensitive information</li>
+  <li><strong>Data Encryption</strong>: Verifying proper encryption of sensitive data</li>
+  <li><strong>Information Leakage</strong>: Testing for information disclosure in error messages</li>
+  <li><strong>Cache Security</strong>: Checking for sensitive data in caches</li>
+  <li><strong>Logging Security</strong>: Verifying that sensitive data is not logged inappropriately</li>
+</ol>
+
+<p>These tests help ensure that your MCP server properly protects sensitive information.</p>
+
+<h3 id="comprehensive-security-testing">Comprehensive Security Testing</h3>
+
+<p>For thorough security validation, you can run comprehensive security testing:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run comprehensive security tests</span>
+mcp-test security <span class="nt">--server-name</span> your-server <span class="nt">--comprehensive</span>
+</code></pre></div></div>
+
+<p>Comprehensive security testing combines all security test categories with additional advanced tests, providing thorough validation of your server’s security posture.</p>
+
+<h3 id="security-testing-configuration">Security Testing Configuration</h3>
+
+<p>Security testing can be customized through configuration:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"security"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test_authentication"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test_authorization"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test_input_validation"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test_data_protection"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"malicious_payloads"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"custom_security_tests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"test_sql_injection"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"test_xss_prevention"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"test_command_injection"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"payload_database"</span><span class="p">:</span><span class="w"> </span><span class="s2">"security/payloads.json"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"severity_threshold"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"report_format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"detailed"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration allows you to enable specific security test categories, include custom tests, specify payload databases, set severity thresholds, and configure reporting options.</p>
+
+<h2 id="performance-testing">Performance Testing</h2>
+
+<p>Performance testing evaluates how well your MCP server performs under various conditions. The mcp-client-cli provides comprehensive performance testing capabilities to help you identify bottlenecks and optimize your implementation.</p>
+
+<h3 id="response-time-testing">Response Time Testing</h3>
+
+<p>Response time testing measures how quickly your server responds to requests:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run response time tests</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--category</span> response-time
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, response time testing includes:</p>
+
+<ol>
+  <li><strong>Basic Latency</strong>: Measuring time from request to response</li>
+  <li><strong>Tool-Specific Timing</strong>: Measuring response times for different tools</li>
+  <li><strong>Parameter Impact</strong>: Assessing how different parameters affect response time</li>
+  <li><strong>Consistency</strong>: Evaluating variation in response times</li>
+  <li><strong>Timeout Handling</strong>: Testing behavior when operations take too long</li>
+</ol>
+
+<p>These tests help you understand and optimize your server’s responsiveness.</p>
+
+<h3 id="load-testing">Load Testing</h3>
+
+<p>Load testing evaluates how your server performs under increasing request volume:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run load tests</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--category</span> load
+</code></pre></div></div>
+
+<p>Load testing includes:</p>
+<ol>
+  <li><strong>Throughput Measurement</strong>: Determining requests per second capacity</li>
+  <li><strong>Concurrency Handling</strong>: Testing with multiple simultaneous connections</li>
+  <li><strong>Saturation Point</strong>: Identifying when performance begins to degrade</li>
+  <li><strong>Recovery Time</strong>: Measuring how quickly the server recovers after high load</li>
+  <li><strong>Error Rates</strong>: Tracking error frequency under load</li>
+</ol>
+
+<p>These tests help you understand your server’s capacity and optimize for higher throughput.</p>
+
+<h3 id="resource-utilization-testing">Resource Utilization Testing</h3>
+
+<p>Resource utilization testing monitors how efficiently your server uses system resources:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run resource utilization tests</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--category</span> resources
+</code></pre></div></div>
+
+<p>Resource utilization testing includes:</p>
+<ol>
+  <li><strong>CPU Usage</strong>: Monitoring processor utilization</li>
+  <li><strong>Memory Usage</strong>: Tracking memory allocation and deallocation</li>
+  <li><strong>Disk I/O</strong>: Measuring file system operations</li>
+  <li><strong>Network I/O</strong>: Monitoring network traffic</li>
+  <li><strong>Resource Leaks</strong>: Identifying resources that aren’t properly released</li>
+</ol>
+
+<p>These tests help you identify inefficient resource usage and potential leaks.</p>
+
+<h3 id="endurance-testing">Endurance Testing</h3>
+
+<p>Endurance testing evaluates how your server performs during extended operation:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run endurance tests</span>
+mcp-test performance <span class="nt">--server-name</span> your-server <span class="nt">--category</span> endurance <span class="nt">--duration</span> 3600
+</code></pre></div></div>
+
+<p>Endurance testing includes:</p>
+<ol>
+  <li><strong>Stability Over Time</strong>: Monitoring for degradation during extended operation</li>
+  <li><strong>Memory Leaks</strong>: Identifying gradual memory consumption</li>
+  <li><strong>Resource Exhaustion</strong>: Testing for eventual resource depletion</li>
+  <li><strong>Error Accumulation</strong>: Checking if errors increase over time</li>
+  <li><strong>Recovery Mechanisms</strong>: Evaluating self-healing capabilities</li>
+</ol>
+
+<p>These tests help ensure that your server remains stable and performant during extended operation.</p>
+
+<h3 id="performance-testing-configuration">Performance Testing Configuration</h3>
+
+<p>Performance testing can be customized through configuration:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"performance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"benchmark_tools"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"concurrent_connections"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test_duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"memory_monitoring"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"resource_limits"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"max_memory_mb"</span><span class="p">:</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"max_cpu_percent"</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"scenarios"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"light_load"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"connections"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium_load"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"connections"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"heavy_load"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"connections"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"duration"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"monitoring_interval"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"report_percentiles"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration allows you to specify connection counts, test durations, resource limits, test scenarios, monitoring intervals, and reporting options.</p>
+
+<h2 id="integration-testing">Integration Testing</h2>
+
+<p>Integration testing validates how your MCP server works with other systems and in end-to-end scenarios. The mcp-client-cli provides several approaches to integration testing.</p>
+
+<h3 id="llm-integration-testing">LLM Integration Testing</h3>
+
+<p>LLM integration testing verifies that your MCP server works correctly with language models:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run LLM integration tests</span>
+mcp-test integration <span class="nt">--server-name</span> your-server <span class="nt">--category</span> llm
+</code></pre></div></div>
+
+<p>According to <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp">Anthropic’s MCP documentation</a>, LLM integration testing includes:</p>
+
+<ol>
+  <li><strong>Tool Selection</strong>: Verifying that LLMs can correctly identify and select tools</li>
+  <li><strong>Parameter Mapping</strong>: Testing how LLMs map natural language to tool parameters</li>
+  <li><strong>Result Interpretation</strong>: Evaluating how LLMs interpret and use tool results</li>
+  <li><strong>Error Handling</strong>: Testing LLM behavior when tools return errors</li>
+  <li><strong>Multi-Step Reasoning</strong>: Validating complex workflows involving multiple tool calls</li>
+</ol>
+
+<p>These tests help ensure that your MCP server works effectively with language models.</p>
+
+<h3 id="client-integration-testing">Client Integration Testing</h3>
+
+<p>Client integration testing verifies compatibility with different MCP clients:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run client integration tests</span>
+mcp-test integration <span class="nt">--server-name</span> your-server <span class="nt">--category</span> clients
+</code></pre></div></div>
+
+<p>Client integration testing includes:</p>
+<ol>
+  <li><strong>Protocol Compatibility</strong>: Testing with different client implementations</li>
+  <li><strong>Version Compatibility</strong>: Verifying support for different protocol versions</li>
+  <li><strong>Edge Cases</strong>: Testing unusual client behaviors</li>
+  <li><strong>Error Handling</strong>: Validating client-server error communication</li>
+  <li><strong>Performance Characteristics</strong>: Measuring client-specific performance patterns</li>
+</ol>
+
+<p>These tests help ensure broad compatibility with the MCP client ecosystem.</p>
+
+<h3 id="external-system-integration">External System Integration</h3>
+
+<p>External system integration testing validates interaction with backend systems:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run external system integration tests</span>
+mcp-test integration <span class="nt">--server-name</span> your-server <span class="nt">--category</span> external
+</code></pre></div></div>
+
+<p>External system integration testing includes:</p>
+<ol>
+  <li><strong>API Connectivity</strong>: Verifying connections to external APIs</li>
+  <li><strong>Data Consistency</strong>: Validating data integrity across systems</li>
+  <li><strong>Authentication Propagation</strong>: Testing how credentials are handled</li>
+  <li><strong>Error Propagation</strong>: Verifying how external errors are communicated</li>
+  <li><strong>Performance Impact</strong>: Measuring how external systems affect performance</li>
+</ol>
+
+<p>These tests help ensure reliable integration with the systems your MCP server depends on.</p>
+
+<h3 id="end-to-end-workflow-testing">End-to-End Workflow Testing</h3>
+
+<p>End-to-end workflow testing validates complete user scenarios:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run end-to-end workflow tests</span>
+mcp-test integration <span class="nt">--server-name</span> your-server <span class="nt">--category</span> workflows
+</code></pre></div></div>
+
+<p>End-to-end workflow testing includes:</p>
+<ol>
+  <li><strong>Scenario Simulation</strong>: Testing realistic user workflows</li>
+  <li><strong>Cross-Tool Interaction</strong>: Validating data flow between tools</li>
+  <li><strong>State Management</strong>: Testing state preservation across operations</li>
+  <li><strong>Error Recovery</strong>: Verifying workflow resilience to failures</li>
+  <li><strong>Performance Characteristics</strong>: Measuring end-to-end performance</li>
+</ol>
+
+<p>These tests help ensure that your MCP server works correctly in realistic usage scenarios.</p>
+
+<h3 id="integration-testing-configuration">Integration Testing Configuration</h3>
+
+<p>Integration testing can be customized through configuration:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"integration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"llm_integration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"openai"</span><span class="p">,</span><span class="w"> </span><span class="s2">"anthropic"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"models"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"gpt-4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"claude-3-opus"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"scenarios"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"simple_queries"</span><span class="p">,</span><span class="w"> </span><span class="s2">"complex_reasoning"</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"client_integration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"clients"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"python-client"</span><span class="p">,</span><span class="w"> </span><span class="s2">"nodejs-client"</span><span class="p">,</span><span class="w"> </span><span class="s2">"browser-client"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"protocol_versions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"1.0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"external_integration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"systems"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"database"</span><span class="p">,</span><span class="w"> </span><span class="s2">"api"</span><span class="p">,</span><span class="w"> </span><span class="s2">"file_system"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"mock_external"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"workflow_integration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"workflow_files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"workflows/data-processing.json"</span><span class="p">,</span><span class="w"> </span><span class="s2">"workflows/content-generation.json"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration allows you to specify which integration test categories to run, which specific components to test, and how to configure each test category.</p>
+
+<h2 id="issue-detection-and-remediation">Issue Detection and Remediation</h2>
+
+<p>Beyond basic testing, the mcp-client-cli includes advanced capabilities for detecting and addressing issues in MCP servers.</p>
+
+<h3 id="automated-issue-detection">Automated Issue Detection</h3>
+
+<p>The tool can automatically identify common issues:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run issue detection</span>
+mcp-test detect-issues <span class="nt">--server-name</span> your-server
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md">TESTING.md</a> documentation, issue detection includes:</p>
+
+<ol>
+  <li><strong>Pattern Matching</strong>: Identifying known issue patterns</li>
+  <li><strong>Anomaly Detection</strong>: Flagging unusual behavior</li>
+  <li><strong>Performance Degradation</strong>: Detecting performance issues</li>
+  <li><strong>Security Vulnerabilities</strong>: Identifying potential security problems</li>
+  <li><strong>Protocol Violations</strong>: Flagging non-compliant behavior</li>
+</ol>
+
+<p>These detection mechanisms help identify issues that might not be caught by standard tests.</p>
+
+<h3 id="root-cause-analysis">Root Cause Analysis</h3>
+
+<p>For identified issues, the tool can help determine root causes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Analyze issue root causes</span>
+mcp-test analyze-issue <span class="nt">--server-name</span> your-server <span class="nt">--issue-id</span> issue-123
+</code></pre></div></div>
+
+<p>Root cause analysis includes:</p>
+<ol>
+  <li><strong>Trace Analysis</strong>: Examining request and response sequences</li>
+  <li><strong>Log Correlation</strong>: Connecting issues to log entries</li>
+  <li><strong>Dependency Mapping</strong>: Identifying related components</li>
+  <li><strong>Pattern Recognition</strong>: Matching issues to known patterns</li>
+  <li><strong>Historical Comparison</strong>: Comparing with previously identified issues</li>
+</ol>
+
+<p>This analysis helps you understand why issues occur, facilitating effective resolution.</p>
+
+<h3 id="automated-remediation">Automated Remediation</h3>
+
+<p>For some issues, the tool can suggest or apply automated fixes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Get remediation suggestions</span>
+mcp-test suggest-remediation <span class="nt">--server-name</span> your-server <span class="nt">--issue-id</span> issue-123
+
+<span class="c"># Apply automated remediation</span>
+mcp-test apply-remediation <span class="nt">--server-name</span> your-server <span class="nt">--issue-id</span> issue-123 <span class="nt">--remediation-id</span> rem-456
+</code></pre></div></div>
+
+<p>Automated remediation includes:</p>
+<ol>
+  <li><strong>Configuration Adjustments</strong>: Modifying server configuration</li>
+  <li><strong>Resource Allocation</strong>: Adjusting resource limits</li>
+  <li><strong>Dependency Updates</strong>: Updating external dependencies</li>
+  <li><strong>Code Fixes</strong>: Applying patches for known issues</li>
+  <li><strong>Security Hardening</strong>: Implementing security best practices</li>
+</ol>
+
+<p>These remediation capabilities help you quickly address identified issues.</p>
+
+<h3 id="issue-tracking-and-management">Issue Tracking and Management</h3>
+
+<p>The mcp-client-cli includes features for tracking and managing issues over time:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List all issues</span>
+mcp-test list-issues <span class="nt">--server-name</span> your-server
+
+<span class="c"># Get issue details</span>
+mcp-test issue-details <span class="nt">--issue-id</span> issue-123
+
+<span class="c"># Update issue status</span>
+mcp-test update-issue <span class="nt">--issue-id</span> issue-123 <span class="nt">--status</span> resolved
+</code></pre></div></div>
+
+<p>Issue tracking includes:</p>
+<ol>
+  <li><strong>Issue Database</strong>: Maintaining a record of identified issues</li>
+  <li><strong>Status Tracking</strong>: Monitoring issue resolution progress</li>
+  <li><strong>Prioritization</strong>: Ranking issues by severity and impact</li>
+  <li><strong>Trend Analysis</strong>: Identifying patterns in issue occurrence</li>
+  <li><strong>Resolution Verification</strong>: Confirming that issues have been resolved</li>
+</ol>
+
+<p>These tracking capabilities help you manage the overall health of your MCP server.</p>
+
+<h3 id="issue-detection-configuration">Issue Detection Configuration</h3>
+
+<p>Issue detection and remediation can be customized through configuration:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"issue_detection"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"detection_interval"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"detection_methods"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"pattern"</span><span class="p">,</span><span class="w"> </span><span class="s2">"anomaly"</span><span class="p">,</span><span class="w"> </span><span class="s2">"performance"</span><span class="p">,</span><span class="w"> </span><span class="s2">"security"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"sensitivity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"auto_remediation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"approval_required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"allowed_remediation_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"configuration"</span><span class="p">,</span><span class="w"> </span><span class="s2">"resource"</span><span class="p">,</span><span class="w"> </span><span class="s2">"dependency"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"excluded_remediation_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"code"</span><span class="p">,</span><span class="w"> </span><span class="s2">"security"</span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"notification"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"channels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"console"</span><span class="p">,</span><span class="w"> </span><span class="s2">"email"</span><span class="p">,</span><span class="w"> </span><span class="s2">"webhook"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"min_severity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration allows you to specify detection methods, sensitivity levels, auto-remediation settings, and notification preferences.</p>
+
+<h2 id="custom-test-development">Custom Test Development</h2>
+
+<p>For specialized testing needs, the mcp-client-cli supports custom test development. This allows you to create tests tailored to your specific MCP server implementation.</p>
+
+<h3 id="custom-test-structure">Custom Test Structure</h3>
+
+<p>Custom tests are defined in Python modules with a specific structure:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># custom_tests/data_validation_test.py
+</span><span class="kn">from</span> <span class="nn">mcp_client_cli.testing</span> <span class="kn">import</span> <span class="n">TestCase</span><span class="p">,</span> <span class="n">TestResult</span><span class="p">,</span> <span class="n">TestStatus</span>
+
+<span class="k">class</span> <span class="nc">DataValidationTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="s">"""Test data validation in the MCP server."""</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"data_validation_test"</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">"Validates data handling in MCP server"</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">category</span> <span class="o">=</span> <span class="s">"functional"</span>
+    
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Prepare for test execution."""</span>
+        <span class="c1"># Setup code here
+</span>        <span class="k">pass</span>
+    
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Execute the test."""</span>
+        <span class="c1"># Test implementation
+</span>        <span class="n">client</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_client</span><span class="p">()</span>
+        
+        <span class="c1"># Test valid data
+</span>        <span class="n">valid_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">execute_tool</span><span class="p">(</span><span class="s">"data_process"</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">"data"</span><span class="p">:</span> <span class="p">{</span><span class="s">"id"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"Test Data"</span><span class="p">}</span>
+        <span class="p">})</span>
+        
+        <span class="c1"># Test invalid data
+</span>        <span class="n">invalid_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">execute_tool</span><span class="p">(</span><span class="s">"data_process"</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">"data"</span><span class="p">:</span> <span class="p">{</span><span class="s">"id"</span><span class="p">:</span> <span class="s">"not_a_number"</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="mi">12345</span><span class="p">}</span>
+        <span class="p">})</span>
+        
+        <span class="c1"># Validate results
+</span>        <span class="k">if</span> <span class="n">valid_result</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"status"</span><span class="p">)</span> <span class="o">==</span> <span class="s">"success"</span> <span class="ow">and</span> <span class="n">invalid_result</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"status"</span><span class="p">)</span> <span class="o">==</span> <span class="s">"error"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TestResult</span><span class="p">(</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">TestStatus</span><span class="p">.</span><span class="n">PASSED</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s">"Data validation working correctly"</span><span class="p">,</span>
+                <span class="n">confidence</span><span class="o">=</span><span class="mi">95</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TestResult</span><span class="p">(</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">TestStatus</span><span class="p">.</span><span class="n">FAILED</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s">"Data validation issues detected"</span><span class="p">,</span>
+                <span class="n">confidence</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+                <span class="n">details</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s">"valid_result"</span><span class="p">:</span> <span class="n">valid_result</span><span class="p">,</span>
+                    <span class="s">"invalid_result"</span><span class="p">:</span> <span class="n">invalid_result</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+    
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Clean up after test execution."""</span>
+        <span class="c1"># Cleanup code here
+</span>        <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>This structure includes setup, execution, and cleanup phases, along with result reporting.</p>
+
+<h3 id="registering-custom-tests">Registering Custom Tests</h3>
+
+<p>Custom tests must be registered with the testing framework:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># custom_tests/__init__.py
+</span><span class="kn">from</span> <span class="nn">mcp_client_cli.testing</span> <span class="kn">import</span> <span class="n">register_test</span>
+<span class="kn">from</span> <span class="nn">.data_validation_test</span> <span class="kn">import</span> <span class="n">DataValidationTest</span>
+
+<span class="k">def</span> <span class="nf">register_custom_tests</span><span class="p">():</span>
+    <span class="n">register_test</span><span class="p">(</span><span class="s">"data_validation"</span><span class="p">,</span> <span class="n">DataValidationTest</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Once registered, custom tests can be included in test suites or run directly:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run a custom test</span>
+mcp-test custom <span class="nt">--server-name</span> your-server <span class="nt">--test-name</span> data_validation
+
+<span class="c"># Include in a test suite</span>
+mcp-test run-suite <span class="nt">--server-name</span> your-server <span class="nt">--suite-file</span> custom-suite.json
+</code></pre></div></div>
+
+<h3 id="custom-test-configuration">Custom Test Configuration</h3>
+
+<p>Custom tests can be configured through the standard configuration system:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"custom_tests"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"data_validation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"validation_level"</span><span class="p">:</span><span class="w"> </span><span class="s2">"strict"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"test_data_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test-data/validation-samples.json"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This configuration is passed to the test constructor and can be accessed during test execution.</p>
+
+<h3 id="custom-test-utilities">Custom Test Utilities</h3>
+
+<p>The mcp-client-cli provides utilities to simplify custom test development:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mcp_client_cli.testing.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">compare_results</span><span class="p">,</span>
+    <span class="n">generate_test_data</span><span class="p">,</span>
+    <span class="n">validate_schema</span><span class="p">,</span>
+    <span class="n">measure_performance</span><span class="p">,</span>
+    <span class="n">capture_logs</span>
+<span class="p">)</span>
+
+<span class="c1"># Compare actual results with expected results
+</span><span class="n">comparison</span> <span class="o">=</span> <span class="n">compare_results</span><span class="p">(</span><span class="n">actual_result</span><span class="p">,</span> <span class="n">expected_result</span><span class="p">)</span>
+
+<span class="c1"># Generate test data based on schema
+</span><span class="n">test_data</span> <span class="o">=</span> <span class="n">generate_test_data</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Validate data against schema
+</span><span class="n">validation_result</span> <span class="o">=</span> <span class="n">validate_schema</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="c1"># Measure performance metrics
+</span><span class="n">performance</span> <span class="o">=</span> <span class="n">measure_performance</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">client</span><span class="p">.</span><span class="n">execute_tool</span><span class="p">(</span><span class="s">"example"</span><span class="p">))</span>
+
+<span class="c1"># Capture logs during test execution
+</span><span class="k">with</span> <span class="n">capture_logs</span><span class="p">()</span> <span class="k">as</span> <span class="n">logs</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">execute_tool</span><span class="p">(</span><span class="s">"example"</span><span class="p">)</span>
+    <span class="n">log_entries</span> <span class="o">=</span> <span class="n">logs</span><span class="p">.</span><span class="n">get_entries</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>These utilities help you create more sophisticated and effective custom tests.</p>
+
+<h2 id="advanced-reporting-and-analytics">Advanced Reporting and Analytics</h2>
+
+<p>The mcp-client-cli provides advanced reporting and analytics capabilities to help you understand test results and server performance.</p>
+
+<h3 id="comprehensive-test-reports">Comprehensive Test Reports</h3>
+
+<p>For detailed analysis of test results:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate a comprehensive report</span>
+mcp-test generate-report <span class="nt">--server-name</span> your-server <span class="nt">--format</span> html <span class="nt">--output</span> comprehensive-report.html
+</code></pre></div></div>
+
+<p>According to the <a href="https://github.com/tosin2013/mcp-client-cli">mcp-client-cli documentation</a>, comprehensive reports include:</p>
+
+<ol>
+  <li><strong>Executive Summary</strong>: High-level overview of test results</li>
+  <li><strong>Detailed Test Results</strong>: Complete information about each test</li>
+  <li><strong>Issue Analysis</strong>: Breakdown of identified issues</li>
+  <li><strong>Performance Metrics</strong>: Detailed performance data</li>
+  <li><strong>Trend Analysis</strong>: Comparison with previous test runs</li>
+  <li><strong>Recommendations</strong>: Suggested improvements and fixes</li>
+</ol>
+
+<p>These reports provide a complete picture of your MCP server’s status and any issues that need attention.</p>
+
+<h3 id="performance-analytics">Performance Analytics</h3>
+
+<p>For in-depth performance analysis:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate performance analytics</span>
+mcp-test analyze-performance <span class="nt">--server-name</span> your-server <span class="nt">--output</span> performance-analysis.html
+</code></pre></div></div>
+
+<p>Performance analytics include:</p>
+<ol>
+  <li><strong>Response Time Distribution</strong>: Statistical analysis of response times</li>
+  <li><strong>Throughput Analysis</strong>: Requests per second under different conditions</li>
+  <li><strong>Resource Usage Patterns</strong>: CPU, memory, and I/O utilization</li>
+  <li><strong>Bottleneck Identification</strong>: Pinpointing performance limitations</li>
+  <li><strong>Optimization Suggestions</strong>: Recommendations for performance improvement</li>
+</ol>
+
+<p>These analytics help you understand and optimize your server’s performance characteristics.</p>
+
+<h3 id="security-analysis">Security Analysis</h3>
+
+<p>For comprehensive security assessment:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate security analysis</span>
+mcp-test analyze-security <span class="nt">--server-name</span> your-server <span class="nt">--output</span> security-analysis.html
+</code></pre></div></div>
+
+<p>Security analysis includes:</p>
+<ol>
+  <li><strong>Vulnerability Assessment</strong>: Identified security issues</li>
+  <li><strong>Risk Scoring</strong>: Severity and impact ratings</li>
+  <li><strong>Attack Surface Analysis</strong>: Potential entry points</li>
+  <li><strong>Mitigation Recommendations</strong>: Suggested security improvements</li>
+  <li><strong>Compliance Status</strong>: Alignment with security standards</li>
+</ol>
+
+<p>This analysis helps you understand and address security risks in your MCP server.</p>
+
+<h3 id="custom-analytics">Custom Analytics</h3>
+
+<p>For specialized analysis needs:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Generate custom analytics</span>
+mcp-test analyze-custom <span class="nt">--server-name</span> your-server <span class="nt">--analysis-file</span> custom-analysis.json <span class="nt">--output</span> custom-analysis.html
+</code></pre></div></div>
+
+<p>Custom analytics allow you to define specific metrics and analyses tailored to your requirements:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">//</span><span class="w"> </span><span class="err">custom-analysis.json</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data Processing Analysis"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"metrics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_throughput"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_process"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"measurement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"records_per_second"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error_rate"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_process"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"measurement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error_percentage"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_size_impact"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"tool"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_process"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"measurement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"response_time_vs_size"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"visualizations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"line_chart"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_throughput"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"x_axis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"concurrent_connections"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data Throughput vs. Concurrency"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scatter_plot"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_size_impact"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"x_axis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_size_kb"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"y_axis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"response_time_ms"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Response Time vs. Data Size"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bar_chart"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metric"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error_rate"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"x_axis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"data_type"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Error Rate by Data Type"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"comparisons"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"version_comparison"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"baseline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v1.0"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"comparison"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v2.0"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"metrics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"data_throughput"</span><span class="p">,</span><span class="w"> </span><span class="s2">"error_rate"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This flexibility allows you to create analytics that address your specific concerns and requirements.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This chapter has explored the advanced testing capabilities of the mcp-client-cli, including comprehensive test suites, security testing, performance testing, integration testing, issue detection and remediation, custom test development, and advanced reporting and analytics.</p>
+
+<p>These advanced capabilities enable thorough validation of MCP servers across multiple dimensions, helping ensure that your implementations are functional, secure, performant, and reliable. By leveraging these capabilities, you can develop high-quality MCP servers that meet the needs of your users and integrate effectively with the broader MCP ecosystem.</p>
+
+<p>In the next chapter, we’ll explore the AI-driven configuration system, which simplifies the setup and management of MCP server testing.</p>
+
+    </div>
+
+    <nav class="chapter-nav bottom">
+        <div class="nav-links">
+            
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter5/" class="nav-link prev">
+                    ← Previous: Testing MCP Servers
+                </a>
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                <a href="/mcp-client-cli/chapters/chapter7/" class="nav-link next">
+                    Next: AI-Driven Configuration System →
+                </a>
+            
+        </div>
+    </nav>
+</article>
+
+<aside class="chapter-sidebar">
+    <h3>All Chapters</h3>
+    <ol class="chapter-list">
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter1/">
+                <span class="chapter-number">1.</span>
+                <span class="chapter-title">Introduction to MCP and the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter2/">
+                <span class="chapter-number">2.</span>
+                <span class="chapter-title">Understanding the Model Context Protocol</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter3/">
+                <span class="chapter-number">3.</span>
+                <span class="chapter-title">Setting Up the MCP-Client-CLI</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter4/">
+                <span class="chapter-number">4.</span>
+                <span class="chapter-title">Basic Usage and Commands</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter5/">
+                <span class="chapter-number">5.</span>
+                <span class="chapter-title">Testing MCP Servers</span>
+            </a>
+        </li>
+        
+        <li class="current">
+            <a href="/mcp-client-cli/chapters/chapter6/">
+                <span class="chapter-number">6.</span>
+                <span class="chapter-title">Advanced Testing Capabilities</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter7/">
+                <span class="chapter-number">7.</span>
+                <span class="chapter-title">AI-Driven Configuration System</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter8/">
+                <span class="chapter-number">8.</span>
+                <span class="chapter-title">CI/CD Integration</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter9/">
+                <span class="chapter-number">9.</span>
+                <span class="chapter-title">Multi-Language Testing</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter10/">
+                <span class="chapter-number">10.</span>
+                <span class="chapter-title">Troubleshooting and Best Practices</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter11/">
+                <span class="chapter-number">11.</span>
+                <span class="chapter-title">Case Studies and Real-World Examples</span>
+            </a>
+        </li>
+        
+        <li class="">
+            <a href="/mcp-client-cli/chapters/chapter12/">
+                <span class="chapter-number">12.</span>
+                <span class="chapter-title">Future Directions and Emerging Trends</span>
+            </a>
+        </li>
+        
+    </ol>
+</aside> 
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col footer-col-1">
+                    <ul class="contact-list">
+                        <li>MCP-Client-CLI Technical Documentation</li>
+                        <li>Comprehensive guide for testing and validating MCP servers</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-2">
+                    <ul class="social-media-list">
+                        
+                        <li>
+                            <a href="https://github.com/tosin2013/mcp-client-cli">
+                                <span class="icon icon--github">GitHub</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-col-3">
+                    <p>Created by Manus, an AI agent created by the Manus team.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/mcp-client-cli/assets/js/main.js"></script>
+</body>
+</html> 
