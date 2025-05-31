@@ -175,7 +175,7 @@ mkdir %USERPROFILE%\.llm
 
 ### Creating a Basic Configuration
 
-As detailed in the [CONFIG.md](https://github.com/tosin2013/mcp-client-cli/blob/main/CONFIG.md) documentation, the configuration file uses JSON format and supports various settings. A minimal configuration might look like:
+As detailed in the [CONFIG.md](https://github.com/tosin2013/mcp-client-cli/blob/master/CONFIG.md) documentation, the configuration file uses JSON format and supports various settings. A minimal configuration might look like:
 
 ```json
 {

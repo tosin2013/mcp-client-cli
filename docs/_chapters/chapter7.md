@@ -13,7 +13,7 @@ The mcp-client-cli introduces a revolutionary AI-driven configuration system tha
 
 ### The Configuration Challenge
 
-Before exploring the AI configuration system, it's important to understand the challenges it addresses. According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, traditional MCP server configuration and testing setup involved several complex steps:
+Before exploring the AI configuration system, it's important to understand the challenges it addresses. According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, traditional MCP server configuration and testing setup involved several complex steps:
 
 1. **Manual Repository Analysis**: Understanding the server's structure, dependencies, and requirements
 2. **Configuration File Creation**: Manually creating detailed configuration files
@@ -21,7 +21,7 @@ Before exploring the AI configuration system, it's important to understand the c
 4. **CI/CD Integration**: Setting up continuous integration and deployment pipelines
 5. **Security and Performance Configuration**: Configuring specialized testing parameters
 
-This process was time-consuming, error-prone, and required deep knowledge of both the MCP protocol and testing methodologies. As noted in the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/main/AI_CONFIGURATION_GUIDE.md), even experienced developers could spend hours on proper configuration.
+This process was time-consuming, error-prone, and required deep knowledge of both the MCP protocol and testing methodologies. As noted in the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/master/AI_CONFIGURATION_GUIDE.md), even experienced developers could spend hours on proper configuration.
 
 ### The AI-Driven Solution
 
@@ -45,7 +45,7 @@ The AI configuration system offers several significant benefits:
 4. **Standardization**: Ensuring consistent testing approaches across projects
 5. **Accessibility**: Making MCP server testing available to more developers
 
-As noted in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, these benefits represent a transformative improvement in the MCP testing workflow.
+As noted in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, these benefits represent a transformative improvement in the MCP testing workflow.
 
 ## Setting Up Repositories for Testing
 
@@ -67,7 +67,7 @@ This command triggers the AI configuration process, which:
 4. Generates configuration files and CI/CD workflows
 5. Commits and pushes changes (if authorized)
 
-According to the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/main/AI_CONFIGURATION_GUIDE.md), this approach is ideal for developers who prefer command-line interfaces and want a straightforward setup process.
+According to the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/master/AI_CONFIGURATION_GUIDE.md), this approach is ideal for developers who prefer command-line interfaces and want a straightforward setup process.
 
 ### Configuration Options
 
@@ -88,7 +88,7 @@ These options allow you to guide the AI configuration process when needed, while
 
 ### Repository Structure Requirements
 
-While the AI configuration system is designed to work with a wide range of repository structures, certain patterns make the process more effective. According to the [TECHNICAL_ARCHITECTURE.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TECHNICAL_ARCHITECTURE.md) documentation, the system works best with repositories that:
+While the AI configuration system is designed to work with a wide range of repository structures, certain patterns make the process more effective. According to the [TECHNICAL_ARCHITECTURE.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TECHNICAL_ARCHITECTURE.md) documentation, the system works best with repositories that:
 
 1. **Follow Standard Layouts**: Using conventional directory structures for the server's language
 2. **Include Dependency Information**: Having package.json, requirements.txt, or similar files
@@ -134,7 +134,7 @@ Configure MCP testing for https://github.com/user/my-mcp-server
 Use the MCP Client CLI AI configuration system to set up comprehensive testing.
 ```
 
-According to the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/main/AI_CONFIGURATION_GUIDE.md), this prompt instructs the AI assistant to:
+According to the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/master/AI_CONFIGURATION_GUIDE.md), this prompt instructs the AI assistant to:
 
 1. Recognize the MCP testing configuration task
 2. Invoke the appropriate mcp-client-cli commands
@@ -158,7 +158,7 @@ This command prompts GitHub Copilot to suggest the appropriate mcp-client-cli co
 llm --ai-configure setup-testing --repo-url https://github.com/$(git config user.name)/$(basename $(pwd))
 ```
 
-As noted in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, this integration leverages Copilot's understanding of the current context to generate appropriate commands.
+As noted in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, this integration leverages Copilot's understanding of the current context to generate appropriate commands.
 
 ### Claude Standalone Integration
 
@@ -168,7 +168,7 @@ For users of Claude as a standalone assistant, the AI configuration system suppo
 I need to configure MCP testing for my repository at https://github.com/user/my-server. The server is written in Python and provides file system tools. Please use the MCP Client CLI AI configuration system to set up comprehensive testing including security scanning.
 ```
 
-According to the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/main/AI_CONFIGURATION_GUIDE.md), Claude can:
+According to the [AI_CONFIGURATION_GUIDE.md](https://github.com/tosin2013/mcp-client-cli/blob/master/AI_CONFIGURATION_GUIDE.md), Claude can:
 
 1. Understand the specific requirements
 2. Generate the appropriate mcp-client-cli command
@@ -201,7 +201,7 @@ The first automated workflow is repository analysis:
 llm --ai-configure analyze --repo-url https://github.com/user/my-mcp-server
 ```
 
-According to the [TECHNICAL_ARCHITECTURE.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TECHNICAL_ARCHITECTURE.md) documentation, this workflow:
+According to the [TECHNICAL_ARCHITECTURE.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TECHNICAL_ARCHITECTURE.md) documentation, this workflow:
 
 1. **Clones the Repository**: Creates a local copy for analysis
 2. **Examines Structure**: Identifies key directories and files
@@ -237,7 +237,7 @@ For continuous testing, the system sets up CI/CD integration:
 llm --ai-configure setup-ci --config-dir config/ --ci-type github-actions
 ```
 
-As described in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, this workflow:
+As described in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, this workflow:
 
 1. **Creates Workflow Files**: Generates CI configuration files
 2. **Configures Test Execution**: Sets up automated test runs
@@ -310,7 +310,7 @@ Despite the AI-driven automation, configuration issues can sometimes arise. The 
 
 ### Common Configuration Issues
 
-According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, several common issues can occur during configuration:
+According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, several common issues can occur during configuration:
 
 #### Authentication Issues
 
@@ -417,7 +417,7 @@ Consider a Python-based MCP server repository:
 llm --ai-configure setup-testing --repo-url https://github.com/user/python-mcp-server
 ```
 
-According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, the system:
+According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, the system:
 
 1. **Detects Python Server**: Identifies Python code and requirements.txt
 2. **Recognizes Framework**: Identifies FastAPI or similar framework
@@ -658,7 +658,7 @@ The AI configuration system continues to evolve, with several exciting developme
 
 ### Enhanced AI Models
 
-According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, future versions will incorporate more sophisticated AI models:
+According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, future versions will incorporate more sophisticated AI models:
 
 1. **Deeper Code Understanding**: More nuanced analysis of repository code
 2. **Predictive Configuration**: Anticipating testing needs based on code patterns

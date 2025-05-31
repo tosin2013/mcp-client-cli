@@ -13,7 +13,7 @@ Python is one of the most popular languages for implementing MCP servers due to 
 
 ### Python Server Characteristics
 
-According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md) documentation, Python MCP servers typically have several distinctive characteristics:
+According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/MULTI_LANGUAGE_TESTING.md) documentation, Python MCP servers typically have several distinctive characteristics:
 
 1. **Asynchronous Implementation**: Often using `asyncio` for non-blocking operations
 2. **Framework Integration**: Frequently built on frameworks like FastAPI, Flask, or Django
@@ -116,7 +116,7 @@ Node.js is another popular choice for MCP server implementation, offering excell
 
 ### Node.js Server Characteristics
 
-According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md) documentation, Node.js MCP servers typically have several distinctive characteristics:
+According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/MULTI_LANGUAGE_TESTING.md) documentation, Node.js MCP servers typically have several distinctive characteristics:
 
 1. **Event-Driven Architecture**: Leveraging Node.js's non-blocking I/O model
 2. **Promise-Based APIs**: Using Promises and async/await for asynchronous operations
@@ -219,7 +219,7 @@ One of the key benefits of the MCP protocol is enabling interoperability between
 
 ### Cross-Language Testing Principles
 
-According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md) documentation, effective cross-language testing is guided by several principles:
+According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/MULTI_LANGUAGE_TESTING.md) documentation, effective cross-language testing is guided by several principles:
 
 1. **Protocol Compliance**: Ensuring all implementations adhere to the MCP specification
 2. **Data Format Consistency**: Validating consistent handling of data formats across languages
@@ -387,7 +387,7 @@ For Python MCP servers, several optimizations can enhance performance and reliab
 mcp-test python-optimize --server-name python-server
 ```
 
-According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md) documentation, this testing identifies opportunities for:
+According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/MULTI_LANGUAGE_TESTING.md) documentation, this testing identifies opportunities for:
 
 1. **Asyncio Optimization**: Ensuring efficient use of Python's asyncio
 2. **C Extension Usage**: Identifying opportunities to use C extensions for performance-critical code
@@ -486,7 +486,7 @@ Security testing is essential for all MCP servers:
 mcp-test security --server-name any-server
 ```
 
-As noted in the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md) documentation, this testing verifies:
+As noted in the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/MULTI_LANGUAGE_TESTING.md) documentation, this testing verifies:
 
 1. **Input Validation**: Protection against injection attacks
 2. **Authentication**: Proper implementation of authentication mechanisms

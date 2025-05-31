@@ -11,7 +11,7 @@ description: "Practical case studies and real-world implementation examples"
 
 ### Background and Requirements
 
-A large enterprise developing an AI platform needed to implement and test an MCP server that would provide access to various internal tools and systems. According to their technical lead, as quoted in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation:
+A large enterprise developing an AI platform needed to implement and test an MCP server that would provide access to various internal tools and systems. According to their technical lead, as quoted in the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation:
 
 "Our platform needed to expose over 50 internal tools to language models while maintaining strict security controls, ensuring high performance under variable load, and providing detailed audit logging. We needed a comprehensive testing approach that would validate all these aspects."
 
@@ -162,7 +162,7 @@ This case study demonstrates the effectiveness of comprehensive MCP server testi
 
 ### Background and Requirements
 
-An open-source project aimed to create a community-maintained MCP server implementation that would provide a reference for the protocol and offer a foundation for custom implementations. According to the project's README, as quoted in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation:
+An open-source project aimed to create a community-maintained MCP server implementation that would provide a reference for the protocol and offer a foundation for custom implementations. According to the project's README, as quoted in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation:
 
 "Our goal is to create a high-quality, well-tested MCP server implementation that serves as both a reference for the protocol and a practical foundation for custom implementations. We prioritize correctness, clarity, and comprehensive testing over performance or feature richness."
 
@@ -326,7 +326,7 @@ This case study demonstrates the effectiveness of community-driven MCP server te
 
 ### Background and Requirements
 
-A research organization developing specialized AI tools needed to implement an MCP server to make these tools available to language models. According to their research director, as quoted in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation:
+A research organization developing specialized AI tools needed to implement an MCP server to make these tools available to language models. According to their research director, as quoted in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation:
 
 "Our specialized research tools represent years of development and unique capabilities. We needed to make these tools available to language models through the MCP protocol while ensuring they functioned correctly, maintained their accuracy, and performed efficiently."
 
@@ -501,7 +501,7 @@ This case study demonstrates the effectiveness of domain-specific MCP server tes
 
 ### Background and Requirements
 
-A software company developing a commercial MCP platform needed to implement servers in multiple programming languages to support diverse customer environments. According to their CTO, as quoted in the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md) documentation:
+A software company developing a commercial MCP platform needed to implement servers in multiple programming languages to support diverse customer environments. According to their CTO, as quoted in the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/MULTI_LANGUAGE_TESTING.md) documentation:
 
 "Our customers operate in diverse technical environments, requiring MCP implementations in Python, Node.js, Java, and Go. We needed to ensure consistent functionality, performance, and security across all implementations while leveraging each language's strengths."
 

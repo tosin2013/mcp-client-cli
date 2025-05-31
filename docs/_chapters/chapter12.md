@@ -188,7 +188,7 @@ mcp-test canary-setup --server-name your-server --baseline-version 1.0 --canary-
 mcp-test progressive-deployment --server-name your-server --stages 10,30,50,100
 ```
 
-According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, continuous verification helps identify issues that might only appear in production environments, providing more comprehensive quality assurance.
+According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, continuous verification helps identify issues that might only appear in production environments, providing more comprehensive quality assurance.
 
 ## Specialized Testing Areas
 
@@ -371,7 +371,7 @@ mcp-test community-benchmark --benchmark standard-mcp-benchmark --publish-result
 mcp-test vulnerability-check --server-name your-server --database community-vulnerabilities
 ```
 
-According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/main/END_TO_END_WORKFLOW.md) documentation, these collaborative testing ecosystems help improve testing quality across the entire MCP community.
+According to the [END_TO_END_WORKFLOW.md](https://github.com/tosin2013/mcp-client-cli/blob/master/END_TO_END_WORKFLOW.md) documentation, these collaborative testing ecosystems help improve testing quality across the entire MCP community.
 
 ### Integrated Development Environments
 
@@ -475,7 +475,7 @@ mcp-test contribute-extension --extension your-extension/ --documentation docs/
 mcp-test community-vote --proposal feature-roadmap-2026
 ```
 
-According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/MULTI_LANGUAGE_TESTING.md) documentation, community-driven development will help the mcp-client-cli adapt to the diverse and evolving needs of the MCP ecosystem.
+According to the [MULTI_LANGUAGE_TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/MULTI_LANGUAGE_TESTING.md) documentation, community-driven development will help the mcp-client-cli adapt to the diverse and evolving needs of the MCP ecosystem.
 
 ### Enterprise Features
 

@@ -9,7 +9,7 @@ description: "Essential commands and basic usage patterns for MCP-Client-CLI"
 
 ## Command Line Interface Overview
 
-The mcp-client-cli provides a powerful and flexible command-line interface for testing and validating MCP servers. Understanding this interface is essential for effective testing workflows. As documented in the [Quick Reference guide](https://github.com/tosin2013/mcp-client-cli/blob/main/QUICK_REFERENCE.md), the tool offers multiple entry points and a rich set of commands.
+The mcp-client-cli provides a powerful and flexible command-line interface for testing and validating MCP servers. Understanding this interface is essential for effective testing workflows. As documented in the [Quick Reference guide](https://github.com/tosin2013/mcp-client-cli/blob/master/QUICK_REFERENCE.md), the tool offers multiple entry points and a rich set of commands.
 
 ### Multiple Entry Points
 
@@ -208,7 +208,7 @@ For consistency, this chapter focuses on JSON configuration, which is the format
 
 ### Basic Configuration Structure
 
-As described in the [CONFIG.md](https://github.com/tosin2013/mcp-client-cli/blob/main/CONFIG.md) file, a typical configuration includes several sections:
+As described in the [CONFIG.md](https://github.com/tosin2013/mcp-client-cli/blob/master/CONFIG.md) file, a typical configuration includes several sections:
 
 ```json
 {
@@ -483,7 +483,7 @@ Test results include several key components that help you understand the state o
 
 #### Confidence Scores
 
-Many tests include confidence scores (0-100%) indicating the reliability of the test results. As explained in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, these scores help you assess the certainty of the findings:
+Many tests include confidence scores (0-100%) indicating the reliability of the test results. As explained in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, these scores help you assess the certainty of the findings:
 
 - **90-100%**: High confidence, very reliable results
 - **70-89%**: Good confidence, generally reliable results

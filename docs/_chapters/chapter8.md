@@ -454,7 +454,7 @@ The mcp-client-cli includes special integration with [Dagger.io](https://dagger.
 
 ### Dagger.io Overview
 
-According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, Dagger.io offers several advantages for MCP server testing:
+According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, Dagger.io offers several advantages for MCP server testing:
 
 1. **Portability**: Pipelines run consistently across different environments
 2. **Containerization**: Tests run in isolated containers

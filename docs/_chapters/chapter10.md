@@ -22,7 +22,7 @@ One of the most frequent challenges is establishing a connection with the MCP se
 
 #### Solutions
 
-According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, several approaches can resolve connection issues:
+According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, several approaches can resolve connection issues:
 
 ```bash
 # Check if the server is running
@@ -228,7 +228,7 @@ Incorrect configuration can cause various problems in MCP server testing.
 
 #### Solutions
 
-According to the [CONFIG.md](https://github.com/tosin2013/mcp-client-cli/blob/main/CONFIG.md) documentation, several approaches can address configuration issues:
+According to the [CONFIG.md](https://github.com/tosin2013/mcp-client-cli/blob/master/CONFIG.md) documentation, several approaches can address configuration issues:
 
 ```bash
 # Validate configuration
@@ -281,7 +281,7 @@ Before optimizing, establish a performance baseline:
 mcp-test benchmark --server-name your-server --output baseline-performance.json
 ```
 
-According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, this benchmarking measures:
+According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, this benchmarking measures:
 
 1. **Response Time**: How quickly the server responds to requests
 2. **Throughput**: How many requests the server can handle per second
@@ -479,7 +479,7 @@ For secure data handling:
 mcp-test security-best-practices --category data-protection
 ```
 
-According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, this validation checks:
+According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, this validation checks:
 
 1. **Encryption**: Properly encrypting sensitive data
 2. **Data Minimization**: Collecting and storing only necessary data
@@ -688,7 +688,7 @@ mcp-test list-resources --category documentation
 mcp-test open-resource --resource mcp-specification
 ```
 
-According to the [DOCUMENTATION_INDEX.md](https://github.com/tosin2013/mcp-client-cli/blob/main/DOCUMENTATION_INDEX.md), key documentation resources include:
+According to the [DOCUMENTATION_INDEX.md](https://github.com/tosin2013/mcp-client-cli/blob/master/DOCUMENTATION_INDEX.md), key documentation resources include:
 
 1. **MCP Specification**: The official protocol specification
 2. **Implementation Guides**: Language-specific implementation guidance

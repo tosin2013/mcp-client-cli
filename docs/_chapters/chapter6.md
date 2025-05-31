@@ -13,7 +13,7 @@ While the basic testing capabilities covered in the previous chapter provide a s
 
 ### Suite Structure and Organization
 
-According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, comprehensive test suites are organized into a hierarchical structure:
+According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, comprehensive test suites are organized into a hierarchical structure:
 
 ```
 test-suites/
@@ -195,7 +195,7 @@ Input validation testing verifies that the server properly validates and sanitiz
 mcp-test security --server-name your-server --category input-validation
 ```
 
-As noted in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, input validation testing includes:
+As noted in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, input validation testing includes:
 
 1. **SQL Injection**: Attempting to inject SQL commands
 2. **Command Injection**: Attempting to execute system commands
@@ -505,7 +505,7 @@ The tool can automatically identify common issues:
 mcp-test detect-issues --server-name your-server
 ```
 
-According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, issue detection includes:
+According to the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, issue detection includes:
 
 1. **Pattern Matching**: Identifying known issue patterns
 2. **Anomaly Detection**: Flagging unusual behavior

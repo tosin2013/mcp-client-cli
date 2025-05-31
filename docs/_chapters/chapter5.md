@@ -49,7 +49,7 @@ Security testing must systematically evaluate these aspects to identify and addr
 
 ### Performance Requirements
 
-MCP servers must perform efficiently to provide a good user experience. As outlined in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, performance testing should assess:
+MCP servers must perform efficiently to provide a good user experience. As outlined in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, performance testing should assess:
 
 1. **Response Time**: How quickly the server responds to requests
 2. **Throughput**: How many requests the server can handle per second
@@ -65,7 +65,7 @@ Effective MCP server testing is guided by several fundamental principles that en
 
 ### Methodological Pragmatism
 
-As described in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, the mcp-client-cli follows a principle called "methodological pragmatism," which combines systematic verification with practical considerations. This approach includes:
+As described in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, the mcp-client-cli follows a principle called "methodological pragmatism," which combines systematic verification with practical considerations. This approach includes:
 
 1. **Systematic Coverage**: Testing all aspects of the server's functionality and compliance
 2. **Confidence Scoring**: Quantifying the reliability of test results
@@ -352,7 +352,7 @@ These categories help you quickly identify which aspects of your server require 
 
 ### Confidence Scoring
 
-As explained in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/main/TESTING.md) documentation, test results include confidence scores that indicate the reliability of the findings:
+As explained in the [TESTING.md](https://github.com/tosin2013/mcp-client-cli/blob/master/TESTING.md) documentation, test results include confidence scores that indicate the reliability of the findings:
 
 - **90-100%**: High confidence, very reliable results
 - **70-89%**: Good confidence, generally reliable results
