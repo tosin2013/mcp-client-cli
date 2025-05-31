@@ -14,3 +14,25 @@ mcp-server-config.json
 
 .DS_Store
 repomix-output.md
+
+# Jekyll and Ruby specific
+docs/vendor/
+docs/.bundle/
+docs/_site/
+docs/.sass-cache/
+docs/.jekyll-cache/
+docs/.jekyll-metadata
+docs/Gemfile.lock
+
+# Jekyll build artifacts
+.sass-cache/
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby version management
+.ruby-version
+.rbenv-version
+
+# Local development
+.env.local
