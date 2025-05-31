@@ -53,11 +53,8 @@ git push origin main
 
 ### Step 3: Access Your Documentation
 Your documentation will be available at:
-```
-https://your-username.github.io/mcp-client-cli
-```
 
-*Note: Replace `your-username` with your actual GitHub username*
+🌍 https://tosin2013.github.io/mcp-client-cli
 
 ## 🎨 Features Included
 

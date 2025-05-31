@@ -48,7 +48,7 @@ This documentation includes over 150 external references to authoritative source
 
 ## Contributing
 
-This documentation is part of the [MCP-Client-CLI project](https://github.com/your-username/mcp-client-cli). Contributions and improvements are welcome through pull requests.
+This documentation is part of the [MCP-Client-CLI project](https://github.com/tosin2013/mcp-client-cli). Contributions and improvements are welcome through pull requests.
 
 ## Author
 

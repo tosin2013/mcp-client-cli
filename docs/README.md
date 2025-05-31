@@ -31,7 +31,10 @@ To enable GitHub Pages for this repository:
 4. Choose "main" branch and "/docs" folder
 5. Click "Save"
 
-The documentation will be available at: `https://your-username.github.io/mcp-client-cli`
+Your documentation will be available at:
+```
+https://tosin2013.github.io/mcp-client-cli
+```
 
 ## Local Development
 
